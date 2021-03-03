@@ -10,11 +10,11 @@
 
 <%@include  file="../header.html" %>
 <%
-	//String bckColor = "#0066cb";
-	String bckColor = "#b81b44";
+	String bckColor = "#0066cb";
+	//String bckColor = "#b81b44";
 	
-	String showSkyzerPaymentImg = "display: block";
-	String showSkyzerTechImg = "display: none";
+	String showSkyzerPaymentImg = "display: none";
+	String showSkyzerTechImg = "display: block";
 %>
 
 </head>
@@ -53,7 +53,9 @@
                                         </h1>
                                     </div>
                                     <div class="col-12 col-xl-auto mb-3">
-                                        <button style="background-color:<%=bckColor %>;" class="btn btn-sm btn-light active mr-2"><i class="fas fa-plus"></i>&nbsp;Create New Project</button>
+                                        <button style="background-color:<%=bckColor %>;" 
+                                        data-toggle="modal" data-target="#exampleModalLg"
+                                        class="btn btn-sm btn-light active mr-2"><i class="fas fa-plus"></i>&nbsp;Create New Project</button>
                                     </div>
                                 </div>
                             </div>
@@ -62,6 +64,43 @@
                     <!-- Main page content-->
                     <div class="container">
                         <div class="row">
+                        
+                        	<div class="modal fade" id="exampleModalLg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+							    <div class="modal-dialog modal-lg" role="document">
+							        <div class="modal-content">
+							            <div class="modal-header">
+							                <h5 class="modal-title">Create a new project</h5>
+							                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+							            </div>
+							            <div class="modal-body">
+							                <form>
+											    <div class="form-group"><label for="exampleFormControlInput1">Email address</label><input class="form-control" id="exampleFormControlInput1" type="email" placeholder="name@example.com"></div>
+											    <div class="form-group">
+											        <label for="exampleFormControlSelect1">Example select</label><select class="form-control" id="exampleFormControlSelect1">
+											            <option>1</option>
+											            <option>2</option>
+											            <option>3</option>
+											            <option>4</option>
+											            <option>5</option>
+											        </select>
+											    </div>
+											    <div class="form-group">
+											        <label for="exampleFormControlSelect2">Example multiple select</label><select class="form-control" id="exampleFormControlSelect2" multiple="">
+											            <option>1</option>
+											            <option>2</option>
+											            <option>3</option>
+											            <option>4</option>
+											            <option>5</option>
+											        </select>
+											    </div>
+											    <div class="form-group"><label for="exampleFormControlTextarea1">Example textarea</label><textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea></div>
+											</form>
+							            </div>
+							            <div class="modal-footer"><button class="btn btn-sm btn-light active mr-2" style="background-color:<%=bckColor %>; " type="button" data-dismiss="modal">Close</button></div>
+							        </div>
+							    </div>
+							</div>
+                        	
                             
                             <!-- Project card -->
                             <div class="col-lg-4 mb-4">
@@ -89,7 +128,7 @@
                            <!-- New project card -->
                              <div class="col-lg-4 mb-4" data-toggle="tooltip" title="Create New Project">
                                 <!-- Knowledge base category card 1-->
-                                <a  class="card lift lift-sm h-100" href="knowledge-base-category.html">
+                                <a  class="card lift lift-sm h-100" data-toggle="modal" data-target="#exampleModalLg">
                                 	<!-- add new for tech -->
                                     <img style="<%=showSkyzerTechImg %>; height: 8rem; padding: 2rem;" class="card-img-top" src="../img/icons/add-new-skyzer-tech.svg" alt="...">
                                		<!-- add new for payment -->
@@ -97,8 +136,6 @@
                                 </a>
                             </div>
                            <!-- End of new project card -->
-                            
-                            
                          
                         </div>
                     </div>
