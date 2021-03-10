@@ -6,8 +6,15 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Skyzer - My Task | Projects</title>
+<title>Skyzer - My Task | Tasks</title>
 
+<!-- Following css/styles just for table -->
+<link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
+<link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
+<link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
+<link rel="stylesheet" type="text/css" href="../css/util.css">
+<link rel="stylesheet" type="text/css" href="../css/main.css">
 <%@include  file="../header.html" %>
 <%
 	String bckColor = "#0066cb";
@@ -16,7 +23,19 @@
 	String showSkyzerPaymentImg = "display: none";
 	String showSkyzerTechImg = "display: block";
 %>
-
+<style type="text/css">
+.table100.ver1 .row100 td:hover  {
+  background-color: <%=bckColor %>;
+  color: #fff;
+}
+.table100.ver1 .hov-column-head-ver1 {
+  background-color: <%=bckColor %>; !important;
+  font-weight: bold;
+}
+.mytd i:hover {
+	color: #fff;
+}
+</style>
 </head>
 <body id="page-top">
 
@@ -49,13 +68,13 @@
                                             <div class="page-header-icon">
                                           		<i class="fas fa-project-diagram"></i>  
                                             </div>
-                                            Projects
+                                            @Project IKR - Tasks
                                         </h1>
                                     </div>
                                     <div class="col-12 col-xl-auto mb-3">
                                         <button style="background-color:<%=bckColor %>;" 
                                         data-toggle="modal" data-target="#projectModelLg"
-                                        class="btn btn-sm btn-light active mr-2"><i class="fas fa-plus"></i>&nbsp;Create New Project</button>
+                                        class="btn btn-sm btn-light active mr-2"><i class="fas fa-plus"></i>&nbsp;Create New Task</button>
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +83,8 @@
                     <!-- Main page content-->
                     <div class="container">
                         <div class="row">
-                        
+                        	
+                        	<!-- Models -->
                         	<div class="modal fade" id="projectModelLg" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
 							    <div class="modal-dialog modal-lg" role="document">
 							        <div class="modal-content">
@@ -118,43 +138,78 @@
 							        </div>
 							    </div>
 							</div>
-                        	
+                        	<!-- End Models -->
                             
-                            <!-- Project card -->
-                            <div class="col-lg-4 mb-4">
-                                <a class="card lift lift-sm h-100" href="../Views/tasks.jsp?project=11">
-                                    <div class="card-body py-5">
-                                        <h5 class="card-title mb-2" style="color:<%=bckColor %>;">
-                                            Project IKR
-                                        </h5>
-                                    </div>
-                                    <div class="card-footer">
-										<div class="small text-muted mb-2">
-											12 tasks in this project
-										</div>
-										<div class="progress rounded-pill"
-											style="height: 0.5rem">
-											<div style="background-color:<%=bckColor %>;" class="progress-bar w-75 rounded-pill"
-												role="progressbar" aria-valuenow="75" aria-valuemin="0"
-												aria-valuemax="100"></div>
-										</div>
+                            <!-- Task Table -->
+                            <div class="limiter">
+							<div class="container-table100">
+								<div class="wrap-table100">
+									<div class="table100 ver1 m-b-110">
+										<table data-vertable="ver1">
+											<thead>
+												<tr class="row100 head">
+													<th style="background-color: <%=bckColor %>;" class="column100 column1" data-column="column1">Task / Dates</th>
+													<th style="background-color: <%=bckColor %>;" class="column100 column2" data-column="column2">Sunday</th>
+													<th style="background-color: <%=bckColor %>;" class="column100 column3" data-column="column3">Monday</th>
+													<th style="background-color: <%=bckColor %>;" class="column100 column4" data-column="column4">Tuesday</th>
+													<th style="background-color: <%=bckColor %>;" class="column100 column5" data-column="column5">Wednesday</th>
+													<th style="background-color: <%=bckColor %>;" class="column100 column6" data-column="column6">Thursday</th>
+													<th style="background-color: <%=bckColor %>;" class="column100 column7" data-column="column7">Friday</th>
+													<th style="background-color: <%=bckColor %>;" class="column100 column8" data-column="column8">Saturday</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr class="row100">
+													<td class="column100 column1" data-column="column1">
+													<button href="#" title="Add time">
+														<span style="font-size: 1em;">
+														  <i style="margin-left: 10px;" class="far fa-calendar-plus"></i>
+														</span>
+													</button>	| 												
+													Lawrence Scott 
+													</td>
+													
+													<td class="column100 column2" data-column="column2">8:00 AM</td>
+													<td class="column100 column3" data-column="column3">--</td>
+													<td class="column100 column4" data-column="column4">--</td>
+													<td class="column100 column5" data-column="column5">8:00 AM</td>
+													<td class="column100 column6" data-column="column6">--</td>
+													<td class="column100 column7" data-column="column7">5:00 PM</td>
+													<td class="column100 column8" data-column="column8">8:00 AM</td>
+												</tr>
+												
+												 <!-- New task row -->
+												<tr class="row100">
+													<td class="column100 column1" data-column="column1">
+													<button href="#" title="Add time">
+														<span style="font-size: 1em;">
+														  <i style="margin-left: 10px;" class="far fa-calendar-plus"></i>
+														</span>
+													</button>	| 												
+													Add New Task <b>@Project IKR</b> 
+													</td>
+													
+													<td class="column100 column2" data-column="column2">8:00 AM</td>
+													<td class="column100 column3" data-column="column3">--</td>
+													<td class="column100 column4" data-column="column4">--</td>
+													<td class="column100 column5" data-column="column5">8:00 AM</td>
+													<td class="column100 column6" data-column="column6">--</td>
+													<td class="column100 column7" data-column="column7">5:00 PM</td>
+													<td class="column100 column8" data-column="column8">8:00 AM</td>
+												</tr>
+												<!-- End of new task row -->
+												
+											</tbody>
+										</table>
 									</div>
-								</a>
-                            </div>
-                           <!-- End of project card -->
+					
+									
+									
+									</div>
+								</div>
+							</div>
+                           <!-- End of Task Table -->
                            
-                           <!-- New project card -->
-                             <div class="col-lg-4 mb-4" data-toggle="tooltip" title="Create New Project">
-                                <!-- Knowledge base category card 1-->
-                                <a  class="card lift lift-sm h-100" data-toggle="modal" data-target="#projectModelLg">
-                                	<!-- add new for tech -->
-                                    <img style="<%=showSkyzerTechImg %>; height: 8rem; padding: 2rem;" class="card-img-top" src="../img/icons/add-new-skyzer-tech.svg" alt="...">
-                               		<!-- add new for payment -->
-                               		<img style="<%=showSkyzerPaymentImg %>; height: 8rem; padding: 2rem;" class="card-img-top" src="../img/icons/add-new-skyzer-payment.svg" alt="...">
-                                </a>
-                            </div>
-                           <!-- End of new project card -->
-                         
                         </div>
                     </div>
                 </main>
@@ -165,6 +220,10 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
+            <!-- Following css/styles just for table -->
+			<script src="../vendor/bootstrap/js/popper.js"></script>
+			<script src="../vendor/select2/select2.min.js"></script>
+			<script src="../js/main.js"></script>
             <%@include  file="../footer.html" %>
             <!-- End of Footer -->
 
