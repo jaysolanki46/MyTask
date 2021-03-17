@@ -135,7 +135,7 @@ th, td {
 
 .column100.column1 {
   width: 265px;
-  padding-left: 42px;
+  /*padding-left: 42px;*/
 }
 
 .row100.head th {
@@ -144,8 +144,11 @@ th, td {
 }
 
 .row100 td {
+	/*
   padding-top: 18px;
   padding-bottom: 14px;
+  */
+  padding: 10px;
 }
 
 

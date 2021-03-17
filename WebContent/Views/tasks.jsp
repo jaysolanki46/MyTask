@@ -1,6 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page language="java" import="java.util.*" %>
+<%@ page language="java" import="java.text.SimpleDateFormat" %>
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -8,13 +10,6 @@
 <meta charset="ISO-8859-1">
 <title>Skyzer - My Task | Tasks</title>
 
-<!-- Following css/styles just for table -->
-<link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
-<link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
-<link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
-<link rel="stylesheet" type="text/css" href="../css/util.css">
-<link rel="stylesheet" type="text/css" href="../css/main.css">
 <%@include  file="../header.html" %>
 <%
 	String bckColor = "#0066cb";
@@ -22,6 +17,18 @@
 	
 	String showSkyzerPaymentImg = "display: none";
 	String showSkyzerTechImg = "display: block";
+	
+	
+	Calendar now = Calendar.getInstance();
+	
+	SimpleDateFormat tableFormat = new SimpleDateFormat("dd MMM");
+	SimpleDateFormat dbFrmat = new SimpleDateFormat("dd/MM/yyyy");
+
+	
+    String[] days = new String[7];
+    int delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
+    now.add(Calendar.DAY_OF_MONTH, delta );
+	
 %>
 <style type="text/css">
 .table100.ver1 .row100 td:hover  {
@@ -66,9 +73,9 @@
                                     <div class="col-auto mb-3">
                                         <h1 class="page-header-title" style="color: <%=bckColor %>; font-weight: bold;">
                                             <div class="page-header-icon">
-                                          		<i class="fas fa-project-diagram"></i>  
+                                          		<i class="far fa-calendar-plus"></i> 
                                             </div>
-                                            @Project IKR - Tasks
+                                            Tasks - @Project IKR
                                         </h1>
                                     </div>
                                     <div class="col-12 col-xl-auto mb-3">
@@ -84,12 +91,12 @@
                     <div class="container">
                         <div class="row">
                         	
-                        	<!-- Models -->
+                        	<!-- Model create a new task -->
                         	<div class="modal fade" id="projectModelLg" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
 							    <div class="modal-dialog modal-lg" role="document">
 							        <div class="modal-content">
 							            <div class="modal-header">
-							                <h5 class="modal-title">Create a new project</h5>
+							                <h5 class="modal-title">Create a new task</h5>
 							                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 							            </div>
 							            <div class="modal-body">
@@ -97,20 +104,14 @@
 							                	<div class="row">
 							                		<div class="col">
 													    <div class="form-group">
-														    <label for="projectNameInput">Project name <span style="color: red;">*</span></label>
+														    <label for="projectNameInput">Task name <span style="color: red;">*</span></label>
 														    <input style="height: fit-content;" class="form-control" id="projectNameInput" type="text" placeholder="Ex. IKR Project">
 													    </div>
 												    </div>
 												    <div class="col">
 													    <div class="form-group">
-													        <label for="departmentSelect">Department <span style="color: red;">*</span></label>
-													        <select style="height: fit-content;" class="form-control" id="departmentSelect">
-													            <option>GENERAL</option>
-													            <option>SUPPORT</option>
-													            <option>SALES</option>
-													            <option>COOPERATE</option>
-													            <option>PRODUCTION</option>
-													        </select>
+													        <label for="departmentSelect">Project <span style="color: red;">*</span></label>
+													        <input style="height: fit-content;" class="form-control" id="projectNameInput" type="text" value="IKR Project" readonly="readonly">
 													    </div>
 												    </div>
 											    </div>
@@ -138,76 +139,131 @@
 							        </div>
 							    </div>
 							</div>
-                        	<!-- End Models -->
+                        	<!-- End Model create a new task -->
                             
                             <!-- Task Table -->
-                            <div class="limiter">
-							<div class="container-table100">
-								<div class="wrap-table100">
-									<div class="table100 ver1 m-b-110">
-										<table data-vertable="ver1">
-											<thead>
-												<tr class="row100 head">
-													<th style="background-color: <%=bckColor %>;" class="column100 column1" data-column="column1">Task / Dates</th>
-													<th style="background-color: <%=bckColor %>;" class="column100 column2" data-column="column2">Sunday</th>
-													<th style="background-color: <%=bckColor %>;" class="column100 column3" data-column="column3">Monday</th>
-													<th style="background-color: <%=bckColor %>;" class="column100 column4" data-column="column4">Tuesday</th>
-													<th style="background-color: <%=bckColor %>;" class="column100 column5" data-column="column5">Wednesday</th>
-													<th style="background-color: <%=bckColor %>;" class="column100 column6" data-column="column6">Thursday</th>
-													<th style="background-color: <%=bckColor %>;" class="column100 column7" data-column="column7">Friday</th>
-													<th style="background-color: <%=bckColor %>;" class="column100 column8" data-column="column8">Saturday</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr class="row100">
-													<td class="column100 column1" data-column="column1">
-													<button href="#" title="Add time">
-														<span style="font-size: 1em;">
-														  <i style="margin-left: 10px;" class="far fa-calendar-plus"></i>
-														</span>
-													</button>	| 												
-													Lawrence Scott 
-													</td>
-													
-													<td class="column100 column2" data-column="column2">8:00 AM</td>
-													<td class="column100 column3" data-column="column3">--</td>
-													<td class="column100 column4" data-column="column4">--</td>
-													<td class="column100 column5" data-column="column5">8:00 AM</td>
-													<td class="column100 column6" data-column="column6">--</td>
-													<td class="column100 column7" data-column="column7">5:00 PM</td>
-													<td class="column100 column8" data-column="column8">8:00 AM</td>
-												</tr>
-												
-												 <!-- New task row -->
-												<tr class="row100">
-													<td class="column100 column1" data-column="column1">
-													<button href="#" title="Add time">
-														<span style="font-size: 1em;">
-														  <i style="margin-left: 10px;" class="far fa-calendar-plus"></i>
-														</span>
-													</button>	| 												
-													Add New Task <b>@Project IKR</b> 
-													</td>
-													
-													<td class="column100 column2" data-column="column2">8:00 AM</td>
-													<td class="column100 column3" data-column="column3">--</td>
-													<td class="column100 column4" data-column="column4">--</td>
-													<td class="column100 column5" data-column="column5">8:00 AM</td>
-													<td class="column100 column6" data-column="column6">--</td>
-													<td class="column100 column7" data-column="column7">5:00 PM</td>
-													<td class="column100 column8" data-column="column8">8:00 AM</td>
-												</tr>
-												<!-- End of new task row -->
-												
-											</tbody>
-										</table>
+                            <table class="table table-bordered">
+						    <thead>
+						      <tr>
+						        <th style="text-align: inherit;">Tasks</th>
+						        <th>Assignee</th>
+						        <%
+						        	String daysList[] = {"Mon", "Tue", "Wed",
+						                "Thurs", "Fri"};
+						        
+							        for (int i = 0; i < 5; i++)
+							        {
+							        	%><th style="text-align: -webkit-center;"><%=tableFormat.format(now.getTime()) + "," + daysList[i] %></th><% 
+							            now.add(Calendar.DAY_OF_MONTH, 1);
+							        }
+						        	
+						        %>
+						       
+						        <th style="text-align: -webkit-center;">Total hours</th>
+						      </tr>
+						    </thead>
+						    <tbody>
+						      <tr>
+						        <td style="text-align: inherit;">
+						        	<i class="far fa-edit"></i>
+						        	IKR Printing Test 
+						        </td>
+						        <td>Kishan Rabari</td>
+						        <td>
+						        	<input class="form-control form-control-sm" type="text" onclick="#taskModel1mar" data-toggle="modal" data-target="#taskModel1mar">
+						        	<!-- Model create a new task -->
+		                        	<div class="modal fade" id="taskModel1mar" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
+									    <div class="modal-dialog modal-lg" role="document">
+									        <div class="modal-content">
+									            <div class="modal-header">
+									                <h5 class="modal-title">Create a new task 1 Mar</h5>
+									                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+									            </div>
+									            <div class="modal-body">
+									                <form>
+									                	<div class="row">
+									                		<div class="col">
+															    <div class="form-group">
+																    <label for="projectNameInput">Task name <span style="color: red;">*</span></label>
+																    <input style="height: fit-content;" class="form-control" id="projectNameInput" type="text" placeholder="Ex. IKR Project">
+															    </div>
+														    </div>
+														    <div class="col">
+															    <div class="form-group">
+															        <label for="departmentSelect">Project <span style="color: red;">*</span></label>
+															        <input style="height: fit-content;" class="form-control" id="projectNameInput" type="text" value="IKR Project" readonly="readonly">
+															    </div>
+														    </div>
+													    </div>
+													    <div class="form-group">
+													        <label for="teamMemberSelect">Team members <span style="color: red;">*</span></label><br/>
+													        <select style="height: fit-content;" class="form-control" id="teamMemberSelect" multiple="multiple">
+													            <option>Christine Hogan</option>
+													            <option>Alan Green</option>
+													            <option>Jay Solanki</option>
+													            <option>Kishan Rabari</option>
+													            <option>Sukhwinder Kaur</option>
+													        </select>
+													    </div>
+													    <div class="form-group">
+														    <label for="descriptionTextarea">Description</label>
+														    <textarea class="form-control" id="descriptionTextarea" rows="4"></textarea>
+													    </div>
+													</form>
+									            </div>
+									            <div class="modal-footer">
+									            	<button class="btn btn-sm btn-light active mr-2" style="background-color:<%=bckColor %>; " type="button" data-dismiss="modal">
+									            		Save
+									            	</button>
+									            </div>
+									        </div>
+									    </div>
 									</div>
-					
-									
-									
-									</div>
-								</div>
-							</div>
+		                        	<!-- End Model create a new task -->
+						        </td>
+						         <td>
+						        	<input class="form-control form-control-sm" type="text">
+						        </td>
+						         <td>
+						        	<input class="form-control form-control-sm" type="text">
+						        </td>
+						         <td>
+						        	<input class="form-control form-control-sm" type="text">
+						        </td>
+						         <td>
+						        	<input class="form-control form-control-sm" type="text">
+						        </td>
+						         <td>
+						        	<input class="form-control form-control-sm" type="text">
+						        </td>
+						      </tr>
+						    </tbody>
+						    <tfoot>
+						    	<tr>
+						    		<th colspan="2"  style="text-align: inherit;">
+						    			Total hours:
+						    		</th>
+						    		<th>
+						    			<input class="form-control form-control-sm" type="text">
+						    		</th>
+						    		<th>
+						    			<input class="form-control form-control-sm" type="text">
+						    		</th>
+						    		<th>
+						    			<input class="form-control form-control-sm" type="text">
+						    		</th>
+						    		<th>
+						    			<input class="form-control form-control-sm" type="text">
+						    		</th>
+						    		<th>
+						    			<input class="form-control form-control-sm" type="text">
+						    		</th>
+						    		<th>
+						    			<input class="form-control form-control-sm" type="text">
+						    		</th>
+						    	</tr>
+						    </tfoot>
+						  </table>
                            <!-- End of Task Table -->
                            
                         </div>
@@ -220,10 +276,7 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <!-- Following css/styles just for table -->
-			<script src="../vendor/bootstrap/js/popper.js"></script>
-			<script src="../vendor/select2/select2.min.js"></script>
-			<script src="../js/main.js"></script>
+           
             <%@include  file="../footer.html" %>
             <!-- End of Footer -->
 

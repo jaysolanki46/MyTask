@@ -1924,11 +1924,13 @@ pre code {
 }
 
 .table-bordered {
-  border: 1px solid #e0e5ec;
+  border: 3px solid #e0e5ec;
 }
 .table-bordered th,
 .table-bordered td {
   border: 1px solid #e0e5ec;
+  vertical-align: middle;
+  text-align: -webkit-center;
 }
 .table-bordered thead th,
 .table-bordered thead td {
@@ -2781,11 +2783,12 @@ pre code {
   border: 0;
 }
 
+/*
 .form-control {
   display: block;
   width: 100%;
   height: calc(1em + 1.75rem + 2px);
-  /*padding: 0.875rem 1.125rem;*/
+  padding: 0.875rem 1.125rem;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1;
@@ -2795,7 +2798,7 @@ pre code {
   border: 1px solid #c5ccd6;
   border-radius: 0.35rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
+}*/
 @media (prefers-reduced-motion: reduce) {
   .form-control {
     transition: none;
@@ -2898,6 +2901,7 @@ select.form-control:focus::-ms-value {
   font-size: 0.75rem;
   line-height: 1;
   border-radius: 0.25rem;
+  width: 5rem;
 }
 
 .form-control-lg {
