@@ -1924,7 +1924,11 @@ pre code {
 }
 
 .table-bordered {
-  border: 3px solid #e0e5ec;
+  
+  border-collapse: collapse;
+    border-radius: 5px;
+    overflow: hidden;
+    border: hidden;
 }
 .table-bordered th,
 .table-bordered td {
@@ -20492,3 +20496,43 @@ pre[class*=language-] {
 .token.variable {
   color: #ff6666;
 }
+
+.total-hours-text {
+	font-size: large;
+	font-weight: 600;
+	text-align: center;
+}
+
+.hours-text {
+	font-size: large;
+	font-weight: 300;
+	text-align: center;
+}
+
+.td-center
+{
+  text-align: center;
+  vertical-align: middle; 
+  padding: 1rem; 
+  margin: 1px;
+}
+
+.span-large
+{
+  white-space: nowrap;
+  font-size: xxx-large;
+  font-weight: 500;
+}
+
+.card-button {
+	margin-left: auto; 
+	font-size: medium; 
+	width: fit-content;
+}
+
+.page-header {
+	font-weight: bold; 
+	font-size: x-large;
+}
+
+

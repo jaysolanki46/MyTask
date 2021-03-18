@@ -45,7 +45,7 @@
                             <div class="page-header-content">
                                 <div class="row align-items-center justify-content-between pt-3">
                                     <div class="col-auto mb-3">
-                                        <h1 class="page-header-title" style="color: <%=bckColor %>; font-weight: bold;">
+                                        <h1 class="page-header-title" style="color: <%=bckColor %>; font-weight: bold; font-size: x-large;">
                                             <div class="page-header-icon">
                                           		<i class="fas fa-project-diagram"></i>  
                                             </div>
@@ -53,9 +53,10 @@
                                         </h1>
                                     </div>
                                     <div class="col-12 col-xl-auto mb-3">
-                                        <button style="background-color:<%=bckColor %>;" 
+                                        <button
                                         data-toggle="modal" data-target="#projectModelLg"
-                                        class="btn btn-sm btn-light active mr-2"><i class="fas fa-plus"></i>&nbsp;Create New Project</button>
+                                        class="btn btn-sm btn-light active mr-3 center_div card-button"
+											style="background-color:<%=bckColor %>; "><i class="fas fa-plus"></i>&nbsp;Create New Project</button>
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +122,7 @@
                         	
                             
                             <!-- Project card -->
-                            <div class="col-lg-4 mb-4">
+                            <div class="col-lg-3 mb-3">
                                 <a class="card lift lift-sm h-100" href="../Views/tasks.jsp?project=11">
                                     <div class="card-body py-5">
                                         <h5 class="card-title mb-2" style="color:<%=bckColor %>;">
@@ -144,7 +145,7 @@
                            <!-- End of project card -->
                            
                            <!-- New project card -->
-                             <div class="col-lg-4 mb-4" data-toggle="tooltip" title="Create New Project">
+                             <div class="col-lg-3 mb-3" data-toggle="tooltip" title="Create New Project">
                                 <!-- Knowledge base category card 1-->
                                 <a  class="card lift lift-sm h-100" data-toggle="modal" data-target="#projectModelLg">
                                 	<!-- add new for tech -->
