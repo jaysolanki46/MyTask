@@ -20431,3 +20431,30 @@ pre[class*=language-] {
   border-color: #D7B1D7;
   background-color: #D7B1D7;
 }
+
+.nav-width {
+    color: #0066cb;
+    font-weight: bold;
+    font-size: medium;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.datepicker table tr td span.active{
+    background: #04c!important;
+    border-color: #04c!important;
+}
+.datepicker .datepicker-days tr td.active {
+    background: #04c!important;
+}
+#week-picker-wrapper .datepicker .datepicker-days tr td.active~td, #week-picker-wrapper .datepicker .datepicker-days tr td.active {
+    color: #fff;
+    background-color: #04c;
+    border-radius: 0;
+}
+
+#week-picker-wrapper .datepicker .datepicker-days tr:hover td, #week-picker-wrapper .datepicker table tr td.day:hover, #week-picker-wrapper .datepicker table tr td.focused {
+    color: #000!important;
+    background: #e5e2e3!important;
+    border-radius: 0!important;
+}

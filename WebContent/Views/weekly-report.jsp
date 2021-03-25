@@ -9,11 +9,11 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Skyzer - My Task | Tasks</title>
+<title>Skyzer - My Task | Weekly Report</title>
 
 <%@include  file="../header.html" %>
 <%
-String bckColor = "#0066cb";
+	String bckColor = "#0066cb";
 	//String bckColor = "#b81b44";
 	
 	String showSkyzerPaymentImg = "display: none";
@@ -59,6 +59,8 @@ String bckColor = "#0066cb";
     text-align: center;
     line-height: 40px;
 }
+
+
 </style>
 </head>
 <body id="page-top">
@@ -84,97 +86,80 @@ String bckColor = "#0066cb";
                 <div id="layoutSidenav_content">
                 <main>
                     <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
-                        <div class="container-fluid">
-                            <div class="page-header-content">
-                                <div class="row align-items-center justify-content-between pt-3">
-                                    <div class="col-auto mb-3">
-                                        <h1 class="page-header-title" style="color: <%=bckColor %>; font-weight: bold;font-size: x-large;">
-                                            <div class="page-header-icon">
-                                          		<i class="far fa-calendar-plus"></i> 
-                                            </div>
-                                            Tasks
-                                        </h1>
-                                    </div>
-                                    <div class="col-12 col-xl-auto mb-3">
-                                        <button 
-                                        data-toggle="modal" data-target="#projectModelLg"
-                                        class="btn btn-sm btn-light active mr-3 center_div card-button"
-											style="background-color:<%=bckColor %>; "><i class="fas fa-plus"></i>&nbsp;Create New Task</button>
-                                    </div>
-                                </div>
+                            <div class="card-body"  style="padding: 0px;">
+                               <div class="container-fluid">
+		                            <div class="page-header-content">
+		                                <div class="row align-items-center justify-content-between pt-3">
+		                                    <div class="col-auto mb-3">
+		                                        <h1 class="page-header-title" style="color: <%=bckColor %>; font-weight: bold;font-size: x-large;">
+		                                            <div class="page-header-icon">
+		                                          		<i class="fas fa-clipboard-list"></i>
+		                                            </div>
+		                                            Reports
+		                                        </h1>
+		                                    </div>
+		                                    
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <hr style="margin: 0rem;">
+                                <nav class="nav nav-borders nav-width">
+                                    <a class="nav-link active ml-0" style="color: <%=bckColor %>; border-bottom-color: <%=bckColor %>;" href="#!">Weekly</a>
+                                    <a class="nav-link" href="#!">Monthly</a>
+                                    <a class="nav-link" href="#!">Custom</a>
+                                    
+                                     <!-- Weekly datepicker -->
+		                              <div class="form-group col-md-4 col-md-offset-2" id="week-picker-wrapper" style="margin: 0rem; margin-left: auto;">
+											<div class="input-group">
+												<span class="input-group-btn" style="margin: 0.2rem;">
+													<!--  <button type="button" class="btn btn-rm week-prev">&laquo;</button>  -->
+													<button type="submit" title="Previous"
+														class="btn btn-rm week-prev btn-sm btn-light active  card-button"
+														style="background-color:<%=bckColor %>; "
+														onclick="this.form.submit();">
+														<i class="fas fa-angle-left"></i></button>	
+												</span>
+												<input type="text" class="form-control week-picker" placeholder="Select a Week" style="margin: 0.2rem;">
+												<span class="input-group-btn" style="margin: 0.2rem;">
+													<!--  <button type="button" class="btn btn-rm week-next">&raquo;</button> -->
+													<button type="submit" title="Previous"
+														class="btn btn-rm week-next btn-sm btn-light active  card-button"
+														style="background-color:<%=bckColor %>; "
+														onclick="this.form.submit();">
+														<i class="fas fa-angle-right"></i></button>	
+												</span>
+											</div>
+										</div>
+                                <!-- End of weekly datepicker -->
+                                </nav>
+                                
+                               
                             </div>
-                        </div>
-                    </header>
+                        </header>
                     <!-- Main page content-->
                     <div class="container">
                         <div class="row">
-                        	
-                        	<!-- Model create a new task -->
-                        	<div class="modal fade" id="projectModelLg" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
-							    <div class="modal-dialog modal-lg" role="document">
-							        <div class="modal-content">
-							            <div class="modal-header">
-							                <h5 class="modal-title">Create a new task</h5>
-							                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-							            </div>
-							            <div class="modal-body">
-							                <form>
-							                	<div class="row">
-							                		<div class="col">
-													    <div class="form-group">
-														    <label for="projectNameInput">Task name <span style="color: red;">*</span></label>
-														    <input style="height: fit-content;" class="form-control" id="projectNameInput" type="text" placeholder="Ex. IKR Project">
-													    </div>
-												    </div>
-												    <div class="col">
-													    <div class="form-group">
-													        <label for="departmentSelect">Project <span style="color: red;">*</span></label>
-													        <input style="height: fit-content;" class="form-control" id="projectNameInput" type="text" value="IKR Project" readonly="readonly">
-													    </div>
-												    </div>
-											    </div>
-											    <div class="form-group">
-											        <label for="teamMemberSelect">Team members <span style="color: red;">*</span></label><br/>
-											        <select class="form-control" id="exampleSelect1">
-														<option>Select member...</option>
-														<option>Christine Hogan</option>
-											            <option>Alan Green</option>
-											            <option>Jay Solanki</option>
-											            <option>Kishan Rabari</option>
-											            <option>Sukhwinder Kaur</option>												    </select>
-											    </div>
-											    <div class="form-group">
-												    <label for="descriptionTextarea">Description</label>
-												    <textarea class="form-control" id="descriptionTextarea" rows="4"></textarea>
-											    </div>
-											</form>
-							            </div>
-							            <div class="modal-footer">
-							            	<button type="submit" title="Search"
-											class="btn btn-sm btn-light active mr-3 center_div card-button"
-											style="background-color:<%=bckColor %>; "
-											onclick="this.form.submit();">
-											<i class="fas fa-save"></i>&nbsp; Save</button>	
-							            </div>
-							        </div>
-							    </div>
-							</div>
-                        	<!-- End Model create a new task -->
                             
-                            <!--  Custom edit -->
-                            <div id="divCustom" class="card-body" style="width:66%; padding: 0px;">
+                            <!--  Custom search -->
+                            <div id="divCustom" class="card-body" style="width:66%;">
                             <div class="card mb-3">
 				
 									<div class="card-body" style="padding: 10px;">
 										<form class="form-inline" action="#" method="post">
-											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">Task:</label> 
+											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">Projects:</label> 
 											<select class="form-control col-sm-2" id="user" name="user">
-												<option value="0" selected>Task 1</option>
-												<option value="1" >Task 2</option>
+												<option value="0" selected>Project 1</option>
+												<option value="1" >Project 2</option>
 											</select>
 											
 											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">Date:</label> 
-											<input type="date" id="followUpDate" name="followUpDate" max="31-12-3000" min="01-01-1000" class="form-control col-sm-2 center_div">
+											<div class="col-12 col-xl-auto mt-4">
+                                        <button class="btn btn-white p-3" id="reportrange">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar mr-2 text-primary"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                            <span>March 17, 2021 - March 23, 2021</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down ml-1"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                        </button>
+                                    </div>
 											
 											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">Hours:</label> 
 											<input class="form-control col-sm-2 center_div" type="number" min="0" max="24" value="0" id="example-number-input">
@@ -191,7 +176,7 @@ String bckColor = "#0066cb";
                             		</div>
                             </div>
                             </div>
-                            <!--  End of custom edit -->
+                            <!--  End of custom search -->
                             
                             <!-- My Task Table -->
                             <table class="table" style="border: hidden; margin-top: -1rem;">
@@ -521,36 +506,35 @@ String bckColor = "#0066cb";
 
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#teamMemberSelect').multiselect();
-        
-        // hidden
-        document.getElementById("divCustom").style.display = "none";
-        document.getElementById("tableMyTeamTasks").style.display = "none";
+var weekpicker, start_date, end_date;
+
+function set_week_picker(date) {
+    start_date = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay());
+    end_date = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 6);
+    weekpicker.datepicker('update', start_date);
+    weekpicker.val((start_date.getMonth() + 1) + '/' + start_date.getDate() + '/' + start_date.getFullYear() + ' - ' + (end_date.getMonth() + 1) + '/' + end_date.getDate() + '/' + end_date.getFullYear());
+}
+$(document).ready(function() {
+    weekpicker = $('.week-picker');
+    console.log(weekpicker);
+    weekpicker.datepicker({
+        autoclose: true,
+        forceParse: false,
+        container: '#week-picker-wrapper',
+    }).on("changeDate", function(e) {
+        set_week_picker(e.date);
     });
-    
-	$("#checkboxCustom").change(function() {
-		
-		var isCustom = $('#checkboxCustom')[0].checked;
-		var divCustom = document.getElementById("divCustom");
-		
-		if(isCustom) {
-			divCustom.style.display = "block";
-		} else {
-			divCustom.style.display = "none";
-		}
-	})
-	
-	$("#checkboxMyTeamTaskShow").change(function() {
-		
-		var isMyTeamTaskShow = $('#checkboxMyTeamTaskShow')[0].checked;
-		var tableMyTeamTasks = document.getElementById("tableMyTeamTasks");
-		
-		if(isMyTeamTaskShow) {
-			tableMyTeamTasks.style.display = "";
-		} else {
-			tableMyTeamTasks.style.display = "none";
-		}
-	})
+    $('.week-prev').on('click', function() {
+        var prev = new Date(start_date.getTime());
+        prev.setDate(prev.getDate() - 1);
+        set_week_picker(prev);
+    });
+    $('.week-next').on('click', function() {
+        var next = new Date(end_date.getTime());
+        next.setDate(next.getDate() + 1);
+        set_week_picker(next);
+    });
+    set_week_picker(new Date);
+});
     
 </script>
