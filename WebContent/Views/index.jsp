@@ -22,7 +22,7 @@
 	<div class="container register">
                 <div class="row">
                     <div class="col-md-3 register-left">
-						<img src="img/icons/index-icon.svg" alt=""/>
+						<img src="img/icons/favicon.png" alt=""/>
                         <h3>SKYZER - MY TASK</h3>
                         <p>MANAGES SKYZER TASKS</p>
                     </div>

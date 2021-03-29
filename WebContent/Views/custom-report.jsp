@@ -121,17 +121,11 @@ String bckColor = "#0066cb";
 				
 									<div class="card-body" style="padding: 10px;">
 										<form class="form-inline" action="#" method="post">
-											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">Task:</label> 
-											<select class="form-control col-sm-2" id="user" name="user">
-												<option value="0" selected>Task 1</option>
-												<option value="1" >Task 2</option>
-											</select>
-											
-											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">Date:</label> 
+											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">Start Date:</label> 
 											<input type="date" id="followUpDate" name="followUpDate" max="31-12-3000" min="01-01-1000" class="form-control col-sm-2 center_div">
 											
-											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">Hours:</label> 
-											<input class="form-control col-sm-2 center_div" type="number" min="0" max="24" value="0" id="example-number-input">
+											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">End Date:</label> 
+											<input type="date" id="followUpDate" name="followUpDate" max="31-12-3000" min="01-01-1000" class="form-control col-sm-2 center_div">
 											
 											<input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0.5rem;margin-right: 0.5rem;"> 
 											<label class="form-check-label" for="exampleCheck1">Complete</label>
@@ -140,7 +134,7 @@ String bckColor = "#0066cb";
 											class="btn btn-sm btn-light active mr-3 center_div card-button"
 											style="background-color:<%=bckColor %>; "
 											onclick="this.form.submit();">
-											<i class="fas fa-save"></i>&nbsp; Save</button>	
+											<i class="fas fa-search"></i>&nbsp; Search</button>	
 										</form>
                             		</div>
                             </div>
@@ -148,7 +142,7 @@ String bckColor = "#0066cb";
                             <!--  End of custom search -->
                     
                     	
-                            <div style="overflow: auto;    height: 40rem;    width: 100%;">
+                            <div style="overflow: auto;    height: 40rem;    width: 100%; display: none;">
                             <table id="weeklyDataTable" class="table table-bordered" style="border: hidden;">
 						    <thead>
 							      <tr>
