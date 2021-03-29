@@ -124,9 +124,9 @@ String bckColor = "#0066cb";
 		                        </div>
 		                        <hr style="margin: 0rem;">
                                 <nav class="nav nav-borders nav-width">
-                                    <a class="nav-link active ml-0" style="color: <%=bckColor %>; border-bottom-color: <%=bckColor %>;" href="#!">Weekly</a>
-                                    <a class="nav-link" href="#!">Monthly</a>
-                                    <a class="nav-link" href="#!">Custom</a>
+                                    <a class="nav-link active ml-0" style="color: <%=bckColor %>; border-bottom-color: <%=bckColor %>;" href="/MyTask/Views/weekly-report.jsp">Weekly</a>
+                                    <a class="nav-link  ml-0" href="/MyTask/Views/monthly-report.jsp">Monthly</a>
+                                    <a class="nav-link  ml-0" href="/MyTask/Views/custom-report.jsp">Custom</a>
                                     
                                      <!-- Weekly datepicker -->
                                      
@@ -341,12 +341,12 @@ $(document).ready(function() {
     $('.week-prev').on('click', function() {
         var prev = new Date(start_date.getTime());
         prev.setDate(prev.getDate() - 1);
-        set_week_picker(prev);
+        //set_week_picker(prev);
     });
     $('.week-next').on('click', function() {
         var next = new Date(end_date.getTime());
         next.setDate(next.getDate() + 1);
-        set_week_picker(next);
+        //set_week_picker(next);
     });
     //set_week_picker(new Date);
 });

@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Skyzer - My Task | Weekly Report</title>
+<title>Skyzer - My Task | Monthly Report</title>
 
 <%@include  file="../header.html" %>
 <%
@@ -24,38 +24,26 @@ String bckColor = "#0066cb";
 	taskList.put(1, "Task 1");
 	taskList.put(2, "Task 2");
 	taskList.put(3, "Task 3");
-	//taskList.put(4, "Task 4");
+	taskList.put(4, "Task 4");
 	
-	
-	// 5 days
-	Calendar currentWeek = Calendar.getInstance();
+	Calendar currentMonth = Calendar.getInstance();
 	Calendar now;
-	
-	// On prev next click
-	int day, month, year;
-	Date date = new Date();
-	Date start_date = new Date(date.getYear(), date.getMonth(), date.getDate() - date.getDay());
-	Date end_date = new Date(date.getYear(), date.getMonth(), date.getDate() - date.getDay() + 6);
-	String dateString = start_date.getDate() + "/" + (start_date.getMonth() + 1)  + "/" + (start_date.getYear() +1900)
-						+ " - " + end_date.getDate() + "/" + (end_date.getMonth() + 1) + "/" + (end_date.getYear() +1900);
-	System.out.print(dateString);
-	
-	if (request.getParameter("week-picker-start-day") != null) {
-		dateString = request.getParameter("week-picker-start-date");
-		day = Integer.valueOf(request.getParameter("week-picker-start-day"));
-		month = Integer.valueOf(request.getParameter("week-picker-start-month")) - 1;
-		year = Integer.valueOf(request.getParameter("week-picker-start-year"));
-
-		currentWeek.set(year, month, day);
-	}
-
 	SimpleDateFormat dd_MMMFormate = new SimpleDateFormat("dd MMM");
 	SimpleDateFormat yyyyMMddFormate = new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat ddMMMFormate = new SimpleDateFormat("ddMMM");
-
-	int delta = 0;//-now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
-	//now.add(Calendar.DAY_OF_MONTH, delta);
-	String daysList[] = { "Mon", "Tue", "Wed", "Thurs", "Fri" };
+	SimpleDateFormat mmFormate = new SimpleDateFormat("MM");
+	SimpleDateFormat mmmmFormate = new SimpleDateFormat("MMMM");
+	SimpleDateFormat yyyyFormate = new SimpleDateFormat("YYYY");
+	
+	String monthString;
+	
+	if (request.getParameter("datepicker") != null) {
+		Date date = new SimpleDateFormat("MMMM-yyyy").parse(request.getParameter("datepicker")); // Gets int from month name
+		currentMonth.setTime(date);
+	}
+	monthString =  mmmmFormate.format(currentMonth.getTime()) + "-" + yyyyFormate.format(currentMonth.getTime());
+	System.out.println(monthString);
+	int delta = 0;
 %>
 <style type="text/css">
 .table100.ver1 .row100 td:hover  {
@@ -124,22 +112,18 @@ String bckColor = "#0066cb";
 		                        </div>
 		                        <hr style="margin: 0rem;">
                                 <nav class="nav nav-borders nav-width">
-                                    <a class="nav-link active ml-0" style="color: <%=bckColor %>; border-bottom-color: <%=bckColor %>;" href="#!">Weekly</a>
-                                    <a class="nav-link" href="#!">Monthly</a>
-                                    <a class="nav-link" href="#!">Custom</a>
+                                    <a class="nav-link  ml-0" href="/MyTask/Views/weekly-report.jsp">Weekly</a>
+                                    <a class="nav-link active ml-0" style="color: <%=bckColor %>; border-bottom-color: <%=bckColor %>;" href="/MyTask/Views/monthly-report.jsp">Monthly</a>
+                                    <a class="nav-link  ml-0" href="/MyTask/Views/custom-report.jsp">Custom</a>
                                     
                                      <!-- Weekly datepicker -->
                                      
 		                              <div class="form-group col-md-4 col-md-offset-2" id="week-picker-wrapper" style="margin: 0rem; margin-left: auto;">
 											<div class="input-group">
-											<form class="form-inline"  method="post" action="../Views/weekly-report.jsp">
-												<label>Select Week: </label>
-												<input type="text" id="week-picker-string" class="form-control week-picker" readonly="readonly" onchange="this.form.submit();"
-													value="<%=dateString %>" placeholder="Select a Week" style="margin: 0.2rem; text-align: center; width: 18rem;">
-												<input type="hidden"  id="week-picker-start-date" name="week-picker-start-date" value="">
-												<input type="hidden" id="week-picker-start-day" name="week-picker-start-day" value="">
-												<input type="hidden" id="week-picker-start-month" name="week-picker-start-month" value="">
-												<input type="hidden" id="week-picker-start-year" name="week-picker-start-year" value="">
+											<form class="form-inline"  method="post" action="../Views/monthly-report.jsp">
+												<label>Select Month: </label>
+												<input type="text" class="form-control" name="datepicker" id="datepicker" readonly="readonly" onchange="this.form.submit();"
+													value="<%=monthString %>" placeholder="Select a Month" style="margin: 0.2rem; text-align: center; width: 18rem;"/>
 												
 												</form>
 											</div>
@@ -152,7 +136,7 @@ String bckColor = "#0066cb";
                         </header>
                     <!-- Main page content-->
                     <div class="container">
-                            
+                            <div style="overflow: auto;    height: 40rem;    width: 100%;">
                             <table id="weeklyDataTable" class="table table-bordered" style="border: hidden;">
 						    <thead>
 							      <tr>
@@ -161,14 +145,12 @@ String bckColor = "#0066cb";
 							        <th>Assignee</th>
 							        <%
 							        
-								        now = currentWeek;
-								        delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
-								        now.add(Calendar.DAY_OF_MONTH, delta );
+								        now = currentMonth;
+								        delta = currentMonth.getActualMaximum(GregorianCalendar.DAY_OF_MONTH); //number of days in month
 							        
-								        for (int i = 0; i < 5; i++)
+								        for (int i = 1; i <= delta; i++)
 								        {
-								        	%><th style="text-align: -webkit-center;"><%=dd_MMMFormate.format(now.getTime()) + " , " + daysList[i] %></th><% 
-								        	now.add(Calendar.DAY_OF_MONTH, 1);
+								        	%><th style="text-align: -webkit-center;"><%=i + "/" + mmFormate.format(now.getTime()) %></th><% 
 								        }
 							        	
 							        %>
@@ -207,63 +189,18 @@ String bckColor = "#0066cb";
 										        <%
 										        
 											     	// 5 days
-											    	now = currentWeek;
-											        delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
-											        now.add(Calendar.DAY_OF_MONTH, delta );
+											    	 now = currentMonth;
+								       				 delta = currentMonth.getActualMaximum(GregorianCalendar.DAY_OF_MONTH); //number of days in month
 										        
-											        for (int i = 0; i < 5; i++)
+								       				for (int i = 1; i <= delta; i++)
 											        {
 											        	%>
 											        		<td>
-											        			<input class="form-control form-control-sm hours-text" type="text" readonly="readonly" value="00.00"
-											        			onclick="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" data-toggle="modal" data-target="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>">
-													        	
-													        	<!-- Model update task -->
-									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
-																    <div class="modal-dialog modal-lg" role="document">
-																        <div class="modal-content">
-																            <div class="modal-header">
-																                <h5 class="modal-title"><%=name %></h5>
-																                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-																            </div>
-																            <div class="modal-body">
-																                <form>
-																                	<div class="row">
-																                		<div class="col">
-																						    <div class="form-group" style="text-align: start;">
-																							    <label for="projectNameInput">Date <span style="color: red;">*</span></label>
-																							    <input type="date" id="startDate" name="startDate" max="31-12-3000" min="01-01-1000" value="<%=yyyyMMddFormate.format(now.getTime()) %>" class="form-control">
-																						    </div>
-																					    </div>
-																					    <div class="col">
-																						    <div class="form-group" style="text-align: start;">
-																						        <label for="departmentSelect">Hours <span style="color: red;">*</span></label>
-																						        <input class="form-control" type="number" min="0" max="24" value="0" id="example-number-input">
-																						    </div>
-																					    </div>
-																				    </div>
-																				</form>
-																            </div>
-																            <div class="modal-footer">
-																            <div style="margin-right: auto;margin-left: 0.5rem;">
-																            	<input class="" id="customCheck1" type="checkbox">
-																				<label class="" for="customCheck1">Complete</label>
-																            </div>
-																            	<button type="submit" title="Search"
-																					class="btn btn-sm btn-light active mr-3 center_div card-button"
-																					style="background-color:<%=bckColor %>; "
-																					onclick="this.form.submit();">
-																					<i class="fas fa-save"></i>&nbsp; Save</button>	
-																            </div>
-																        </div>
-																    </div>
-																</div>
-									                        	<!-- End Model update task -->
+											        			<label>0</label>
 													        </td>
 											        	
 											        	
 											        	<% 
-											            now.add(Calendar.DAY_OF_MONTH, 1);
 											        }
 										        
 										        %>
@@ -279,6 +216,7 @@ String bckColor = "#0066cb";
 						    </tbody>
 						   
 						  </table>
+                    		</div>
                     </div>
                 </main>
             </div>
@@ -310,45 +248,10 @@ String bckColor = "#0066cb";
 
 
 <script type="text/javascript">
-var weekpicker, start_date, end_date, weekpickerstartdate, weekpickerstartday, weekpickerstartmonth, weekpickerstartyear;
-
-function set_week_picker(date) {
-    start_date = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay());
-    end_date = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 6);
-    weekpicker.datepicker('update', start_date);
-    weekpicker.val(start_date.getDate() + '/' + (start_date.getMonth() + 1)  + '/' + start_date.getFullYear() + ' - ' + end_date.getDate() + '/' + (end_date.getMonth() + 1) + '/' + end_date.getFullYear());
-    weekpickerstartdate.val(start_date.getDate() + '/' + (start_date.getMonth() + 1)  + '/' + start_date.getFullYear() + ' - ' + end_date.getDate() + '/' + (end_date.getMonth() + 1) + '/' + end_date.getFullYear());
-    weekpickerstartday.val(start_date.getDate());
-    weekpickerstartmonth.val(start_date.getMonth() + 1);
-    weekpickerstartyear.val(start_date.getFullYear());
-    
-}
-$(document).ready(function() {
-    weekpicker = $('.week-picker');
-    weekpickerstartdate = $('#week-picker-start-date');
-    weekpickerstartday = $('#week-picker-start-day');
-    weekpickerstartmonth = $('#week-picker-start-month');
-    weekpickerstartyear = $('#week-picker-start-year');
-    weekpicker.val($('#week-picker-string').val());
-    console.log(weekpicker);
-    weekpicker.datepicker({
-        autoclose: true,
-        forceParse: false,
-        container: '#week-picker-wrapper',
-    }).on("changeDate", function(e) {
-        set_week_picker(e.date);
-    });
-    $('.week-prev').on('click', function() {
-        var prev = new Date(start_date.getTime());
-        prev.setDate(prev.getDate() - 1);
-        set_week_picker(prev);
-    });
-    $('.week-next').on('click', function() {
-        var next = new Date(end_date.getTime());
-        next.setDate(next.getDate() + 1);
-        set_week_picker(next);
-    });
-    //set_week_picker(new Date);
+$("#datepicker").datepicker( {
+    format: "MM-yyyy",
+    startView: "months", 
+    minViewMode: "months"
 });
 
 var collapsedGroups = {};
@@ -376,7 +279,7 @@ var oTable = $('#weeklyDataTable').DataTable({
 
       // Add category name to the <tr>. NOTE: Hardcoded colspan
       return $('<tr/>')
-        .append('<td colspan="9" style="text-align: justify;">' + group + ' - ' + rows.count() + ' Task(s)</td>')
+        .append('<td colspan="32" style="text-align: justify;">' + group + ' - ' + rows.count() + ' Task(s)</td>')
         .attr('data-name', group)
         .toggleClass('collapsed', collapsed);
     }
