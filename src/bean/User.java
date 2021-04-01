@@ -4,6 +4,9 @@ public class User {
 
 	private Integer id;
 	private String name;
+	private String pass;
+	private String theme;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -15,5 +18,17 @@ public class User {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getPass() {
+		return pass;
+	}
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+	public String getTheme() {
+		return theme;
+	}
+	public void setTheme(String theme) {
+		this.theme = theme;
 	}
 }

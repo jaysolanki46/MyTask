@@ -1,3 +1,6 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" import="java.sql.*" %>
+<%@ page language="java" import="config.DBConfig" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -16,7 +19,31 @@
 	        rel="stylesheet">
 	<link href="css/sb-admin-2.min.css" rel="stylesheet">
 <!-- end header includes -->
-
+<%
+	Connection dbConn = DBConfig.connection(); ;
+	Statement st = null;
+	ResultSet rs = null;
+	st = dbConn.createStatement();
+	
+	String username = request.getParameter("username");
+	String pass = request.getParameter("password");
+	String theme = "#0066cb";
+	HttpSession user = request.getSession();
+	
+	if (username != null && pass != null) {
+		if (username.equals("jay") && pass.equals("pass")) {
+						
+			response.sendRedirect("Views/projects.jsp");
+			user.setAttribute("name", username);
+			user.setAttribute("theme", theme);
+		} else {
+			user.setAttribute("name", "error");
+			%><script>alert("Invalid username or password!");</script><% 
+		}
+	}
+	
+	System.out.println(username + pass);
+%>
 </head>
 <body style="background: #0066cb; margin-top:10rem;">
 	<div class="container register">
@@ -38,7 +65,7 @@
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="user" role="tabpanel" aria-labelledby="user-tab">
                                 <img alt="" loading="lazy" style="margin-top: 5rem; margin-left: 5rem;"  data-src="https://www.skyzer.co.nz/wp-content/uploads/2019/08/Skyzer-Technologies-Logo.svg" class="vc_single_image-img attachment-full lazyloaded" src="https://www.skyzer.co.nz/wp-content/uploads/2019/08/Skyzer-Technologies-Logo.svg">
-                                <form action="<%=request.getContextPath()%>/UserServlet" method="post">
+                                <form action="" method="post">
                                 <div class="row register-form">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -70,10 +97,8 @@
                             </div>
                         </div>
                     </div>
-                    		
                 </div>
 
             </div>
-	
 </body>
 </html>
