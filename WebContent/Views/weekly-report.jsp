@@ -1,3 +1,5 @@
+<%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
+<%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@page import="javafx.util.Pair"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -14,11 +16,29 @@
 
 <%@include  file="../header.html" %>
 <%
-String bckColor = "#0066cb";
-	//String bckColor = "#b81b44";
+	String bckColor = "";
+	String showSkyzerPaymentImg = "";
+	String showSkyzerTechImg = "";
 	
-	String showSkyzerPaymentImg = "display: none";
-	String showSkyzerTechImg = "display: block";
+	String userid = "";
+	String username = "";
+	String useremail = "";
+	String usertheme = "";
+	String userpass = "";
+	String usertype = "";
+	
+	%><%@include  file="../session.jsp" %><% 
+	
+	if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
+		bckColor = SKYZERTECHNOLOGIES.COLOR.getValue();
+		showSkyzerPaymentImg = SKYZERTECHNOLOGIES.LOGOSKYZERTECHNOLOGIES.getValue();
+		showSkyzerTechImg = SKYZERTECHNOLOGIES.LOGOSKYZERPAYMENTS.getValue();
+		
+	} else if (usertheme.equals(SKYZERPAYMENTS.ID.getValue())) {
+		bckColor = SKYZERPAYMENTS.COLOR.getValue();
+		showSkyzerPaymentImg = SKYZERPAYMENTS.LOGOSKYZERTECHNOLOGIES.getValue();
+		showSkyzerTechImg = SKYZERPAYMENTS.LOGOSKYZERPAYMENTS.getValue();
+	}
 	
 	// Number of tasks
 	Map<Integer, String> taskList = new HashMap<Integer, String>();
@@ -134,7 +154,7 @@ String bckColor = "#0066cb";
 		                              <div class="form-group col-md-4 col-md-offset-2" id="week-picker-wrapper" style="margin: 0rem; margin-left: auto;">
 											<div class="input-group">
 											<form class="form-inline"  method="post" action="../Views/weekly-report.jsp">
-												<label>Select Week: </label>
+												<label style="color: <%=bckColor %>;">Select Week: </label>
 												<input type="text" id="week-picker-string" class="form-control week-picker" readonly="readonly" onchange="this.form.submit();"
 													value="<%=dateString %>" placeholder="Select a Week" style="margin: 0.2rem; text-align: center; width: 18rem;">
 												<input type="hidden"  id="week-picker-start-date" name="week-picker-start-date" value="">

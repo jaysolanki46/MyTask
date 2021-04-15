@@ -1,3 +1,5 @@
+<%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
+<%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@page import="javafx.util.Pair"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -13,12 +15,31 @@
 <title>Skyzer - My Task | Tasks</title>
 
 <%@include  file="../header.html" %>
+
 <%
-String bckColor = "#0066cb";
-	//String bckColor = "#b81b44";
+	String bckColor = "";
+	String showSkyzerPaymentImg = "";
+	String showSkyzerTechImg = "";
 	
-	String showSkyzerPaymentImg = "display: none";
-	String showSkyzerTechImg = "display: block";
+	String userid = "";
+	String username = "";
+	String useremail = "";
+	String usertheme = "";
+	String userpass = "";
+	String usertype = "";
+	
+	%><%@include  file="../session.jsp" %><% 
+	
+	if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
+		bckColor = SKYZERTECHNOLOGIES.COLOR.getValue();
+		showSkyzerPaymentImg = SKYZERTECHNOLOGIES.LOGOSKYZERTECHNOLOGIES.getValue();
+		showSkyzerTechImg = SKYZERTECHNOLOGIES.LOGOSKYZERPAYMENTS.getValue();
+		
+	} else if (usertheme.equals(SKYZERPAYMENTS.ID.getValue())) {
+		bckColor = SKYZERPAYMENTS.COLOR.getValue();
+		showSkyzerPaymentImg = SKYZERPAYMENTS.LOGOSKYZERTECHNOLOGIES.getValue();
+		showSkyzerTechImg = SKYZERPAYMENTS.LOGOSKYZERPAYMENTS.getValue();
+	}
 	
 	// Number of tasks
 	Map<Integer, String> taskList = new HashMap<Integer, String>();
@@ -26,7 +47,6 @@ String bckColor = "#0066cb";
 	taskList.put(2, "Task 2");
 	taskList.put(3, "Task 3");
 	//taskList.put(4, "Task 4");
-	
 	
 	// 5 days
 	Calendar now = Calendar.getInstance();

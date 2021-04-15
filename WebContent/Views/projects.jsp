@@ -1,3 +1,5 @@
+<%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
+<%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -9,13 +11,30 @@
 <title>Skyzer - My Task | Projects</title>
 
 <%@include  file="../header.html" %>
-
 <%
-	String bckColor = "#0066cb";
-	//String bckColor = "#b81b44";
+	String bckColor = "";
+	String showSkyzerPaymentImg = "";
+	String showSkyzerTechImg = "";
 	
-	String showSkyzerPaymentImg = "display: none";
-	String showSkyzerTechImg = "display: block";
+	String userid = "";
+	String username = "";
+	String useremail = "";
+	String usertheme = "";
+	String userpass = "";
+	String usertype = "";
+	
+	%><%@include  file="../session.jsp" %><% 
+	
+	if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
+		bckColor = SKYZERTECHNOLOGIES.COLOR.getValue();
+		showSkyzerPaymentImg = SKYZERTECHNOLOGIES.LOGOSKYZERTECHNOLOGIES.getValue();
+		showSkyzerTechImg = SKYZERTECHNOLOGIES.LOGOSKYZERPAYMENTS.getValue();
+		
+	} else if (usertheme.equals(SKYZERPAYMENTS.ID.getValue())) {
+		bckColor = SKYZERPAYMENTS.COLOR.getValue();
+		showSkyzerPaymentImg = SKYZERPAYMENTS.LOGOSKYZERTECHNOLOGIES.getValue();
+		showSkyzerTechImg = SKYZERPAYMENTS.LOGOSKYZERPAYMENTS.getValue();
+	}
 %>
 </head>
 <body id="page-top">

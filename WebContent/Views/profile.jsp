@@ -16,12 +16,15 @@
 	String bckColor = "";
 	String showSkyzerPaymentImg = "";
 	String showSkyzerTechImg = "";
-	String userid = session.getAttribute("userId").toString();
-	String username = session.getAttribute("userName").toString();
-	String useremail = session.getAttribute("userEmail").toString();
-	String usertheme = session.getAttribute("userTheme").toString();
-	String userpass = session.getAttribute("userPass").toString();
-	String usertype = session.getAttribute("userType").toString();
+	
+	String userid = "";
+	String username = "";
+	String useremail = "";
+	String usertheme = "";
+	String userpass = "";
+	String usertype = "";
+	
+	%><%@include  file="../session.jsp" %><% 
 	
 	if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 		bckColor = SKYZERTECHNOLOGIES.COLOR.getValue();
@@ -33,7 +36,6 @@
 		showSkyzerPaymentImg = SKYZERPAYMENTS.LOGOSKYZERTECHNOLOGIES.getValue();
 		showSkyzerTechImg = SKYZERPAYMENTS.LOGOSKYZERPAYMENTS.getValue();
 	}
-	System.out.print(usertheme);
 %>
 
 </head>
