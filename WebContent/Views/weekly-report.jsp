@@ -7,6 +7,7 @@
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+<% try { %>
 <head>
 <meta charset="ISO-8859-1">
 <title>Skyzer - My Task | Weekly Report</title>
@@ -302,10 +303,11 @@ String bckColor = "#0066cb";
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
-    
-
 </body>
+<% 
+} catch (Exception e) {
+	e.printStackTrace();
+} %>
 </html>
 
 

@@ -1,0 +1,43 @@
+<div id="success" class="toast alert alert-success alert-solid" role="alert" aria-live="assertive" 
+		aria-atomic="true" data-delay="5000" style="position: fixed; bottom: 0; left: 0;">
+		<b>Success:</b> Well Done <%=username %>! Your last update was successfully completed.
+	</div>
+	<div id="error" class="toast alert alert-danger alert-solid" role="alert" aria-live="assertive" 
+		aria-atomic="true" data-delay="5000" style="position: fixed; bottom: 0; left: 0;">
+		<b>Error:</b> Opps <%=username %>! A problem has been occurred on last update.
+	</div>
+	<div id="warning" class="toast alert alert-warning alert-solid" role="alert" aria-live="assertive" 
+		aria-atomic="true" data-delay="5000" style="position: fixed; bottom: 0; left: 0;">
+		<b>Warning:</b> Are you <%=username %>! Your update is valid!
+	</div>
+
+    <%
+			if (session.getAttribute("status") != null) {
+				if (session.getAttribute("status").toString().equals("update") || session.getAttribute("status").toString().equals("insert")) {
+					%>
+					<script>
+						$('#success').toast('show');
+					</script>
+					<%
+					session.setAttribute("status", "killed");
+					
+				} else if (session.getAttribute("status").toString().equals("error") || 
+						session.getAttribute("status").toString().equals("ko")) {
+					%>
+					<script>
+						$('#error').toast('show');
+					</script>
+					<%
+					session.setAttribute("status", "killed");
+					
+				} else if (session.getAttribute("status").toString().equals("warning")) {
+					%>
+					<script>
+						$('#error').toast('show');
+					</script>
+					<%
+					session.setAttribute("status", "killed");
+				} 
+			}
+		%>
+		

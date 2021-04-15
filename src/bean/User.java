@@ -4,8 +4,11 @@ public class User {
 
 	private Integer id;
 	private String name;
+	private String email;
 	private String pass;
 	private String theme;
+	
+	public User() {	}
 	
 	public Integer getId() {
 		return id;
@@ -19,6 +22,12 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	public String getPass() {
 		return pass;
 	}
@@ -30,5 +39,10 @@ public class User {
 	}
 	public void setTheme(String theme) {
 		this.theme = theme;
+	}
+	
+	public User(String name, String pass) {
+		this.name = name;
+		this.pass = pass;
 	}
 }

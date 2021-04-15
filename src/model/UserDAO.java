@@ -6,10 +6,10 @@ import config.DBConfig;
 
 public class UserDAO {
 
-	private Connection cnn;
-	private ResultSet rs;
+	private static Connection cnn;
+	private static ResultSet rs;
 	
-	public ResultSet authenticate(User user) throws ClassNotFoundException {
+	public static ResultSet authenticate(User user) throws ClassNotFoundException {
 		
 		try {
 			
@@ -20,7 +20,6 @@ public class UserDAO {
 					.prepareStatement("select * from users where name = ? and pass = ?");
 			preparedStatement.setString(1, user.getName());
 			preparedStatement.setString(2, user.getPass());
-			preparedStatement.setBoolean(3, true);
 
 			System.out.println(preparedStatement);
 			rs = preparedStatement.executeQuery();
@@ -29,5 +28,32 @@ public class UserDAO {
            	e.printStackTrace();
         }
 		return rs;
+	}
+	
+	public boolean update(User user) throws ClassNotFoundException {
+		
+		try {
+        	
+			new DBConfig();
+			cnn = DBConfig.connection();
+			
+            PreparedStatement preparedStatement =  cnn.prepareStatement("Update users set "
+            		+ "name = ?, pass = ?, theme = ?, email = ? "
+            		+ "WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getPass());
+            preparedStatement.setString(3, user.getTheme());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setInt(5, user.getId());
+            
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+            rs = preparedStatement.getGeneratedKeys();
+            
+        } catch (SQLException e) {
+           	e.printStackTrace();
+           	return false;
+        }
+		return true;
 	}
 }

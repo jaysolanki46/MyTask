@@ -21,3 +21,10 @@
 <link rel="stylesheet" href="https://nightly.datatables.net/css/jquery.dataTables.css" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.0.2/css/rowGroup.dataTables.min.css" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.css" crossorigin="anonymous" />
+<%
+
+	if(session.getAttribute("userName") == null) {
+		response.sendRedirect("../");
+		throw new Exception("User session timed out!");
+	} 
+%>
