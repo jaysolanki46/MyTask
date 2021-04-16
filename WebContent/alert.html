@@ -14,29 +14,30 @@
     <%
 			if (session.getAttribute("status") != null) {
 				if (session.getAttribute("status").toString().equals("update") || session.getAttribute("status").toString().equals("insert")) {
+					session.setAttribute("status", null);
+					System.out.println(session.getAttribute("status"));
 					%>
 					<script>
 						$('#success').toast('show');
 					</script>
 					<%
-					session.setAttribute("status", "killed");
 					
 				} else if (session.getAttribute("status").toString().equals("error") || 
 						session.getAttribute("status").toString().equals("ko")) {
+					session.setAttribute("status", null);
 					%>
 					<script>
 						$('#error').toast('show');
 					</script>
 					<%
-					session.setAttribute("status", "killed");
 					
 				} else if (session.getAttribute("status").toString().equals("warning")) {
+					session.setAttribute("status", null);
 					%>
 					<script>
-						$('#error').toast('show');
+						$('#warning').toast('show');
 					</script>
 					<%
-					session.setAttribute("status", "killed");
 				} 
 			}
 		%>

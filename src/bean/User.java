@@ -40,9 +40,15 @@ public class User {
 	public void setTheme(String theme) {
 		this.theme = theme;
 	}
-	
+	public User(Integer id) {
+		this.id = id;
+	}
 	public User(String name, String pass) {
 		this.name = name;
 		this.pass = pass;
+	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", email=" + email + ", pass=" + pass + ", theme=" + theme + "]";
 	}
 }

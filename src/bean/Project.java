@@ -59,4 +59,10 @@ public class Project {
 	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
 	}
+	@Override
+	public String toString() {
+		return "Project [id=" + id + ", name=" + name + ", department=" + department + ", description=" + description
+				+ ", createdOn=" + createdOn + ", createdBy=" + createdBy + ", updatedOn=" + updatedOn + ", updatedBy="
+				+ updatedBy + "]";
+	}
 }

@@ -61,4 +61,18 @@ public class EnumMyTask {
 			return value;
 		}
 	}
+	
+	public enum SKYZERTASKSTATUS {
+		INCOMPLETE(0),
+		COMPLETED(1);
+		
+		int value;
+		private SKYZERTASKSTATUS(int value) {
+			this.value = value;
+		}
+		
+		public int getValue(){
+			return value;
+		}
+	}
 }

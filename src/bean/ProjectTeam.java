@@ -4,7 +4,7 @@ public class ProjectTeam {
 
 	private Integer id;
 	private Project project;
-	private ProjectTeam projectTeam;
+	private User teamMember;
 	
 	public Integer getId() {
 		return id;
@@ -18,10 +18,14 @@ public class ProjectTeam {
 	public void setProject(Project project) {
 		this.project = project;
 	}
-	public ProjectTeam getProjectTeam() {
-		return projectTeam;
+	public User getTeamMember() {
+		return teamMember;
 	}
-	public void setProjectTeam(ProjectTeam projectTeam) {
-		this.projectTeam = projectTeam;
+	public void setTeamMember(User teamMember) {
+		this.teamMember = teamMember;
+	}
+	@Override
+	public String toString() {
+		return "ProjectTeam [id=" + id + ", project=" + project + ", projectTeam=" + teamMember + "]";
 	}
 }

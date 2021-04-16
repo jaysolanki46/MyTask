@@ -73,4 +73,10 @@ public class Task {
 	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
 	}
+	@Override
+	public String toString() {
+		return "Task [id=" + id + ", name=" + name + ", project=" + project + ", projectTeam=" + projectTeam
+				+ ", description=" + description + ", isCompleted=" + isCompleted + ", createdOn=" + createdOn
+				+ ", createdBy=" + createdBy + ", updatedOn=" + updatedOn + ", updatedBy=" + updatedBy + "]";
+	}
 }

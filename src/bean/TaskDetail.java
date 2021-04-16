@@ -66,4 +66,10 @@ public class TaskDetail {
 	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
 	}
+	@Override
+	public String toString() {
+		return "TaskDetail [id=" + id + ", task=" + task + ", taskDetailDate=" + taskDetailDate + ", hours=" + hours
+				+ ", description=" + description + ", createdOn=" + createdOn + ", createdBy=" + createdBy
+				+ ", updatedOn=" + updatedOn + ", updatedBy=" + updatedBy + "]";
+	}
 }
