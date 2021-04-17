@@ -1,4 +1,4 @@
-<div id="success" class="toast alert alert-success alert-solid" role="alert" aria-live="assertive" 
+	<div id="success" class="toast alert alert-success alert-solid" role="alert" aria-live="assertive" 
 		aria-atomic="true" data-delay="5000" style="position: fixed; bottom: 0; left: 0;">
 		<b>Success:</b> Well Done <%=username %>! <br/>Your last update was successfully completed.
 	</div>
@@ -10,11 +10,15 @@
 		aria-atomic="true" data-delay="5000" style="position: fixed; bottom: 0; left: 0;">
 		<b>Warning:</b> Are you <%=username %>! <br/>Your update is valid!
 	</div>
+	<div id="info" class="toast alert alert-info alert-solid" role="alert" aria-live="assertive" 
+		aria-atomic="true" data-delay="5000" style="position: fixed; bottom: 0; left: 0;">
+		<b>Warning:</b> Hmmmm <%=username %>! <br/>Your last request was invalid!
+	</div>
 
     <%
 			if (session.getAttribute("status") != null) {
 				if (session.getAttribute("status").toString().equals("update") || session.getAttribute("status").toString().equals("insert")) {
-					session.setAttribute("status", null);
+					session.removeAttribute("status");
 					System.out.println(session.getAttribute("status"));
 					%>
 					<script>
@@ -24,7 +28,7 @@
 					
 				} else if (session.getAttribute("status").toString().equals("error") || 
 						session.getAttribute("status").toString().equals("ko")) {
-					session.setAttribute("status", null);
+					session.removeAttribute("status");
 					%>
 					<script>
 						$('#error').toast('show');
@@ -32,10 +36,17 @@
 					<%
 					
 				} else if (session.getAttribute("status").toString().equals("warning")) {
-					session.setAttribute("status", null);
+					session.removeAttribute("status");
 					%>
 					<script>
 						$('#warning').toast('show');
+					</script>
+					<%
+				} else if (session.getAttribute("status").toString().equals("info")) {
+					session.removeAttribute("status");
+					%>
+					<script>
+						$('#info').toast('show');
 					</script>
 					<%
 				} 

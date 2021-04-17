@@ -29,7 +29,7 @@ public class ProjectServlet extends HttpServlet {
 	private boolean isInsert;;
 	private ProjectDAO projectDAO;
 	private ProjectTeamDAO projectTeamDAO;
-    private HttpSession sessionStatus;
+    private HttpSession session;
        
     public ProjectServlet() {
         super();
@@ -45,7 +45,7 @@ public class ProjectServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
-			sessionStatus = request.getSession();
+			session = request.getSession();
 			
 			Project project = new Project();
 			project.setName(request.getParameter("projectName"));
@@ -56,9 +56,9 @@ public class ProjectServlet extends HttpServlet {
 			project.setDepartment(department);
 			project.setDescription(request.getParameter("projectDescription"));
 			project.setCreatedOn(LocalDate.now().toString());
-			project.setCreatedBy(new User(Integer.valueOf(sessionStatus.getAttribute("userId").toString())));
+			project.setCreatedBy(new User(Integer.valueOf(session.getAttribute("userId").toString())));
 			project.setUpdatedOn(LocalDate.now().toString());
-			project.setUpdatedBy(new User(Integer.valueOf(sessionStatus.getAttribute("userId").toString())));
+			project.setUpdatedBy(new User(Integer.valueOf(session.getAttribute("userId").toString())));
 			
 			ResultSet projectRS = projectDAO.insert(project);
 			if(projectRS != null && projectRS.next()) {
@@ -73,16 +73,16 @@ public class ProjectServlet extends HttpServlet {
 					
 					isInsert = projectTeamDAO.insert(projectTeam);
 					if(isInsert) 
-						sessionStatus.setAttribute("status", "insert");
+						session.setAttribute("status", "insert");
 					else
-						sessionStatus.setAttribute("status", "error");
+						session.setAttribute("status", "error");
 				}
 			}
 			
 			response.sendRedirect("./Views/projects.jsp");
 			
 		} catch (Exception e) {
-			sessionStatus.setAttribute("status", "ko");
+			session.setAttribute("status", "ko");
 			response.sendRedirect("./Views/projects.jsp");
 		}
 	}

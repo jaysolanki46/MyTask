@@ -13,16 +13,8 @@
 
 <%@include  file="../header.html" %>
 <%
-	String bckColor = "";
-	String showSkyzerPaymentImg = "";
-	String showSkyzerTechImg = "";
-	
-	String userid = "";
-	String username = "";
-	String useremail = "";
-	String usertheme = "";
-	String userpass = "";
-	String usertype = "";
+	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
+	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "";
 	
 	%><%@include  file="../session.jsp" %><% 
 	

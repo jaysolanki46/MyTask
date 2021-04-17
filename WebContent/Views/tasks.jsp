@@ -15,18 +15,10 @@
 <title>Skyzer - My Task | Tasks</title>
 
 <%@include  file="../header.html" %>
-
 <%
-	String bckColor = "";
-	String showSkyzerPaymentImg = "";
-	String showSkyzerTechImg = "";
-	
-	String userid = "";
-	String username = "";
-	String useremail = "";
-	String usertheme = "";
-	String userpass = "";
-	String usertype = "";
+	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
+	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "";
+	String projectId = "";
 	
 	%><%@include  file="../session.jsp" %><% 
 	
@@ -39,6 +31,15 @@
 		bckColor = SKYZERPAYMENTS.COLOR.getValue();
 		showSkyzerPaymentImg = SKYZERPAYMENTS.LOGOSKYZERTECHNOLOGIES.getValue();
 		showSkyzerTechImg = SKYZERPAYMENTS.LOGOSKYZERPAYMENTS.getValue();
+	}
+	
+	try{
+		projectId =  new String(Base64.getDecoder().decode(request.getParameter("project")));
+		System.out.print(projectId);
+	} catch (Exception e) {
+		session.setAttribute("status", "info");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("./projects.jsp");
+		dispatcher.forward(request, response);
 	}
 	
 	// Number of tasks

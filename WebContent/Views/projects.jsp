@@ -1,3 +1,4 @@
+<%@page import="java.util.Base64"%>
 <%@page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
@@ -15,16 +16,8 @@
 
 <%@include  file="../header.html" %>
 <%
-	String bckColor = "";
-	String showSkyzerPaymentImg = "";
-	String showSkyzerTechImg = "";
-	
-	String userid = "";
-	String username = "";
-	String useremail = "";
-	String usertheme = "";
-	String userpass = "";
-	String usertype = "";
+	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
+	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "";
 	
 	%><%@include  file="../session.jsp" %><% 
 	
@@ -174,7 +167,7 @@
 							    {   
 									%>
 							    		<div class="col-lg-3 mb-3">
-		                                <a class="card lift lift-sm h-100" href="../Views/tasks.jsp?project=11">
+		                                <a class="card lift lift-sm h-100" href="../Views/tasks.jsp?project=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes()) %>">
 		                                    <div class="card-body py-5" style="display: flex;">
 		                                        <h5 class="card-title mb-2" style="color:<%=bckColor %>;">
 		                                           <%=rs.getString("name") %>
