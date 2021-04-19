@@ -2,6 +2,8 @@
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@page import="javafx.util.Pair"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" import="java.sql.*" %>
+<%@ page language="java" import="config.DBConfig" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page language="java" import="java.util.*" %>
@@ -20,6 +22,21 @@
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
 	String projectId = "";
 	
+	Connection dbConn = DBConfig.connection(); ;
+	Statement st = null;
+	ResultSet rs = null;
+	st = dbConn.createStatement();
+	
+	Connection dbConnTask = DBConfig.connection(); ;
+	Statement stTask = null;
+	ResultSet rsTask = null;
+	stTask = dbConnTask.createStatement();
+	
+	Connection dbConnNested = DBConfig.connection(); ;
+	Statement stNested = null;
+	ResultSet rsNested = null;
+	stNested = dbConnNested.createStatement();
+	
 	%><%@include  file="../session.jsp" %><% 
 	
 	if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
@@ -35,7 +52,8 @@
 	
 	try{
 		projectId =  new String(Base64.getDecoder().decode(request.getParameter("project")));
-		System.out.print(projectId);
+		
+		
 	} catch (Exception e) {
 		session.setAttribute("status", "info");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("./projects.jsp");
@@ -54,6 +72,7 @@
 	SimpleDateFormat dd_MMMFormate = new SimpleDateFormat("dd MMM");
 	SimpleDateFormat yyyyMMddFormate = new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat ddMMMFormate = new SimpleDateFormat("ddMMM");
+	SimpleDateFormat ddMMyyyyFormate = new SimpleDateFormat("dd-MM-yyyy");
 
 	int delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
 	now.add(Calendar.DAY_OF_MONTH, delta);
@@ -104,6 +123,10 @@
 
                 <!-- Begin Page Content -->
                 <div id="layoutSidenav_content">
+                <%
+					rs = st.executeQuery("SELECT * FROM projects where id = "+ projectId +"");
+                    while(rs.next()) {   
+				%>	
                 <main>
                     <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
                         <div class="container-fluid">
@@ -114,7 +137,7 @@
                                             <div class="page-header-icon">
                                           		<i class="far fa-calendar-plus"></i> 
                                             </div>
-                                            Tasks
+                                            <%=rs.getString("name") %>
                                         </h1>
                                     </div>
                                     <div class="col-12 col-xl-auto mb-3">
@@ -134,42 +157,53 @@
                         	<!-- Model create a new task -->
                         	<div class="modal fade" id="projectModelLg" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
 							    <div class="modal-dialog modal-lg" role="document">
+							    	<form action="<%=request.getContextPath()%>/TaskServlet" method="post">
 							        <div class="modal-content">
 							            <div class="modal-header">
 							                <h5 class="modal-title">Create a new task</h5>
 							                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 							            </div>
 							            <div class="modal-body">
-							                <form>
 							                	<div class="row">
 							                		<div class="col">
 													    <div class="form-group">
 														    <label for="projectNameInput">Task name <span style="color: red;">*</span></label>
-														    <input style="height: fit-content;" class="form-control" id="projectNameInput" type="text" placeholder="Ex. IKR Project">
+														    <input style="height: fit-content;" class="form-control" id="name" name="name" type="text" placeholder="Ex. IKR Project">
 													    </div>
 												    </div>
 												    <div class="col">
 													    <div class="form-group">
 													        <label for="departmentSelect">Project <span style="color: red;">*</span></label>
-													        <input style="height: fit-content;" class="form-control" id="projectNameInput" type="text" value="IKR Project" readonly="readonly">
+													        <input style="height: fit-content;" class="form-control" type="text" value="<%=rs.getString("name") %>" readonly="readonly">
+													        <input style="height: fit-content;" class="form-control" id="hiddenProjectId" name="hiddenProjectId" type="hidden" value="<%=projectId %>">
 													    </div>
 												    </div>
 											    </div>
 											    <div class="form-group">
 											        <label for="teamMemberSelect">Team members <span style="color: red;">*</span></label><br/>
-											        <select class="form-control" id="exampleSelect1">
-														<option>Select member...</option>
-														<option>Christine Hogan</option>
-											            <option>Alan Green</option>
-											            <option>Jay Solanki</option>
-											            <option>Kishan Rabari</option>
-											            <option>Sukhwinder Kaur</option>												    </select>
+											        <select class="form-control" id="teamMember" name="teamMember">
+											        	<option>Select member...</option>
+											        <%
+											        	rsNested = stNested.executeQuery("SELECT * FROM project_team where project = "+ projectId +"");
+											        	List<Integer> projectTeamMemberList = new ArrayList<Integer>();
+											        	String projectTeamStr = "";
+										        		while(rsNested.next()) {
+										        			projectTeamMemberList.add(rsNested.getInt("team_member"));		
+										        		}
+										        		
+										        		projectTeamStr = projectTeamMemberList.toString().replace("[", "").replace("]", "").replace(" ", "");
+										        		
+										        		rsNested = stNested.executeQuery("SELECT * FROM users where id IN ("+ projectTeamStr +")");
+										        		while(rsNested.next()) {
+										        			%><option value="<%=rsNested.getInt("id") %>"><%=rsNested.getString("name") %></option><%		
+										        		}
+											        %>
+											        </select>
 											    </div>
 											    <div class="form-group">
 												    <label for="descriptionTextarea">Description</label>
-												    <textarea class="form-control" id="descriptionTextarea" rows="4"></textarea>
+												    <textarea class="form-control" id="description" name="description" rows="4"></textarea>
 											    </div>
-											</form>
 							            </div>
 							            <div class="modal-footer">
 							            	<button type="submit" title="Search"
@@ -179,6 +213,7 @@
 											<i class="fas fa-save"></i>&nbsp; Save</button>	
 							            </div>
 							        </div>
+							        </form>
 							    </div>
 							</div>
                         	<!-- End Model create a new task -->
@@ -214,14 +249,9 @@
                             </div>
                             </div>
                             <!--  End of custom edit -->
-                            
+                           
                             <!-- My Task Table -->
                             <table class="table" style="border: hidden; margin-top: -1rem;">
-                            	<tr>
-	                            	<td class="td-center"  colspan="2">
-		                            		<span class="span-large" style="color: <%=bckColor %>;">@ PROJECT IKR</span>
-	                            	</td>
-	                            </tr>
                             	<tr style="border-top: hidden;">
 	                            	<td style="border-right: hidden;">
 	                            		<h2>My Tasks</h2>
@@ -261,15 +291,18 @@
 							    <% 
 							    Integer key = 0;
 						        String name = "";
-						        String firstName =  "";
-						        String lastName = "";
+						        String assignee =  "";
 						        String profileColor = "green";
 						        
-								    for (Map.Entry<Integer, String> entry : taskList.entrySet()) {
-								    	key = entry.getKey();
-								        name = entry.getValue();
-								        firstName = "Jay";
-								        lastName = "Solanki";
+						        	rsTask = stTask.executeQuery("SELECT * FROM tasks where project = "+ projectId +"  AND team_member = "+ userid +"");
+						        
+								    while(rsTask.next()) {
+								    	key = rsTask.getInt("id");
+								        name = rsTask.getString("name");
+								        
+								        	rsNested = stNested.executeQuery("SELECT * FROM users where id = "+ rsTask.getInt("team_member") +"");
+								        	if(rsNested.next()) assignee = rsNested.getString("name");
+								        
 								        %>
 								        	<tr>
 										        <td style="text-align: inherit;">
@@ -277,8 +310,8 @@
 										        </td>
 										        <td>
 										        	<!-- will come from db -->
-													<div id="profileImage" style="background: <%=profileColor %>" title="">
-														<%=firstName.toUpperCase().charAt(0) + "" + lastName.toUpperCase().charAt(0) %>
+													<div id="profileImage" style="background: <%=profileColor %>" title=<%=assignee %>>
+														<%=assignee.toUpperCase().substring(0, 2) %>
 													</div>
 										        </td>
 										        <%
@@ -292,34 +325,56 @@
 											        {
 											        	%>
 											        		<td>
-											        			<input class="form-control form-control-sm hours-text" type="text" readonly="readonly" value="00.00"
-											        			onclick="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" data-toggle="modal" data-target="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>">
+											        			<input class="form-control form-control-sm hours-text" type="text" readonly="readonly"
+											        			onclick="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" data-toggle="modal" 
+											        			data-target="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>"
+											        			value=<%
+											        				Integer taskId = 0;
+											        				String taskDate = "";
+											        				Integer taskHours = 0;
+											        				
+											        				// code for retrive data from task details
+											        			
+											        			
+											        			%>>
 													        	
 													        	<!-- Model update task -->
 									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
-																    <div class="modal-dialog modal-lg" role="document">
+																    <div class="modal-dialog modal-sm" role="document">
+																    	<form action="<%=request.getContextPath()%>/TeamDetailServlet" method="post">
 																        <div class="modal-content">
 																            <div class="modal-header">
-																                <h5 class="modal-title"><%=name %></h5>
+																                <h5 class="modal-title"><%=name %> - <%=ddMMyyyyFormate.format(now.getTime()) %></h5>
 																                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 																            </div>
 																            <div class="modal-body">
-																                <form>
 																                	<div class="row">
-																                		<div class="col">
+																                		<div class="col" style="display: none;">
 																						    <div class="form-group" style="text-align: start;">
 																							    <label for="projectNameInput">Date <span style="color: red;">*</span></label>
-																							    <input type="date" id="startDate" name="startDate" max="31-12-3000" min="01-01-1000" value="<%=yyyyMMddFormate.format(now.getTime()) %>" class="form-control">
+																							    <input type="text" id="hiddenProjectId" name="hiddenProjectId"
+																							    value=<%=rs.getInt("id") %> class="form-control">
+																							    <input type="text" id="hiddenTaskId" name="hiddenTaskId"
+																							    value=<%=rsTask.getInt("id") %> class="form-control">
+																							    <input type="date" id="taskDetailDate" name="taskDetailDate" max="31-12-3000" min="01-01-1000" 
+																							    value="<%=yyyyMMddFormate.format(now.getTime()) %>" class="form-control">
 																						    </div>
 																					    </div>
 																					    <div class="col">
 																						    <div class="form-group" style="text-align: start;">
 																						        <label for="departmentSelect">Hours <span style="color: red;">*</span></label>
-																						        <input class="form-control" type="number" min="0" max="24" value="0" id="example-number-input">
+																						        <input class="form-control" type="number" min="0" max="24" value="0" id="taskDetailHours" name="taskDetailHours">
 																						    </div>
 																					    </div>
 																				    </div>
-																				</form>
+																				    <div class="row">
+																					    <div class="col">
+																						    <div class="form-group" style="text-align: start;">
+																						        <label for="departmentSelect">Description<span style="color: red;">*</span></label>
+																						        <textarea class="form-control" id="taskDetailDescription" name="taskDetailDescription" rows="4"></textarea>
+																						    </div>
+																					    </div>
+																				    </div>
 																            </div>
 																            <div class="modal-footer">
 																            <div style="margin-right: auto;margin-left: 0.5rem;">
@@ -333,12 +388,11 @@
 																					<i class="fas fa-save"></i>&nbsp; Save</button>	
 																            </div>
 																        </div>
+																        </form>
 																    </div>
 																</div>
 									                        	<!-- End Model update task -->
 													        </td>
-											        	
-											        	
 											        	<% 
 											            now.add(Calendar.DAY_OF_MONTH, 1);
 											        }
@@ -348,8 +402,6 @@
 										        	<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="00.00">
 										        </td>
 										      </tr>
-								        
-								        
 								        <%
 								    }
 							     %>	
@@ -427,26 +479,28 @@
 							    <tbody>
 							    	
 							    <% 
-							  	key = 0;
-						        name = "";
-						        firstName =  "";
-						        lastName = "";
-						        profileColor = "green";
+								  	key = 0;
+							        name = "";
+							        assignee = "";
+							        profileColor = "purple";
 						        
-								    for (Map.Entry<Integer, String> entry : taskList.entrySet()) {
-								    	key = entry.getKey();
-								        name = entry.getValue();
-								        firstName = "Jay";
-								        lastName = "Solanki";
+								        rsTask = stTask.executeQuery("SELECT * FROM tasks where project = "+ projectId +"  AND team_member != "+ userid +"");
+								        
+									    while(rsTask.next()) {
+									    	key = rsTask.getInt("id");
+									        name = rsTask.getString("name");
+									        
+									        	rsNested = stNested.executeQuery("SELECT * FROM users where id = "+ rsTask.getInt("team_member") +"");
+									        	if(rsNested.next()) assignee = rsNested.getString("name");
+								        
 								        %>
 								        	<tr>
 										        <td style="text-align: inherit;">
 										        	<%=name %> 
 										        </td>
 										        <td>
-										        	<!-- will come from db -->
-													<div id="profileImage" style="background: <%=profileColor %>" title="">
-														<%=firstName.toUpperCase().charAt(0) + "" + lastName.toUpperCase().charAt(0) %>
+													<div id="profileImage" style="background: <%=profileColor %>" title=<%=assignee %>>
+														<%=assignee.toUpperCase().substring(0, 2) %>
 													</div>
 										        </td>
 										        <%
@@ -513,7 +567,11 @@
                             <!-- End of My Team Task Table -->
                         </div>
                     </div>
+                   
                 </main>
+                 <% 
+				    }
+                 %>
             </div>
                
 				<!-- End if Page Content -->
@@ -535,6 +593,10 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
+<!-- Alert Status -->
+<%@include  file="../alert.html" %>
+<!-- Alert Status -->
 </body>
 <% 
 } catch (Exception e) {

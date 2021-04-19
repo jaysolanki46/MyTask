@@ -59,6 +59,12 @@ public class Project {
 	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
 	}
+	public Project() {
+	}
+	public Project(Integer id) {
+		super();
+		this.id = id;
+	}
 	@Override
 	public String toString() {
 		return "Project [id=" + id + ", name=" + name + ", department=" + department + ", description=" + description

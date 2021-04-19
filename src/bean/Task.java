@@ -5,7 +5,7 @@ public class Task {
 	private Integer id;
 	private String name;
 	private Project project;
-	private ProjectTeam projectTeam;
+	private User team_member;
 	private String description;
 	private Boolean isCompleted;
 	private String createdOn;
@@ -30,12 +30,6 @@ public class Task {
 	}
 	public void setProject(Project project) {
 		this.project = project;
-	}
-	public ProjectTeam getProjectTeam() {
-		return projectTeam;
-	}
-	public void setProjectTeam(ProjectTeam projectTeam) {
-		this.projectTeam = projectTeam;
 	}
 	public String getDescription() {
 		return description;
@@ -73,9 +67,15 @@ public class Task {
 	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
 	}
+	public User getTeam_member() {
+		return team_member;
+	}
+	public void setTeam_member(User team_member) {
+		this.team_member = team_member;
+	}
 	@Override
 	public String toString() {
-		return "Task [id=" + id + ", name=" + name + ", project=" + project + ", projectTeam=" + projectTeam
+		return "Task [id=" + id + ", name=" + name + ", project=" + project + ", team_member=" + team_member
 				+ ", description=" + description + ", isCompleted=" + isCompleted + ", createdOn=" + createdOn
 				+ ", createdBy=" + createdBy + ", updatedOn=" + updatedOn + ", updatedBy=" + updatedBy + "]";
 	}

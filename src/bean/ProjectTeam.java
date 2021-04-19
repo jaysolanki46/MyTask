@@ -24,6 +24,12 @@ public class ProjectTeam {
 	public void setTeamMember(User teamMember) {
 		this.teamMember = teamMember;
 	}
+	public ProjectTeam() {
+	}
+	public ProjectTeam(Integer id) {
+		super();
+		this.id = id;
+	}
 	@Override
 	public String toString() {
 		return "ProjectTeam [id=" + id + ", project=" + project + ", projectTeam=" + teamMember + "]";

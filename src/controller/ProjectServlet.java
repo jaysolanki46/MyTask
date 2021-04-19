@@ -26,7 +26,7 @@ import model.UserDAO;
 public class ProjectServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-	private boolean isInsert;;
+	private boolean isInsert;
 	private ProjectDAO projectDAO;
 	private ProjectTeamDAO projectTeamDAO;
     private HttpSession session;
