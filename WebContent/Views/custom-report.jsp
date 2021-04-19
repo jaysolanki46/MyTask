@@ -17,7 +17,7 @@
 <%@include  file="../header.html" %>
 <%
 	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
-	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "";
+	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
 	
 	%><%@include  file="../session.jsp" %><% 
 	

@@ -7,6 +7,7 @@ public class User {
 	private String email;
 	private String pass;
 	private String theme;
+	private Department department;
 	
 	public User() {	}
 	
@@ -47,8 +48,15 @@ public class User {
 		this.name = name;
 		this.pass = pass;
 	}
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", email=" + email + ", pass=" + pass + ", theme=" + theme + "]";
+		return "User [id=" + id + ", name=" + name + ", email=" + email + ", pass=" + pass + ", theme=" + theme + ", department=" + department.toString() + "]";
 	}
 }

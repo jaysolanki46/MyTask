@@ -17,7 +17,7 @@
 <%@include  file="../header.html" %>
 <%
 	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
-	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "";
+	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
 	
 	%><%@include  file="../session.jsp" %><% 
 	
@@ -162,7 +162,7 @@
                             
                             <!-- Project card -->
                             <% 
-                            	rs = st.executeQuery("SELECT * FROM mytask.projects order by id DESC");
+                            	rs = st.executeQuery("SELECT * FROM projects order by id DESC");
 	                            while(rs.next())
 							    {   
 									%>

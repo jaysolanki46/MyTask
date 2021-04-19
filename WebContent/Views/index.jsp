@@ -39,6 +39,7 @@
 			user.setAttribute("userId", rs.getString("id"));
 			user.setAttribute("userName", rs.getString("name"));
 			user.setAttribute("userEmail", rs.getString("email"));
+			user.setAttribute("userDepartment", rs.getString("department"));
 			user.setAttribute("userTheme", rs.getString("theme"));
 			user.setAttribute("userPass", rs.getString("pass"));
 			user.setAttribute("userType", rs.getString("user_type"));

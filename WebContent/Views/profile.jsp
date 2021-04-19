@@ -1,6 +1,8 @@
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" import="java.sql.*" %>
+<%@ page language="java" import="config.DBConfig" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
@@ -14,7 +16,7 @@
 <%@include  file="../header.html" %>
 <%
 	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
-	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "";
+	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
 	
 	%><%@include  file="../session.jsp" %><% 
 	
@@ -28,6 +30,11 @@
 		showSkyzerPaymentImg = SKYZERPAYMENTS.LOGOSKYZERTECHNOLOGIES.getValue();
 		showSkyzerTechImg = SKYZERPAYMENTS.LOGOSKYZERPAYMENTS.getValue();
 	}
+	
+	Connection dbConn = DBConfig.connection(); ;
+	Statement st = null;
+	ResultSet rs = null;
+	st = dbConn.createStatement();
 %>
 
 </head>
@@ -98,6 +105,29 @@
                                             <!-- Form Row    -->
                                             <div class="form-row">
                                             <div class="col-md-6">
+                                            		<div class="form-group">
+                                                        <label class="small mb-1" for="userName">Department</label>
+                                                        <%
+															rs = st.executeQuery("SELECT * FROM departments where id = " + userdepartment);
+															while(rs.next()) {
+																%><input class="form-control" type="text" placeholder="Name" value="<%=rs.getString("name")%>" readonly="readonly"><%
+															}
+														%>
+                                                    </div>
+                                            	</div>
+											 <div class="col-md-6">
+	                                            <div class="col-md-13">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="userPassword">Password</label>
+                                                        <input class="form-control" id="userPassword" name="userPassword" type="password" 
+                                                        value="<%=userpass%>" data-toggle="password">
+                                                    </div>
+                                                </div>
+											</div>
+											</div>
+											
+											<div class="form-row">
+                                            	 <div class="col-md-6">
                                             	<label class="small mb-1" for="name">Theme</label>
 	                                            	<div class="col-md-12" style="margin-left: -1rem;">
 		                                                <div class="custom-control custom-radio custom-control-inline">
@@ -121,20 +151,6 @@
 													</div>
 													
 											</div>
-											 <div class="col-md-6">
-	                                            <div class="col-md-13">
-                                                    <div class="form-group">
-                                                        <label class="small mb-1" for="userPassword">Password</label>
-                                                        <input class="form-control" id="userPassword" name="userPassword" type="password" 
-                                                        value="<%=userpass%>" data-toggle="password">
-                                                    </div>
-                                                </div>
-											</div>
-											</div>
-											
-											<div class="form-row">
-                                            	<div class="col-md-6">
-                                            	</div>
                                             	<div class="col-md-6">
                                             		<div class="custom-control custom-control-inline">
 													  <input type="checkbox" class="custom-control-input" id="showCheck" onclick="showPassword()">
