@@ -75,4 +75,17 @@ public class EnumMyTask {
 			return value;
 		}
 	}
+	
+	public enum SKYZERDEPARTMENTS {
+		GENERAL(1);
+		
+		int value;
+		private SKYZERDEPARTMENTS(int value) {
+			this.value = value;
+		}
+		
+		public int getValue(){
+			return value;
+		}
+	}
 }

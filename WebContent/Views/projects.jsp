@@ -1,3 +1,4 @@
+<%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
 <%@page import="java.util.Base64"%>
 <%@page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
@@ -162,7 +163,7 @@
                             
                             <!-- Project card -->
                             <% 
-                            	rs = st.executeQuery("SELECT * FROM projects order by id DESC");
+                            	rs = st.executeQuery("SELECT * FROM projects where department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC");
 	                            while(rs.next())
 							    {   
 									%>
