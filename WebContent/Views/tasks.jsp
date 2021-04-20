@@ -318,8 +318,8 @@
 	                            <table class="table table-bordered">
 							    <thead>
 							      <tr>
-							        <th style="text-align: center;">Tasks</th>
-							        <th>Assignee</th>
+							        <th style="text-align: center; width: 30%;">Tasks</th>
+							        <th style="width: 5%;">Assignee</th>
 							        <%
 							        
 								        now = Calendar.getInstance();
@@ -363,7 +363,6 @@
 										        	<%=name %> 
 										        </td>
 										        <td>
-										        	<!-- will come from db -->
 													<div id="profileImage" style="background: <%=profileColor %>" title=<%=assignee %>>
 														<%=assignee.toUpperCase().substring(0, 2) %>
 													</div>
@@ -401,10 +400,10 @@
 								        								case 4: myTaskColumnTotalFri += taskHours; taskColumnTotal += myTaskColumnTotalFri; break;
 								        							}
 											        			%>
-											        			<input class="form-control form-control-sm hours-text" type="text" readonly="readonly"
+											        			<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class="form-control"
 											        			onclick="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" data-toggle="modal" 
 											        			data-target="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" 
-											        			value="<%=taskHours %>:00">
+											        			><%=taskHours %>:00</label>
 													        	
 													        	<!-- Model update task -->
 									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
@@ -468,7 +467,7 @@
 										        
 										        %>
 										        <td>
-										        	<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=taskRowTotal %>:00">
+										       		<label class="total-hours-text"><%=taskRowTotal %>:00</label>
 										        </td>
 										      </tr>
 								        <%
@@ -483,22 +482,22 @@
 							    			Total hours:
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTaskColumnTotalMon %>:00">
+							    			<label class="total-hours-text"><%=myTaskColumnTotalMon %>:00</label>
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTaskColumnTotalTue %>:00">
+							    			<label class="total-hours-text"><%=myTaskColumnTotalTue %>:00</label>
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTaskColumnTotalWed %>:00">
+											<label class="total-hours-text"><%=myTaskColumnTotalWed %>:00</label>
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTaskColumnTotalThu %>:00">
+							    			<label class="total-hours-text"><%=myTaskColumnTotalThu %>:00</label>
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTaskColumnTotalFri %>:00">
+							    			<label class="total-hours-text"><%=myTaskColumnTotalFri %>:00</label>
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=taskColumnTotal %>:00">
+							    			<label class="total-hours-text"><%=taskColumnTotal %>:00</label>
 							    		</th>
 							    	</tr>
 							    </tfoot>
@@ -526,8 +525,8 @@
 	                            <table class="table table-bordered" id="tableMyTeamTasks">
 							    <thead>
 							      <tr>
-							        <th style="text-align: center;">Tasks</th>
-							        <th>Assignee</th>
+							        <th style="text-align: center; width: 30%;">Tasks</th>
+							        <th style="width: 5%;">Assignee</th>
 							        <%
 							        
 							        	now = Calendar.getInstance();
@@ -604,10 +603,10 @@
 								        								case 4: myTeamTaskColumnTotalFri += taskHours; taskColumnTotal += myTeamTaskColumnTotalFri; break;
 								        							}
 											        			%>
-											        			<input class="form-control form-control-sm hours-text" type="text" readonly="readonly"
+											        			<label name=hoursLable class="form-control"
 											        			onclick="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" data-toggle="modal" 
 											        			data-target="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" 
-											        			value="<%=taskHours %>:00">
+											        			><%=taskHours %>:00</label>
 													        </td>
 											        		
 											        		<!-- Model update task -->
@@ -673,7 +672,7 @@
 										        
 										        %>
 										        <td>
-										        	<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=taskRowTotal %>:00">
+										        	<label class="total-hours-text"><%=taskRowTotal %>:00</label>
 										        </td>
 										      </tr>
 								        
@@ -690,22 +689,22 @@
 							    			Total hours:
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTeamTaskColumnTotalMon %>:00">
+							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalMon %>:00</label>
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTeamTaskColumnTotalTue %>:00">
+							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalTue %>:00</label>
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTeamTaskColumnTotalWed %>:00">
+							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalWed %>:00</label>
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTeamTaskColumnTotalThu %>:00">
+							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalThu %>:00</label>
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTeamTaskColumnTotalFri %>:00">
+							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalFri %>:00</label>
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=taskColumnTotal %>:00">
+							    			<label class="total-hours-text"><%=taskColumnTotal %>:00</label>
 							    		</th>
 							    	</tr>
 							    </tfoot>
