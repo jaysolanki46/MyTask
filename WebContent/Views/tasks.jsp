@@ -531,14 +531,95 @@
 											    	now = Calendar.getInstance();
 											        delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
 											        now.add(Calendar.DAY_OF_MONTH, delta );
+											        taskColumnTotal = 0; taskRowTotal = 0;
 										        
 											        for (int i = 0; i < 5; i++)
 											        {
 											        	%>
 											        		<td>
-											        			<input class="form-control form-control-sm hours-text" type="text" readonly="readonly" value="00.00">
+											        			<% // Getting hours from task_details
+											        				Integer taskId = key;
+											        				String taskDate = yyyyMMddFormate.format(now.getTime());
+											        				Integer taskHours = 0;
+											        				String taskDescription = "";
+											        				
+											        				rsHours = stHours.executeQuery("SELECT * FROM task_details where task = "+ taskId +" AND task_detail_date = '"+ taskDate +"' order by id DESC");
+								        							if(rsHours.next()) {
+								        								taskHours = rsHours.getInt("hours");
+								        								taskDescription = rsHours.getString("description");
+								        							}
+								        							taskRowTotal += taskHours;
+								        							
+								        							switch (i){
+								        								case 0: myTeamTaskColumnTotalMon += taskHours; taskColumnTotal += myTeamTaskColumnTotalMon; break;
+								        								case 1: myTeamTaskColumnTotalTue += taskHours; taskColumnTotal += myTeamTaskColumnTotalTue; break;
+								        								case 2: myTeamTaskColumnTotalWed += taskHours; taskColumnTotal += myTeamTaskColumnTotalWed; break;
+								        								case 3: myTeamTaskColumnTotalThu += taskHours; taskColumnTotal += myTeamTaskColumnTotalThu; break;
+								        								case 4: myTeamTaskColumnTotalFri += taskHours; taskColumnTotal += myTeamTaskColumnTotalFri; break;
+								        							}
+											        			%>
+											        			<input class="form-control form-control-sm hours-text" type="text" readonly="readonly"
+											        			onclick="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" data-toggle="modal" 
+											        			data-target="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" 
+											        			value="<%=taskHours %>:00">
 													        </td>
-											        	
+											        		
+											        		<!-- Model update task -->
+									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
+																    <div class="modal-dialog modal-sm" role="document">
+																    	<form action="<%=request.getContextPath()%>/TeamDetailServlet" method="post">
+																    	<fieldset disabled="disabled">
+																        <div class="modal-content">
+																            <div class="modal-header">
+																                <h5 class="modal-title"><%=name %> - <%=ddMMyyyyFormate.format(now.getTime()) %></h5>
+																                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+																            </div>
+																            <div class="modal-body">
+																                	<div class="row">
+																                		<div class="col" style="display: none;">
+																						    <div class="form-group" style="text-align: start;">
+																							    <label for="projectNameInput">Date <span style="color: red;">*</span></label>
+																							    <input type="text" id="hiddenProjectId" name="hiddenProjectId"
+																							    value=<%=rs.getInt("id") %> class="form-control">
+																							    <input type="text" id="hiddenTaskId" name="hiddenTaskId"
+																							    value=<%=rsTask.getInt("id") %> class="form-control">
+																							    <input type="date" id="taskDetailDate" name="taskDetailDate" max="31-12-3000" min="01-01-1000" 
+																							    value="<%=yyyyMMddFormate.format(now.getTime()) %>" class="form-control">
+																						    </div>
+																					    </div>
+																					    <div class="col">
+																						    <div class="form-group" style="text-align: start;">
+																						        <label for="departmentSelect">Hours <span style="color: red;">*</span></label>
+																						        <input class="form-control" type="number" min="0" max="12" value=<%=taskHours %> id="taskDetailHours" name="taskDetailHours">
+																						    </div>
+																					    </div>
+																				    </div>
+																				    <div class="row">
+																					    <div class="col">
+																						    <div class="form-group" style="text-align: start;">
+																						        <label for="departmentSelect">Description<span style="color: red;">*</span></label>
+																						        <textarea class="form-control" id="taskDetailDescription" name="taskDetailDescription" rows="4"><%=taskDescription %></textarea>
+																						    </div>
+																					    </div>
+																				    </div>
+																            </div>
+																            <div class="modal-footer">
+																            <div style="margin-right: auto;margin-left: 0.5rem;">
+																            	<input class="" id="customCheck1" type="checkbox">
+																				<label class="" for="customCheck1">Complete</label>
+																            </div>
+																            	<button type="submit" title="Search"
+																					class="btn btn-sm btn-light active mr-3 center_div card-button"
+																					style="background-color:<%=bckColor %>; "
+																					onclick="this.form.submit();">
+																					<i class="fas fa-save"></i>&nbsp; Save</button>	
+																            </div>
+																        </div>
+																        </form>
+																        </fieldset>
+																    </div>
+																</div>
+									                        	<!-- End Model update task -->
 											        	
 											        	<% 
 											            now.add(Calendar.DAY_OF_MONTH, 1);
@@ -546,7 +627,7 @@
 										        
 										        %>
 										        <td>
-										        	<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="00.00">
+										        	<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=taskRowTotal %>:00">
 										        </td>
 										      </tr>
 								        
@@ -563,22 +644,22 @@
 							    			Total hours:
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="00.00">
+							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTeamTaskColumnTotalMon %>:00">
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="00.00">
+							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTeamTaskColumnTotalTue %>:00">
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="00.00">
+							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTeamTaskColumnTotalWed %>:00">
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="00.00">
+							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTeamTaskColumnTotalThu %>:00">
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="00.00">
+							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=myTeamTaskColumnTotalFri %>:00">
 							    		</th>
 							    		<th>
-							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="00.00">
+							    			<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=taskColumnTotal %>:00">
 							    		</th>
 							    	</tr>
 							    </tfoot>
