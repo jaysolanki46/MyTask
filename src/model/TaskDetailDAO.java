@@ -23,7 +23,7 @@ public class TaskDetailDAO {
             PreparedStatement preparedStatement =  cnn.prepareStatement("Insert into task_details "
             		+ "(task, task_detail_date, hours, description, created_on, created_by, updated_on, updated_by)"
             		+ " values (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, taskDetail.getId());
+            preparedStatement.setInt(1, taskDetail.getTask().getId());
             preparedStatement.setString(2, taskDetail.getTaskDetailDate());
             preparedStatement.setString(3, taskDetail.getHours());
             preparedStatement.setString(4, taskDetail.getDescription());

@@ -43,4 +43,30 @@ public class TaskDAO {
         }
 		return true;
 	}
+	
+	public boolean isCompleted(Task task) {
+		
+		try {
+			new DBConfig();
+			cnn = DBConfig.connection();
+        	
+            PreparedStatement preparedStatement =  cnn.prepareStatement("Update tasks set "
+            		+ "is_completed = ? , updated_on = ?, updated_by = ?"
+            		+ " where id = ?", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setBoolean(1, task.getIsCompleted());
+            preparedStatement.setString(2, task.getUpdatedOn());
+            preparedStatement.setInt(3, task.getUpdatedBy().getId());
+            preparedStatement.setInt(4, task.getId());
+            
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+            
+            rs = preparedStatement.getGeneratedKeys();
+            
+        } catch (Exception e) {
+           	e.printStackTrace();
+           	return false;
+        }
+		return true;
+	}
 }

@@ -228,34 +228,76 @@
                         	<!-- End Model create a new task -->
                             
                             <!--  Custom edit -->
-                            <div id="divCustom" class="card-body" style="width:66%; padding: 0px;">
-                            <div class="card mb-3">
-				
-									<div class="card-body" style="padding: 10px;">
-										<form class="form-inline" action="#" method="post">
-											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">Task:</label> 
-											<select class="form-control col-sm-2" id="user" name="user">
-												<option value="0" selected>Task 1</option>
-												<option value="1" >Task 2</option>
-											</select>
-											
-											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">Date:</label> 
-											<input type="date" id="followUpDate" name="followUpDate" max="31-12-3000" min="01-01-1000" class="form-control col-sm-2 center_div">
-											
-											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">Hours:</label> 
-											<input class="form-control col-sm-2 center_div" type="number" min="0" max="24" value="0" id="example-number-input">
-											
-											<input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0.5rem;margin-right: 0.5rem;"> 
-											<label class="form-check-label" for="exampleCheck1">Complete</label>
-											
-											<button type="submit" title="Search"
-											class="btn btn-sm btn-light active mr-3 center_div card-button"
-											style="background-color:<%=bckColor %>; "
-											onclick="this.form.submit();">
-											<i class="fas fa-save"></i>&nbsp; Save</button>	
+                            <div class="modal fade" id="customTaskDetailModel" tabindex="-1" role="dialog" aria-labelledby="customTaskDetailModelLbl" aria-hidden="true">
+                            	<div class="modal-dialog modal-md" role="document">
+										<form action="<%=request.getContextPath()%>/TaskDetailServlet"
+											method="post">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title">Custom Task Details Update</h5>
+													<button class="close" type="button" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+													<div class="col-md-12">
+														<label for="userEmail">Task</label>
+														<!-- To make use same insert method gave select name="hiddenTaskId", however, it is not hidden at all-->
+														<input type="hidden" id="hiddenProjectId" name="hiddenProjectId" value=<%=projectId %> class="form-control">
+														<select class="form-control" id="hiddenTaskId" name="hiddenTaskId">
+														        <%
+														        	rsNested = stNested.executeQuery("SELECT * FROM tasks where project = "+ projectId +"  AND team_member = "+ userid +"");
+													        		while(rsNested.next()) {
+													        			%><option value="<%=rsNested.getInt("id") %>"><%=rsNested.getString("name") %></option><%		
+													        		}
+														        %>
+														 </select>
+													</div>
+													</div>
+													<div class="row">
+														<div class="col-md-6">
+															<label for="taskDetailDate">Date</label>
+															<input type="date" id="taskDetailDate" name="taskDetailDate" 
+																max="31-12-3000" min="01-01-1000" class="form-control">
+														</div>
+														<div class="col-md-6">
+															<label for="departmentSelect">Hours <span
+																	style="color: red;">*</span></label> 
+																<input class="form-control" type="number" min="0" max="12"
+																	value="0" id="taskDetailHours"
+																	name="taskDetailHours">
+														</div>
+													</div>	
+													<div class="row">
+														<div class="col">
+															<div class="form-group" style="text-align: start;">
+																<label for="departmentSelect">Description<span
+																	style="color: red;">*</span></label>
+																<textarea class="form-control"
+																	id="taskDetailDescription" name="taskDetailDescription"
+																	rows="4"></textarea>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="modal-footer">
+													<div style="margin-right: auto; margin-left: 0.5rem;">
+														<input class="" id="taskIsCompleted"
+															name="taskIsCompleted" type="checkbox">
+														<label class="" for="customCheck1">Complete</label>
+													</div>
+													<button type="submit" title="Search"
+														class="btn btn-sm btn-light active mr-3 center_div card-button"
+														style="background-color:<%=bckColor%>; "
+														onclick="this.form.submit();">
+														<i class="fas fa-save"></i>&nbsp; Save
+													</button>
+												</div>
+											</div>
 										</form>
-                            		</div>
-                            </div>
+									</div>
                             </div>
                             <!--  End of custom edit -->
                            
@@ -266,8 +308,8 @@
 	                            		<h2>My Tasks</h2>
 	                            	</td>
 	                            	<td style="text-align: end;">
-		                            		<input type="checkbox" class="form-check-input" id="checkboxCustom" name="checkboxCustom"> 
-											<label class="form-check-label" for="checkboxCustom">Custom</label>
+											<label class="form-check-label" for="checkboxCustom" style="color: blue; font-style: italic; text-decoration: underline; cursor: pointer;"
+											onclick="#customTaskDetailModel" data-toggle="modal" data-target="#customTaskDetailModel">Custom Update?</label>
 	                            	</td>
 	                            </tr>
 	                            <tr style="border-top: hidden;">
@@ -302,12 +344,15 @@
 						        String name = "";
 						        String assignee =  "";
 						        String profileColor = "green";
+						        Boolean isCompleted = false;
 						        
 						        	rsTask = stTask.executeQuery("SELECT * FROM tasks where project = "+ projectId +"  AND team_member = "+ userid +"");
 						        
 								    while(rsTask.next()) {
 								    	key = rsTask.getInt("id");
 								        name = rsTask.getString("name");
+								        isCompleted = rsTask.getBoolean("is_completed");
+								        System.out.print(isCompleted);
 								        
 								        	rsNested = stNested.executeQuery("SELECT * FROM users where id = "+ rsTask.getInt("team_member") +"");
 								        	if(rsNested.next()) assignee = rsNested.getString("name");
@@ -364,7 +409,7 @@
 													        	<!-- Model update task -->
 									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
 																    <div class="modal-dialog modal-sm" role="document">
-																    	<form action="<%=request.getContextPath()%>/TeamDetailServlet" method="post">
+																    	<form action="<%=request.getContextPath()%>/TaskDetailServlet" method="post">
 																        <div class="modal-content">
 																            <div class="modal-header">
 																                <h5 class="modal-title"><%=name %> - <%=ddMMyyyyFormate.format(now.getTime()) %></h5>
@@ -401,7 +446,8 @@
 																            </div>
 																            <div class="modal-footer">
 																            <div style="margin-right: auto;margin-left: 0.5rem;">
-																            	<input class="" id="customCheck1" type="checkbox">
+																            	<input class="" id="taskIsCompleted" name="taskIsCompleted" type="checkbox"  
+																            	<% if(isCompleted) { %>checked="checked"<%  } %>>
 																				<label class="" for="customCheck1">Complete</label>
 																            </div>
 																            	<button type="submit" title="Search"
@@ -567,7 +613,7 @@
 											        		<!-- Model update task -->
 									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
 																    <div class="modal-dialog modal-sm" role="document">
-																    	<form action="<%=request.getContextPath()%>/TeamDetailServlet" method="post">
+																    	<form action="<%=request.getContextPath()%>/TaskDetailServlet" method="post">
 																    	<fieldset disabled="disabled">
 																        <div class="modal-content">
 																            <div class="modal-header">
@@ -714,22 +760,9 @@
         $('#teamMemberSelect').multiselect();
         
         // hidden
-        document.getElementById("divCustom").style.display = "none";
         document.getElementById("tableMyTeamTasks").style.display = "none";
     });
     
-	$("#checkboxCustom").change(function() {
-		
-		var isCustom = $('#checkboxCustom')[0].checked;
-		var divCustom = document.getElementById("divCustom");
-		
-		if(isCustom) {
-			divCustom.style.display = "block";
-		} else {
-			divCustom.style.display = "none";
-		}
-	})
-	
 	$("#checkboxMyTeamTaskShow").change(function() {
 		
 		var isMyTeamTaskShow = $('#checkboxMyTeamTaskShow')[0].checked;

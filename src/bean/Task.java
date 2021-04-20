@@ -73,6 +73,12 @@ public class Task {
 	public void setTeam_member(User team_member) {
 		this.team_member = team_member;
 	}
+	public Task() {
+	}
+	public Task(Integer id) {
+		super();
+		this.id = id;
+	}
 	@Override
 	public String toString() {
 		return "Task [id=" + id + ", name=" + name + ", project=" + project + ", team_member=" + team_member
