@@ -1,9 +1,12 @@
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
+<%@ page language="java" import="java.sql.*" %>
+<%@ page language="java" import="config.DBConfig" %>
 <%@page import="javafx.util.Pair"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page language="java" import="java.util.Date" %>
 <%@ page language="java" import="java.util.*" %>
 <%@ page language="java" import="java.text.SimpleDateFormat" %>
     
@@ -18,6 +21,18 @@
 <%
 	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
+	Integer taskColumnTotal = 0, taskRowTotal = 0;
+	String reportMonth = "", reportYear = "";
+	
+	Connection dbConn = DBConfig.connection(); ;
+	Statement st = null;
+	ResultSet rs = null;
+	st = dbConn.createStatement();
+	
+	Connection dbConnNested = DBConfig.connection(); ;
+	Statement stNested = null;
+	ResultSet rsNested = null;
+	stNested = dbConnNested.createStatement();
 	
 	%><%@include  file="../session.jsp" %><% 
 	
@@ -47,6 +62,9 @@
 	SimpleDateFormat mmFormate = new SimpleDateFormat("MM");
 	SimpleDateFormat mmmmFormate = new SimpleDateFormat("MMMM");
 	SimpleDateFormat yyyyFormate = new SimpleDateFormat("YYYY");
+	SimpleDateFormat yyyyMMFormate = new SimpleDateFormat("yyyy-MM");
+	SimpleDateFormat ddMMyyyyFormate = new SimpleDateFormat("dd-MM-yyyy");
+	SimpleDateFormat MMyyyyFormate = new SimpleDateFormat("MM-yyyy");
 	
 	String monthString;
 	
@@ -164,8 +182,9 @@
 								        for (int i = 1; i <= delta; i++)
 								        {
 								        	%><th style="text-align: -webkit-center;"><%=i + "/" + mmFormate.format(now.getTime()) %></th><% 
+								        	reportMonth = mmFormate.format(now.getTime());
+								        	reportYear = yyyyFormate.format(now.getTime());
 								        }
-							        	
 							        %>
 							       
 							        <th style="text-align: center;">Total hours</th>
@@ -176,49 +195,73 @@
 						      <% 
 							    Integer key = 0;
 						        String name = "";
-						        String firstName =  "";
-						        String lastName = "";
+						        String assignee =  "";
 						        String profileColor = "green";
+						        taskColumnTotal = 0; taskRowTotal = 0;
 						        
-								    for (Map.Entry<Integer, String> entry : taskList.entrySet()) {
-								    	key = entry.getKey();
-								        name = entry.getValue();
-								        firstName = "Jay";
-								        lastName = "Solanki";
+						        rs = st.executeQuery("select project.*, task.*, taskdetail.* from projects project " +  
+										"LEFT JOIN tasks task ON project.id = task.project " +
+										"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
+										"where MONTH(taskdetail.task_detail_date) = "+ reportMonth +" AND YEAR(taskdetail.task_detail_date) = "+ reportYear +" order by project.id DESC");
+						        
+						        	while(rs.next()) {   
+						        		key = rs.getInt("task.id");
+								        name = rs.getString("task.name");
+								        rsNested = stNested.executeQuery("SELECT * FROM users where id = "+ rs.getInt("task.team_member") +"");
+							        	if(rsNested.next()) assignee = rsNested.getString("name");
+							        	
 								        %>
 								        	<tr>
 										        <td>
-										        	Project IKR
+										        	<%=rs.getString("project.name") %> 
 										        </td>
 										        <td style="text-align: inherit;">
 										        	<%=name %> 
 										        </td>
 										        <td>
 										        	<!-- will come from db -->
-													<div id="profileImage" style="background: <%=profileColor %>" title="">
-														<%=firstName.toUpperCase().charAt(0) + "" + lastName.toUpperCase().charAt(0) %>
+													<div id="profileImage" style="background: <%=profileColor %>" title="<%=assignee %>">
+														<%=assignee.toUpperCase().substring(0, 2) %>
 													</div>
 										        </td>
 										        <%
 										        
 											     	// 5 days
-											    	 now = currentMonth;
-								       				 delta = currentMonth.getActualMaximum(GregorianCalendar.DAY_OF_MONTH); //number of days in month
-										        
+											    	now = currentMonth;
+								       				delta = currentMonth.getActualMaximum(GregorianCalendar.DAY_OF_MONTH); //number of days in month
+								       				taskColumnTotal = 0; taskRowTotal = 0;
+								       				
 								       				for (int i = 1; i <= delta; i++)
 											        {
 											        	%>
 											        		<td>
-											        			<label>0</label>
+											        			<% // Getting hours from task_details
+											        				Integer taskId = key;
+											        				String tableDate = yyyyMMFormate.format(now.getTime()); 
+
+											        				String taskDate = rs.getString("taskdetail.task_detail_date");
+											        				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(taskDate);
+											        				String taskYearMonth = String.valueOf(date.getYear() + 1900) + "-" + String.format("%02d", date.getMonth() + 1);
+											        				
+											        				//System.out.println(tableDate + "=" + taskYearMonth + " " +  i + "=" + date.getDate());
+											        				Integer taskHours = 0;
+											        				String taskDescription = "";
+											        				
+											        				if(tableDate.equals(taskYearMonth) && i == date.getDate()){
+											        					taskHours = rs.getInt("taskdetail.hours");
+											        					taskDescription = rs.getString("taskdetail.description");
+											        				}
+								        							taskRowTotal += taskHours;
+								        							
+											        			%>
+											        			<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class="form-control"
+											        			><%=taskHours %>:00</label>
 													        </td>
-											        	
-											        	
 											        	<% 
 											        }
-										        
 										        %>
 										        <td>
-										        	<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="00.00">
+										        	<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=taskRowTotal %>">
 										        </td>
 										      </tr>
 								        
@@ -276,7 +319,7 @@ var oTable = $('#weeklyDataTable').DataTable({
     "search": "Table search: "
   },
   order: [
-    [2, 'asc']
+    [1, 'asc']
   ],
   rowGroup: {
     // Uses the 'row group' plugin

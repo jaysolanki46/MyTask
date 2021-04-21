@@ -267,9 +267,7 @@
 								        							taskRowTotal += taskHours;
 								        							
 											        			%>
-													        	<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class="form-control"
-											        			onclick="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" data-toggle="modal" 
-											        			data-target="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" 
+											        			<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class="form-control"
 											        			><%=taskHours %>:00</label>
 													        	
 													        	<!-- Start Disabled Model update task -->
