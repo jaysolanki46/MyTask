@@ -1,9 +1,12 @@
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
+<%@ page language="java" import="java.sql.*" %>
+<%@ page language="java" import="config.DBConfig" %>
 <%@page import="javafx.util.Pair"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page language="java" import="java.util.Date" %>
 <%@ page language="java" import="java.util.*" %>
 <%@ page language="java" import="java.text.SimpleDateFormat" %>
     
@@ -18,6 +21,18 @@
 <%
 	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
+	String reportStartDate = "", reportEndDate = "";
+	Integer taskColumnTotal = 0, taskRowTotal = 0;
+	
+	Connection dbConn = DBConfig.connection(); ;
+	Statement st = null;
+	ResultSet rs = null;
+	st = dbConn.createStatement();
+	
+	Connection dbConnNested = DBConfig.connection(); ;
+	Statement stNested = null;
+	ResultSet rsNested = null;
+	stNested = dbConnNested.createStatement();
 	
 	%><%@include  file="../session.jsp" %><% 
 	
@@ -39,7 +54,6 @@
 	taskList.put(3, "Task 3");
 	//taskList.put(4, "Task 4");
 	
-	
 	// 5 days
 	Calendar currentWeek = Calendar.getInstance();
 	Calendar now;
@@ -51,7 +65,7 @@
 	Date end_date = new Date(date.getYear(), date.getMonth(), date.getDate() - date.getDay() + 6);
 	String dateString = start_date.getDate() + "/" + (start_date.getMonth() + 1)  + "/" + (start_date.getYear() +1900)
 						+ " - " + end_date.getDate() + "/" + (end_date.getMonth() + 1) + "/" + (end_date.getYear() +1900);
-	System.out.print(dateString);
+	//System.out.print(dateString);
 	
 	if (request.getParameter("week-picker-start-day") != null) {
 		dateString = request.getParameter("week-picker-start-date");
@@ -65,10 +79,10 @@
 	SimpleDateFormat dd_MMMFormate = new SimpleDateFormat("dd MMM");
 	SimpleDateFormat yyyyMMddFormate = new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat ddMMMFormate = new SimpleDateFormat("ddMMM");
+	SimpleDateFormat ddMMyyyyFormate = new SimpleDateFormat("dd-MM-yyyy");
 
-	int delta = 0;//-now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
-	//now.add(Calendar.DAY_OF_MONTH, delta);
-	String daysList[] = { "Mon", "Tue", "Wed", "Thurs", "Fri" };
+	int delta = 0;
+	String daysList[] = { "MON", "TUE", "WED", "THU", "FRI" };
 %>
 <style type="text/css">
 .table100.ver1 .row100 td:hover  {
@@ -153,8 +167,7 @@
 												<input type="hidden" id="week-picker-start-day" name="week-picker-start-day" value="">
 												<input type="hidden" id="week-picker-start-month" name="week-picker-start-month" value="">
 												<input type="hidden" id="week-picker-start-year" name="week-picker-start-year" value="">
-												
-												</form>
+											</form>
 											</div>
 										</div>
                                 <!-- End of weekly datepicker -->
@@ -176,11 +189,17 @@
 							        
 								        now = currentWeek;
 								        delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
-								        now.add(Calendar.DAY_OF_MONTH, delta );
+								        now.add(Calendar.DAY_OF_MONTH, delta);
 							        
 								        for (int i = 0; i < 5; i++)
 								        {
 								        	%><th style="text-align: -webkit-center;"><%=dd_MMMFormate.format(now.getTime()) + " , " + daysList[i] %></th><% 
+								        	
+								        			
+									        // For report search query
+											if (i == 0) reportStartDate = yyyyMMddFormate.format(now.getTime());
+								        	if (i == 4) reportEndDate = yyyyMMddFormate.format(now.getTime());
+								        			
 								        	now.add(Calendar.DAY_OF_MONTH, 1);
 								        }
 							        	
@@ -194,27 +213,33 @@
 						      <% 
 							    Integer key = 0;
 						        String name = "";
-						        String firstName =  "";
-						        String lastName = "";
+						        String assignee =  "";
 						        String profileColor = "green";
+						        taskColumnTotal = 0; taskRowTotal = 0;
 						        
-								    for (Map.Entry<Integer, String> entry : taskList.entrySet()) {
-								    	key = entry.getKey();
-								        name = entry.getValue();
-								        firstName = "Jay";
-								        lastName = "Solanki";
+								rs = st.executeQuery("select project.*, task.*, taskdetail.* from projects project " +  
+										"LEFT JOIN tasks task ON project.id = task.project " +
+										"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
+										"where taskdetail.task_detail_date between '"+ reportStartDate +"' and '"+ reportEndDate +"' order by project.id DESC");
+				                   		 
+									while(rs.next()) {   
+									    	key = rs.getInt("task.id");
+									        name = rs.getString("task.name");
+									        rsNested = stNested.executeQuery("SELECT * FROM users where id = "+ rs.getInt("task.team_member") +"");
+								        	if(rsNested.next()) assignee = rsNested.getString("name");
+							        	
 								        %>
 								        	<tr>
 										        <td>
-										        	Project IKR
+										        	<%=rs.getString("project.name") %> 
 										        </td>
 										        <td style="text-align: inherit;">
 										        	<%=name %> 
 										        </td>
 										        <td>
 										        	<!-- will come from db -->
-													<div id="profileImage" style="background: <%=profileColor %>" title="">
-														<%=firstName.toUpperCase().charAt(0) + "" + lastName.toUpperCase().charAt(0) %>
+													<div id="profileImage" style="background: <%=profileColor %>" title="<%=assignee %>">
+														<%=assignee.toUpperCase().substring(0, 2) %>
 													</div>
 										        </td>
 										        <%
@@ -223,39 +248,68 @@
 											    	now = currentWeek;
 											        delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
 											        now.add(Calendar.DAY_OF_MONTH, delta );
+											        taskColumnTotal = 0; taskRowTotal = 0;
 										        
 											        for (int i = 0; i < 5; i++)
 											        {
 											        	%>
 											        		<td>
-											        			<input class="form-control form-control-sm hours-text" type="text" readonly="readonly" value="00.00"
-											        			onclick="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" data-toggle="modal" data-target="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>">
+													        	<% // Getting hours from task_details
+											        				Integer taskId = key;
+											        				String taskDate = yyyyMMddFormate.format(now.getTime());
+											        				Integer taskHours = 0;
+											        				String taskDescription = "";
+											        				
+											        				if(taskDate.equals(rs.getString("taskdetail.task_detail_date"))){
+											        					taskHours = rs.getInt("taskdetail.hours");
+											        					taskDescription = rs.getString("taskdetail.description");
+											        				}
+								        							taskRowTotal += taskHours;
+								        							
+											        			%>
+													        	<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class="form-control"
+											        			onclick="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" data-toggle="modal" 
+											        			data-target="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" 
+											        			><%=taskHours %>:00</label>
 													        	
-													        	<!-- Model update task -->
+													        	<!-- Start Disabled Model update task -->
 									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
-																    <div class="modal-dialog modal-lg" role="document">
+																    <div class="modal-dialog modal-sm" role="document">
+																    	<form action="<%=request.getContextPath()%>/TaskDetailServlet" method="post">
+																    	<fieldset disabled="disabled">
 																        <div class="modal-content">
 																            <div class="modal-header">
-																                <h5 class="modal-title"><%=name %></h5>
+																                <h5 class="modal-title"><%=name %> - <%=ddMMyyyyFormate.format(now.getTime()) %></h5>
 																                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 																            </div>
 																            <div class="modal-body">
-																                <form>
 																                	<div class="row">
-																                		<div class="col">
+																                		<div class="col" style="display: none;">
 																						    <div class="form-group" style="text-align: start;">
 																							    <label for="projectNameInput">Date <span style="color: red;">*</span></label>
-																							    <input type="date" id="startDate" name="startDate" max="31-12-3000" min="01-01-1000" value="<%=yyyyMMddFormate.format(now.getTime()) %>" class="form-control">
+																							    <input type="text" id="hiddenProjectId" name="hiddenProjectId"
+																							    value=<%=rs.getInt("task.id") %> class="form-control">
+																							    <input type="text" id="hiddenTaskId" name="hiddenTaskId"
+																							    value=<%=rs.getInt("task.id") %> class="form-control">
+																							    <input type="date" id="taskDetailDate" name="taskDetailDate" max="31-12-3000" min="01-01-1000" 
+																							    value="<%=yyyyMMddFormate.format(now.getTime()) %>" class="form-control">
 																						    </div>
 																					    </div>
 																					    <div class="col">
 																						    <div class="form-group" style="text-align: start;">
 																						        <label for="departmentSelect">Hours <span style="color: red;">*</span></label>
-																						        <input class="form-control" type="number" min="0" max="24" value="0" id="example-number-input">
+																						        <input class="form-control" type="number" min="0" max="12" value=<%=taskHours %> id="taskDetailHours" name="taskDetailHours">
 																						    </div>
 																					    </div>
 																				    </div>
-																				</form>
+																				    <div class="row">
+																					    <div class="col">
+																						    <div class="form-group" style="text-align: start;">
+																						        <label for="departmentSelect">Description<span style="color: red;">*</span></label>
+																						        <textarea class="form-control" id="taskDetailDescription" name="taskDetailDescription" rows="4"><%=taskDescription %></textarea>
+																						    </div>
+																					    </div>
+																				    </div>
 																            </div>
 																            <div class="modal-footer">
 																            <div style="margin-right: auto;margin-left: 0.5rem;">
@@ -269,9 +323,11 @@
 																					<i class="fas fa-save"></i>&nbsp; Save</button>	
 																            </div>
 																        </div>
+																        </form>
+																        </fieldset>
 																    </div>
 																</div>
-									                        	<!-- End Model update task -->
+									                        	<!-- End Disabled Model update task -->
 													        </td>
 											        	
 											        	
@@ -281,7 +337,7 @@
 										        
 										        %>
 										        <td>
-										        	<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="00.00">
+										        	<label class="total-hours-text"><%=taskRowTotal %>:00</label>
 										        </td>
 										      </tr>
 								        
@@ -373,7 +429,7 @@ var oTable = $('#weeklyDataTable').DataTable({
     "search": "Table search: "
   },
   order: [
-    [2, 'asc']
+    [1, 'asc']
   ],
   rowGroup: {
     // Uses the 'row group' plugin

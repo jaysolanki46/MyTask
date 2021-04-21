@@ -68,6 +68,8 @@ public class TaskDetailServlet extends HttpServlet {
 				task.setUpdatedBy(new User(Integer.valueOf(session.getAttribute("userId").toString())));
 				
 				isUpdate = taskDAO.isCompleted(task);
+			} else {
+				isUpdate = true;
 			}
 			
 			if(isInsert && isUpdate) session.setAttribute("status", "insert");

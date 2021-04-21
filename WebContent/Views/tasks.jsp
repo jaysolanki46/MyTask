@@ -609,7 +609,7 @@
 											        			><%=taskHours %>:00</label>
 													        </td>
 											        		
-											        		<!-- Model update task -->
+											        		<!-- Start Disabled Model update task -->
 									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
 																    <div class="modal-dialog modal-sm" role="document">
 																    	<form action="<%=request.getContextPath()%>/TaskDetailServlet" method="post">
@@ -664,7 +664,7 @@
 																        </fieldset>
 																    </div>
 																</div>
-									                        	<!-- End Model update task -->
+									                        	<!-- End Disabled Model update task -->
 											        	
 											        	<% 
 											            now.add(Calendar.DAY_OF_MONTH, 1);

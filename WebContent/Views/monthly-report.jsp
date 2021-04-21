@@ -136,7 +136,7 @@
 											<form class="form-inline"  method="post" action="../Views/monthly-report.jsp">
 												<label style="color: <%=bckColor %>">Select Month: </label>
 												<input type="text" class="form-control" name="datepicker" id="datepicker" readonly="readonly" onchange="this.form.submit();"
-													value="<%=monthString %>" placeholder="Select a Month" style="margin: 0.2rem; text-align: center; width: 18rem;"/>
+													value="<%=monthString %>" placeholder="Select a Month" style="margin: 0.2rem; text-align: center; width: 17rem;"/>
 												
 												</form>
 											</div>
