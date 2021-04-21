@@ -1,5 +1,6 @@
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
+<%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
 <%@ page language="java" import="java.sql.*" %>
 <%@ page language="java" import="config.DBConfig" %>
 <%@page import="javafx.util.Pair"%>
@@ -76,7 +77,7 @@
 		currentWeek.set(year, month, day);
 	}
 
-	SimpleDateFormat dd_MMMFormate = new SimpleDateFormat("dd MMM");
+	SimpleDateFormat ddMMFormate = new SimpleDateFormat("dd/MM");
 	SimpleDateFormat yyyyMMddFormate = new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat ddMMMFormate = new SimpleDateFormat("ddMMM");
 	SimpleDateFormat ddMMyyyyFormate = new SimpleDateFormat("dd-MM-yyyy");
@@ -182,8 +183,8 @@
                             <table id="weeklyDataTable" class="table table-bordered" style="border: hidden;">
 						    <thead>
 							      <tr>
-							      	<th>Project</th>
-							        <th style="text-align: center;">Task</th>
+							      	<th style="width: 10%;">Project</th>
+							        <th style="text-align: center;  width: 30%;">Task</th>
 							        <th>Assignee</th>
 							        <%
 							        
@@ -193,7 +194,7 @@
 							        
 								        for (int i = 0; i < 5; i++)
 								        {
-								        	%><th style="text-align: -webkit-center;"><%=dd_MMMFormate.format(now.getTime()) + " , " + daysList[i] %></th><% 
+								        	%><th style="text-align: -webkit-center;"><%=ddMMFormate.format(now.getTime()) + " , " + daysList[i] %></th><% 
 								        	
 								        			
 									        // For report search query
@@ -215,12 +216,12 @@
 						        String name = "";
 						        String assignee =  "";
 						        String profileColor = "green";
-						        taskColumnTotal = 0; taskRowTotal = 0;
 						        
 								rs = st.executeQuery("select project.*, task.*, taskdetail.* from projects project " +  
 										"LEFT JOIN tasks task ON project.id = task.project " +
 										"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
-										"where taskdetail.task_detail_date between '"+ reportStartDate +"' and '"+ reportEndDate +"' order by project.id DESC");
+										"where (project.department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND " + 
+										"taskdetail.task_detail_date between '"+ reportStartDate +"' and '"+ reportEndDate +"' order by project.id DESC");
 				                   		 
 									while(rs.next()) {   
 									    	key = rs.getInt("task.id");
@@ -338,8 +339,6 @@
 										        	<label class="total-hours-text"><%=taskRowTotal %>:00</label>
 										        </td>
 										      </tr>
-								        
-								        
 								        <%
 								    }
 							     %>	

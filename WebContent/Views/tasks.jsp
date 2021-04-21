@@ -78,14 +78,14 @@
 	
 	// 5 days
 	Calendar now = Calendar.getInstance();
-	SimpleDateFormat dd_MMMFormate = new SimpleDateFormat("dd MMM");
+	SimpleDateFormat ddMMFormate = new SimpleDateFormat("dd/MM");
 	SimpleDateFormat yyyyMMddFormate = new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat ddMMMFormate = new SimpleDateFormat("ddMMM");
 	SimpleDateFormat ddMMyyyyFormate = new SimpleDateFormat("dd-MM-yyyy");
 
 	int delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
 	now.add(Calendar.DAY_OF_MONTH, delta);
-	String daysList[] = { "Mon", "Tue", "Wed", "Thurs", "Fri" };
+	String daysList[] = { "MON", "TUE", "WED", "THU", "FRI" };
 %>
 <style type="text/css">
 .table100.ver1 .row100 td:hover  {
@@ -308,7 +308,7 @@
 	                            		<h2>My Tasks</h2>
 	                            	</td>
 	                            	<td style="text-align: end;">
-											<label class="form-check-label" for="checkboxCustom" style="color: blue; font-style: italic; text-decoration: underline; cursor: pointer;"
+											<label class="form-check-label" for="checkboxCustom" style="color: <%=bckColor %>; font-style: italic; text-decoration: underline; cursor: pointer;"
 											onclick="#customTaskDetailModel" data-toggle="modal" data-target="#customTaskDetailModel">Custom Update?</label>
 	                            	</td>
 	                            </tr>
@@ -328,7 +328,7 @@
 							        
 								        for (int i = 0; i < 5; i++)
 								        {
-								        	%><th style="text-align: -webkit-center;"><%=dd_MMMFormate.format(now.getTime()) + " , " + daysList[i] %></th><% 
+								        	%><th style="text-align: -webkit-center;"><%=ddMMFormate.format(now.getTime()) + " , " + daysList[i] %></th><% 
 								        	now.add(Calendar.DAY_OF_MONTH, 1);
 								        }
 							        	
@@ -535,7 +535,7 @@
 							        
 								        for (int i = 0; i < 5; i++)
 								        {
-								        	%><th style="text-align: -webkit-center;"><%=dd_MMMFormate.format(now.getTime()) + " , " + daysList[i] %></th><% 
+								        	%><th style="text-align: -webkit-center;"><%=ddMMFormate.format(now.getTime()) + " , " + daysList[i] %></th><% 
 								        	now.add(Calendar.DAY_OF_MONTH, 1);
 								        }
 							        	

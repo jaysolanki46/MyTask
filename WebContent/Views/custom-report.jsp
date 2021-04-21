@@ -1,10 +1,14 @@
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
+<%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
+<%@ page language="java" import="java.sql.*" %>
+<%@ page language="java" import="config.DBConfig" %>
 <%@page import="javafx.util.Pair"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page language="java" import="java.util.*" %>
+<%@ page language="java" import="java.time.LocalDate" %>
 <%@ page language="java" import="java.text.SimpleDateFormat" %>
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -18,6 +22,18 @@
 <%
 	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
+	String reportStartDate = "", reportEndDate = ""; 
+	Integer taskColumnTotal = 0, taskRowTotal = 0;
+	
+	Connection dbConn = DBConfig.connection(); ;
+	Statement st = null;
+	ResultSet rs = null;
+	st = dbConn.createStatement();
+	
+	Connection dbConnNested = DBConfig.connection(); ;
+	Statement stNested = null;
+	ResultSet rsNested = null;
+	stNested = dbConnNested.createStatement();
 	
 	%><%@include  file="../session.jsp" %><% 
 	
@@ -32,15 +48,19 @@
 		showSkyzerTechImg = SKYZERPAYMENTS.LOGOSKYZERPAYMENTS.getValue();
 	}
 	
-	// Number of tasks
-	Map<Integer, String> taskList = new HashMap<Integer, String>();
-	taskList.put(1, "Task 1");
-	taskList.put(2, "Task 2");
-	taskList.put(3, "Task 3");
-	taskList.put(4, "Task 4");
+	reportStartDate = request.getParameter("reportStartDate");
+	reportEndDate = request.getParameter("reportEndDate");
 	
-	Calendar currentMonth = Calendar.getInstance();
-	Calendar now;
+	
+	System.out.print(reportStartDate + reportEndDate);
+	
+	// Number of tasks
+		Map<Integer, String> taskList = new HashMap<Integer, String>();
+		taskList.put(1, "Task 1");
+		taskList.put(2, "Task 2");
+		taskList.put(3, "Task 3");
+		//taskList.put(4, "Task 4");
+	
 	SimpleDateFormat dd_MMMFormate = new SimpleDateFormat("dd MMM");
 	SimpleDateFormat yyyyMMddFormate = new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat ddMMMFormate = new SimpleDateFormat("ddMMM");
@@ -121,8 +141,6 @@
                                     <a class="nav-link  ml-0" href="/MyTask/Views/monthly-report.jsp">Monthly</a>
                                     <a class="nav-link active ml-0" style="color: <%=bckColor %>; border-bottom-color: <%=bckColor %>;"  href="/MyTask/Views/custom-report.jsp">Custom</a>
                                 </nav>
-                                
-                               
                             </div>
                         </header>
                     <!-- Main page content-->
@@ -135,13 +153,12 @@
 									<div class="card-body" style="padding: 10px;">
 										<form class="form-inline" action="#" method="post">
 											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">Start Date:</label> 
-											<input type="date" id="followUpDate" name="followUpDate" max="31-12-3000" min="01-01-1000" class="form-control col-sm-2 center_div">
+											<input type="date" id="reportStartDate" name="reportStartDate" max="31-12-3000" min="01-01-1000"
+											 class="form-control col-sm-2 center_div" value="<%=reportStartDate%>">
 											
 											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">End Date:</label> 
-											<input type="date" id="followUpDate" name="followUpDate" max="31-12-3000" min="01-01-1000" class="form-control col-sm-2 center_div">
-											
-											<input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 0.5rem;margin-right: 0.5rem;"> 
-											<label class="form-check-label" for="exampleCheck1">Complete</label>
+											<input type="date" id="reportEndDate" name="reportEndDate" max="31-12-3000" min="01-01-1000" 
+											class="form-control col-sm-2 center_div" value="<%=reportEndDate%>">
 											
 											<button type="submit" title="Search"
 											class="btn btn-sm btn-light active mr-3 center_div card-button"
@@ -154,8 +171,7 @@
                             </div>
                             <!--  End of custom search -->
                     
-                    	
-                            <div style="overflow: auto;    height: 40rem;    width: 100%; display: none;">
+                            <div style="overflow: auto;    height: 40rem;    width: 100%;">
                             <table id="weeklyDataTable" class="table table-bordered" style="border: hidden;">
 						    <thead>
 							      <tr>
@@ -164,14 +180,11 @@
 							        <th>Assignee</th>
 							        <%
 							        
-								        now = currentMonth;
-								        delta = currentMonth.getActualMaximum(GregorianCalendar.DAY_OF_MONTH); //number of days in month
-							        
-								        for (int i = 1; i <= delta; i++)
+								        for (LocalDate date = LocalDate.parse(reportStartDate); date.isBefore(LocalDate.parse(reportEndDate).plusDays(1)); date = date.plusDays(1))
 								        {
-								        	%><th style="text-align: -webkit-center;"><%=i + "/" + mmFormate.format(now.getTime()) %></th><% 
+								        	%><th style="text-align: -webkit-center;"><%=date.getDayOfMonth() + "/" + date.getMonthValue() %></th><% 
 								        }
-							        	
+							        
 							        %>
 							       
 							        <th style="text-align: center;">Total hours</th>
@@ -179,61 +192,61 @@
 							    </thead>
 						    
 						    <tbody>
-						      <% 
-							    Integer key = 0;
-						        String name = "";
-						        String firstName =  "";
-						        String lastName = "";
-						        String profileColor = "green";
-						        
-								    for (Map.Entry<Integer, String> entry : taskList.entrySet()) {
-								    	key = entry.getKey();
-								        name = entry.getValue();
-								        firstName = "Jay";
-								        lastName = "Solanki";
-								        %>
-								        	<tr>
-										        <td>
-										        	Project IKR
-										        </td>
-										        <td style="text-align: inherit;">
-										        	<%=name %> 
-										        </td>
-										        <td>
-										        	<!-- will come from db -->
-													<div id="profileImage" style="background: <%=profileColor %>" title="">
-														<%=firstName.toUpperCase().charAt(0) + "" + lastName.toUpperCase().charAt(0) %>
-													</div>
-										        </td>
-										        <%
-										        
-											     	// 5 days
-											    	 now = currentMonth;
-								       				 delta = currentMonth.getActualMaximum(GregorianCalendar.DAY_OF_MONTH); //number of days in month
-										        
-								       				for (int i = 1; i <= delta; i++)
-											        {
-											        	%>
-											        		<td>
-											        			<label>0</label>
-													        </td>
-											        	
-											        	
-											        	<% 
-											        }
-										        
-										        %>
-										        <td>
-										        	<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="00.00">
-										        </td>
-										      </tr>
-								        
-								        
-								        <%
+							     <% 
+								    Integer key = 0;
+							        String name = "";
+							        String assignee =  "";
+							        String profileColor = "green";
+							        taskColumnTotal = 0; taskRowTotal = 0;
+							        
+									rs = st.executeQuery("select project.*, task.*, taskdetail.* from projects project " +  
+											"LEFT JOIN tasks task ON project.id = task.project " +
+											"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
+											"where (project.department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND " + 
+											"taskdetail.task_detail_date between '"+ reportStartDate +"' and '"+ reportEndDate +"' order by project.id DESC");
+					                   		 
+									while(rs.next()) {   
+									   	key = rs.getInt("task.id");
+									    name = rs.getString("task.name");
+									    rsNested = stNested.executeQuery("SELECT * FROM users where id = "+ rs.getInt("task.team_member") +"");
+									   	if(rsNested.next()) assignee = rsNested.getString("name");
+								        	
+								%>
+								<tr>
+									<td><%=rs.getString("project.name") %></td>
+									<td style="text-align: inherit;"><%=name%></td>
+									<td><div id="profileImage" style="background: <%=profileColor %>" title="<%=assignee %>"><%=assignee.toUpperCase().substring(0, 2) %></div></td>
+									<%
+										taskColumnTotal = 0; taskRowTotal = 0;
+									
+										for (LocalDate date = LocalDate.parse(reportStartDate); date.isBefore(LocalDate.parse(reportEndDate).plusDays(1)); date = date.plusDays(1))
+								        {
+								        	%><td><%
+													// Getting hours from task_details
+														Integer taskId = key;
+														String tableDate = date.getYear() + "-" + String.format("%02d", date.getMonthValue()) + "-" + String.format("%02d", date.getDayOfMonth());
+														Integer taskHours = 0;
+														String taskDescription = "";
+														
+														System.out.println(tableDate);
+				
+														if (tableDate.equals(rs.getString("taskdetail.task_detail_date"))) {
+															taskHours = rs.getInt("taskdetail.hours");
+															taskDescription = rs.getString("taskdetail.description");
+														}
+														taskRowTotal += taskHours;
+													%> 
+													<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class="form-control"
+											        			><%=taskHours %>:00</label>
+								        	</td><% 
+								        }
+									%>
+									<td><label class="total-hours-text"><%=taskRowTotal %>:00</label></td>
+								</tr>
+								 <%
 								    }
 							     %>	
 						    </tbody>
-						   
 						  </table>
                     		</div>
                     </div>
@@ -282,7 +295,7 @@ var oTable = $('#weeklyDataTable').DataTable({
     "search": "Table search: "
   },
   order: [
-    [2, 'asc']
+    [1, 'asc']
   ],
   rowGroup: {
     // Uses the 'row group' plugin
