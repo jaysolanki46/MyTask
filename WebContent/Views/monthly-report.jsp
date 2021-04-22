@@ -255,14 +255,21 @@
 								        							taskRowTotal += taskHours;
 								        							
 											        			%>
-											        			<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class="form-control"
-											        			><%=taskHours %>:00</label>
+											        			
+											        			<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class=""
+											        			><%
+											        				if(taskHours > 0)
+											        					%><%=taskHours + ":00"%><%
+											        				else
+											        					%><%="-"%>
+											        			</label>
+											        			
 													        </td>
 											        	<% 
 											        }
 										        %>
 										        <td>
-										        	<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=taskRowTotal %>">
+										        	<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=taskRowTotal + ":00" %>">
 										        </td>
 										      </tr>
 								        

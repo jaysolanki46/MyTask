@@ -16,7 +16,7 @@
 <% try { %>
 <head>
 <meta charset="ISO-8859-1">
-<title>Skyzer - My Task | Monthly Report</title>
+<title>Skyzer - My Task | Custom Report</title>
 
 <%@include  file="../header.html" %>
 <%
@@ -24,6 +24,7 @@
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
 	String reportStartDate = "", reportEndDate = ""; 
 	Integer taskColumnTotal = 0, taskRowTotal = 0;
+	String divDisplay = "none";
 	
 	Connection dbConn = DBConfig.connection(); ;
 	Statement st = null;
@@ -50,17 +51,7 @@
 	
 	reportStartDate = request.getParameter("reportStartDate");
 	reportEndDate = request.getParameter("reportEndDate");
-	
-	
-	System.out.print(reportStartDate + reportEndDate);
-	
-	// Number of tasks
-		Map<Integer, String> taskList = new HashMap<Integer, String>();
-		taskList.put(1, "Task 1");
-		taskList.put(2, "Task 2");
-		taskList.put(3, "Task 3");
-		//taskList.put(4, "Task 4");
-	
+
 	SimpleDateFormat dd_MMMFormate = new SimpleDateFormat("dd MMM");
 	SimpleDateFormat yyyyMMddFormate = new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat ddMMMFormate = new SimpleDateFormat("ddMMM");
@@ -170,7 +161,11 @@
                             </div>
                             </div>
                             <!--  End of custom search -->
-                    
+                    		
+                    		<%
+                    		if(reportStartDate != null && reportEndDate != null 
+                				&& !reportStartDate.isEmpty() && !reportEndDate.isEmpty()) {
+                    		%>
                             <div style="overflow: auto;    height: 40rem;    width: 100%;">
                             <table id="weeklyDataTable" class="table table-bordered" style="border: hidden;">
 						    <thead>
@@ -228,17 +223,20 @@
 														Integer taskHours = 0;
 														String taskDescription = "";
 														
-														System.out.println(tableDate);
-				
 														if (tableDate.equals(rs.getString("taskdetail.task_detail_date"))) {
 															taskHours = rs.getInt("taskdetail.hours");
 															taskDescription = rs.getString("taskdetail.description");
 														}
 														taskRowTotal += taskHours;
 													%> 
-													<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class="form-control"
-											        			><%=taskHours %>:00</label>
-								        	</td><% 
+													<label id="hoursLable" name="hoursLable"
+														style="cursor: pointer;" class="">
+														<%
+											        		if(taskHours > 0)
+											        			%><%=taskHours + ":00"%><%
+											        		else
+											        			%><%="-"%>
+													</label></td><% 
 								        }
 									%>
 									<td><label class="total-hours-text"><%=taskRowTotal %>:00</label></td>
@@ -249,6 +247,9 @@
 						    </tbody>
 						  </table>
                     		</div>
+                    		<%
+                    		}
+                    		%>
                     </div>
                 </main>
             </div>

@@ -222,8 +222,8 @@
 										"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
 										"where (project.department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND " + 
 										"taskdetail.task_detail_date between '"+ reportStartDate +"' and '"+ reportEndDate +"' order by project.id DESC");
-				                   		 
-									while(rs.next()) {   
+
+								while(rs.next()) {   
 									    	key = rs.getInt("task.id");
 									        name = rs.getString("task.name");
 									        rsNested = stNested.executeQuery("SELECT * FROM users where id = "+ rs.getInt("task.team_member") +"");
@@ -268,8 +268,14 @@
 								        							taskRowTotal += taskHours;
 								        							
 											        			%>
-											        			<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class="form-control"
-											        			><%=taskHours %>:00</label>
+											        			
+											        			<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class=""
+											        			><%
+											        				if(taskHours > 0)
+											        					%><%=taskHours + ":00"%><%
+											        				else
+											        					%><%="-"%>
+											        			</label>
 													        	
 													        	<!-- Start Disabled Model update task -->
 									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
