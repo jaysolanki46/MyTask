@@ -7,8 +7,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page language="java" import="java.util.Date" %>
 <%@ page language="java" import="java.util.*" %>
+<%@ page language="java" import="java.time.LocalDate" %>
 <%@ page language="java" import="java.text.SimpleDateFormat" %>
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -16,14 +16,14 @@
 <% try { %>
 <head>
 <meta charset="ISO-8859-1">
-<title>Skyzer - My Task | Monthly Report</title>
+<title>Skyzer - My Task | Task Report</title>
 
 <%@include  file="../header.html" %>
 <%
 	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
+	String reportTask = "", taskCreatedOn = "", reportStartDate = "", reportEndDate = ""; 
 	Integer taskColumnTotal = 0, taskRowTotal = 0;
-	String reportMonth = "", reportYear = "";
 	
 	Connection dbConn = DBConfig.connection(); ;
 	Statement st = null;
@@ -48,33 +48,17 @@
 		showSkyzerTechImg = SKYZERPAYMENTS.LOGOSKYZERPAYMENTS.getValue();
 	}
 	
-	// Number of tasks
-	Map<Integer, String> taskList = new HashMap<Integer, String>();
-	taskList.put(1, "Task 1");
-	taskList.put(2, "Task 2");
-	taskList.put(3, "Task 3");
-	taskList.put(4, "Task 4");
+	reportTask = request.getParameter("selectProject");
 	
-	Calendar currentMonth = Calendar.getInstance();
-	Calendar now;
+	System.out.println(reportTask);
+	
 	SimpleDateFormat dd_MMMFormate = new SimpleDateFormat("dd MMM");
 	SimpleDateFormat yyyyMMddFormate = new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat ddMMMFormate = new SimpleDateFormat("ddMMM");
 	SimpleDateFormat mmFormate = new SimpleDateFormat("MM");
 	SimpleDateFormat mmmmFormate = new SimpleDateFormat("MMMM");
 	SimpleDateFormat yyyyFormate = new SimpleDateFormat("YYYY");
-	SimpleDateFormat yyyyMMFormate = new SimpleDateFormat("yyyy-MM");
-	SimpleDateFormat ddMMyyyyFormate = new SimpleDateFormat("dd-MM-yyyy");
-	SimpleDateFormat MMyyyyFormate = new SimpleDateFormat("MM-yyyy");
 	
-	String monthString;
-	
-	if (request.getParameter("datepicker") != null) {
-		Date date = new SimpleDateFormat("MMMM-yyyy").parse(request.getParameter("datepicker")); // Gets int from month name
-		currentMonth.setTime(date);
-	}
-	monthString =  mmmmFormate.format(currentMonth.getTime()) + "-" + yyyyFormate.format(currentMonth.getTime());
-	System.out.println(monthString);
 	int delta = 0;
 %>
 <style type="text/css">
@@ -145,49 +129,73 @@
 		                        <hr style="margin: 0rem;">
                                 <nav class="nav nav-borders nav-width">
                                     <a class="nav-link  ml-0" href="/MyTask/Views/weekly-report.jsp">Weekly</a>
-                                    <a class="nav-link active ml-0" style="color: <%=bckColor %>; border-bottom-color: <%=bckColor %>;" href="/MyTask/Views/monthly-report.jsp">Monthly</a>
-                                    <a class="nav-link  ml-0" href="/MyTask/Views/custom-report.jsp">Custom</a>
-                                    <a class="nav-link  ml-0" href="/MyTask/Views/project-report.jsp">Project</a>
-                                    <a class="nav-link  ml-0" href="/MyTask/Views/task-report.jsp">Task</a>
-                                    
-                                     <!-- Weekly datepicker -->
-                                     
-		                              <div class="form-group col-md-4 col-md-offset-2" id="week-picker-wrapper" style="margin: 0rem; margin-left: auto;">
-											<div class="input-group">
-											<form class="form-inline"  method="post" action="../Views/monthly-report.jsp">
-												<label style="color: <%=bckColor %>">Select Month: </label>
-												<input type="text" class="form-control" name="datepicker" id="datepicker" readonly="readonly" onchange="this.form.submit();"
-													value="<%=monthString %>" placeholder="Select a Month" style="margin: 0.2rem; text-align: center; width: 17rem;"/>
-												
-												</form>
-											</div>
-										</div>
-                                <!-- End of weekly datepicker -->
+                                    <a class="nav-link  ml-0" href="/MyTask/Views/monthly-report.jsp">Monthly</a>
+                                    <a class="nav-link  ml-0" href="/MyTask/Views/monthly-report.jsp">Custom</a>
+                                    <a class="nav-link  ml-0" href="/MyTask/Views/monthly-report.jsp">Project</a>
+                                    <a class="nav-link active ml-0" style="color: <%=bckColor %>; border-bottom-color: <%=bckColor %>;"  href="/MyTask/Views/task-report.jsp">Task</a>
                                 </nav>
-                                
-                               
                             </div>
                         </header>
                     <!-- Main page content-->
                     <div class="container">
+                    	
+                    	 <!--  Custom search -->
+                            <div id="divCustom" class="card-body" style="padding: 0px;">
+                            <div class="card mb-3">
+				
+									<div class="card-body" style="padding: 10px;">
+										<form class="form-inline" action="#" method="post">
+											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">Select a Task:</label> 
+											<select class="form-control col-sm-4" id="selectProject" name="selectProject">
+												<option value="">Select a Task...</option>
+												<%
+													rs = st.executeQuery("select task.* from tasks task LEFT JOIN projects project ON project.id = task.project  where department = " + userdepartment + " OR department = " + SKYZERDEPARTMENTS.GENERAL.getValue() + "");
+													
+													while (rs.next()) {
+													%>
+														<option value="<%=rs.getInt("id")%>" 
+														<%
+															if(reportTask != null && reportTask.equals(rs.getString("id"))) {
+																%>selected<%
+															}	
+														%>
+														><%=rs.getString("name")%></option>
+													<%
+													}
+													%>
+											</select> 
+										
+											<button type="submit" title="Search"
+											class="btn btn-sm btn-light active mr-3 center_div card-button"
+											style="background-color:<%=bckColor %>; "
+											onclick="this.form.submit();">
+											<i class="fas fa-search"></i>&nbsp; Search</button>	
+										</form>
+                            		</div>
+                            </div>
+                            </div>
+                            <!--  End of custom search -->
+                    		
+                    		<%
+                    		if(reportTask != null && !reportTask.isEmpty()) {
+                    		%>
                             <div style="overflow: auto;    height: 40rem;    width: 100%;">
                             <table id="weeklyDataTable" class="table table-bordered" style="border: hidden;">
 						    <thead>
 							      <tr>
-							      	<th style="width: 10%;">Project</th>
-							        <th style="text-align: center;  width: 30%;">Task</th>
+							      	<th>Project</th>
+							        <th style="text-align: center;">Task</th>
 							        <th>Assignee</th>
 							        <%
+							        	rs = st.executeQuery("SELECT * FROM tasks where id = " + reportTask + "");	
 							        
-								        now = currentMonth;
-								        delta = currentMonth.getActualMaximum(GregorianCalendar.DAY_OF_MONTH); //number of days in month
+							        	while(rs.next()){
+							        		taskCreatedOn = rs.getString("created_on");
+									        for (LocalDate date = LocalDate.parse(taskCreatedOn); date.isBefore(LocalDate.now().plusDays(1)); date = date.plusDays(1)) {
+									        	%><th style="text-align: -webkit-center;"><%=date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear() %></th><% 
+									        }
+							        	}
 							        
-								        for (int i = 1; i <= delta; i++)
-								        {
-								        	%><th style="text-align: -webkit-center;"><%=i + "/" + mmFormate.format(now.getTime()) %></th><% 
-								        	reportMonth = mmFormate.format(now.getTime());
-								        	reportYear = yyyyFormate.format(now.getTime());
-								        }
 							        %>
 							       
 							        <th style="text-align: center;">Total hours</th>
@@ -195,94 +203,87 @@
 							    </thead>
 						    
 						    <tbody>
-						      <% 
-							    Integer key = 0;
-						        String name = "";
-						        String assignee =  "";
-						        String profileColor = "green";
-						        
-						        rs = st.executeQuery("select project.*, task.*, taskdetail.* from projects project " +  
-										"LEFT JOIN tasks task ON project.id = task.project " +
-										"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
-										"where (project.department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND " + 
-										"MONTH(taskdetail.task_detail_date) = "+ reportMonth +" AND YEAR(taskdetail.task_detail_date) = "+ reportYear +" order by project.id DESC");
-						        
-						        	while(rs.next()) {   
-						        		key = rs.getInt("task.id");
-								        name = rs.getString("task.name");
-								        rsNested = stNested.executeQuery("SELECT * FROM users where id = "+ rs.getInt("task.team_member") +"");
-							        	if(rsNested.next()) assignee = rsNested.getString("name");
-							        	
-								        %>
-								        	<tr>
-										        <td>
-										        	<%=rs.getString("project.name") %> 
-										        </td>
-										        <td style="text-align: inherit;">
-										        	<%=name %> 
-										        </td>
-										        <td>
-										        	<!-- will come from db -->
-													<div id="profileImage" style="background: <%=profileColor %>" title="<%=assignee %>">
-														<%=assignee.toUpperCase().substring(0, 2) %>
-													</div>
-										        </td>
-										        <%
-										        
-											     	// 5 days
-											    	now = currentMonth;
-								       				delta = currentMonth.getActualMaximum(GregorianCalendar.DAY_OF_MONTH); //number of days in month
-								       				taskColumnTotal = 0; taskRowTotal = 0;
-								       				
-								       				for (int i = 1; i <= delta; i++)
-											        {
-											        	%>
-											        		<td>
-											        			<% // Getting hours from task_details
-											        				Integer taskId = key;
-											        				String tableDate = yyyyMMFormate.format(now.getTime()); 
+							     <% 
+								    Integer key = 0;
+							        String name = "";
+							        String assignee =  "";
+							        String profileColor = "green";
+							        
+									rs = st.executeQuery("select project.*, task.*, taskdetail.* from projects project " +  
+											"LEFT JOIN tasks task ON project.id = task.project " +
+											"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
+											"where (task.id = "+ reportTask +") AND " + 
+											"taskdetail.task_detail_date between '"+ taskCreatedOn +"' and '"+ LocalDate.now() +"' order by project.id DESC");
 
-											        				String taskDate = rs.getString("taskdetail.task_detail_date");
-											        				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(taskDate);
-											        				String taskYearMonth = String.valueOf(date.getYear() + 1900) + "-" + String.format("%02d", date.getMonth() + 1);
-											        				
-											        				//System.out.println(tableDate + "=" + taskYearMonth + " " +  i + "=" + date.getDate());
-											        				Integer taskHours = 0;
-											        				String taskDescription = "";
-											        				
-											        				if(tableDate.equals(taskYearMonth) && i == date.getDate()){
-											        					taskHours = rs.getInt("taskdetail.hours");
-											        					taskDescription = rs.getString("taskdetail.description");
-											        				}
-								        							taskRowTotal += taskHours;
-								        							
-											        			%>
-											        			
-											        			<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class=""
-											        			><%
-											        				if(taskHours > 0)
-											        					%><%=taskHours + ":00"%><%
-											        				else
-											        					%><%="-"%>
-											        			</label>
-											        			
-													        </td>
-											        	<% 
-											        }
-										        %>
-										        <td>
-										        	<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=taskRowTotal + ":00" %>">
-										        </td>
-										      </tr>
-								        
-								        
-								        <%
-								    }
+									while(rs.next()) {   
+									   	key = rs.getInt("task.id");
+									    name = rs.getString("task.name");
+									    rsNested = stNested.executeQuery("SELECT * FROM users where id = "+ rs.getInt("task.team_member") +"");
+									   	if(rsNested.next()) assignee = rsNested.getString("name");
+								        	
+								%>
+								<tr>
+									<td><%=rs.getString("project.name") %></td>
+									<td style="text-align: inherit;"><%=name%></td>
+									<td><div id="profileImage" style="background: <%=profileColor %>" title="<%=assignee %>"><%=assignee.toUpperCase().substring(0, 2) %></div></td>
+									<%
+										 taskRowTotal = 0;
+									
+										for (LocalDate date = LocalDate.parse(taskCreatedOn); date.isBefore(LocalDate.now().plusDays(1)); date = date.plusDays(1)) {
+								        	%><td><%
+													// Getting hours from task_details
+														Integer taskId = key;
+														String tableDate = date.getYear() + "-" + String.format("%02d", date.getMonthValue()) + "-" + String.format("%02d", date.getDayOfMonth());
+														Integer taskHours = 0;
+														String taskDescription = "";
+														
+														if (tableDate.equals(rs.getString("taskdetail.task_detail_date"))) {
+															taskHours = rs.getInt("taskdetail.hours");
+															taskDescription = rs.getString("taskdetail.description");
+														}
+														taskRowTotal += taskHours;
+													%> 
+													<label id="hoursLable" name="hoursLable"
+														style="cursor: pointer;" class="">
+														<%
+											        		if(taskHours > 0)
+											        			%><%=taskHours + ":00"%><%
+											        		else
+											        			%><%="-"%>
+													</label></td><%
+													
+												
+								        }
+									%>
+									<td><label class="total-hours-text"><%=taskRowTotal %>:00</label></td>
+								</tr>
+								 <%
+								 		taskColumnTotal += taskRowTotal;
+								   }
 							     %>	
 						    </tbody>
-						   
+						    <tfoot>
+							    	<tr>
+							    		<th colspan="3"  style="text-align: inherit;">
+							    			Total hours:
+							    		</th>
+							    		<%
+							    		for (LocalDate date = LocalDate.parse(taskCreatedOn); date.isBefore(LocalDate.now().plusDays(1)); date = date.plusDays(1)) {
+							    			%>
+							    				<th></th>
+							    			<%
+							    		}
+							    		%>
+							    		<th>
+							    			<label class="total-hours-text"><%=taskColumnTotal %>:00</label>
+							    		</th>
+							    	</tr>
+							 </tfoot>
 						  </table>
                     		</div>
+                    		<%
+                    		}
+                    		%>
                     </div>
                 </main>
             </div>

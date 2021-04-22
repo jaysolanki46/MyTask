@@ -24,7 +24,6 @@
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
 	String reportStartDate = "", reportEndDate = ""; 
 	Integer taskColumnTotal = 0, taskRowTotal = 0;
-	String divDisplay = "none";
 	
 	Connection dbConn = DBConfig.connection(); ;
 	Statement st = null;
@@ -131,6 +130,8 @@
                                     <a class="nav-link  ml-0" href="/MyTask/Views/weekly-report.jsp">Weekly</a>
                                     <a class="nav-link  ml-0" href="/MyTask/Views/monthly-report.jsp">Monthly</a>
                                     <a class="nav-link active ml-0" style="color: <%=bckColor %>; border-bottom-color: <%=bckColor %>;"  href="/MyTask/Views/custom-report.jsp">Custom</a>
+                                    <a class="nav-link  ml-0" href="/MyTask/Views/project-report.jsp">Project</a>
+                                    <a class="nav-link  ml-0" href="/MyTask/Views/task-report.jsp">Task</a>
                                 </nav>
                             </div>
                         </header>

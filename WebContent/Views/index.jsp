@@ -61,7 +61,7 @@
                     <div class="col-md-3 register-left">
 						<img src="img/icons/favicon.png" alt=""/>
                         <h3>SKYZER - MY TASK</h3>
-                        <p>MANAGES SKYZER TASKS</p>
+                        <p>MANAGES SKYZER TASKS <br/> V1.0</p>
                         <span>Designed & Hosted by <br/><a href="https://www.linkedin.com/in/jaykumar-solanki" style="color: white;">Jay Solanki</a></span>
                     </div>
                     <div class="col-md-9 register-right">
