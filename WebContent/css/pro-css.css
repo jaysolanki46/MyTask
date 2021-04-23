@@ -20461,3 +20461,12 @@ pre[class*=language-] {
 .dataTables_filter, .dataTables_info { 
 	display: none; 
 }
+
+.valuePadding {
+  border: 1px inset #ccc;
+}
+.valuePadding input {
+  border: none;
+  padding:0px;
+  outline: none;
+}

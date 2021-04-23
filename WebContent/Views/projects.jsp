@@ -113,7 +113,7 @@
 													        <label for="departmentSelect">Department <span style="color: red;">*</span></label>
 													        <select style="height: fit-content;" class="form-control" id="projectDepartment" name="projectDepartment">
 													        <%
-													        	rs = st.executeQuery("SELECT * FROM departments");
+													        	rs = st.executeQuery("SELECT * FROM departments where id = "+ userdepartment +" OR id = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +"");
 													        
 														        while(rs.next())
 															    {   
@@ -199,7 +199,8 @@
 												<div class="progress rounded-pill"
 													style="height: 0.5rem">
 													<%
-														rsNested = stNested.executeQuery("select count(is_completed)  from mytask.tasks where project = "+ rs.getString("id") +" and is_completed = " + SKYZERTASKSTATUS.COMPLETED.getValue());
+														rsNested = stNested.executeQuery("select count(id) from mytask.tasks where project = "+ rs.getString("id") +"" 
+																								+" and percentage = " + SKYZERTASKSTATUS.COMPLETED.getValue());
 														Integer completedTasks = 0;
 														double avgOfCompletedTasks = 0;
 														
@@ -209,7 +210,7 @@
 															avgOfCompletedTasks = ((double)completedTasks/(double)totalTask) * 100;
 															System.out.println(avgOfCompletedTasks) ;
 															%>
-																<div style="background-color:<%=bckColor %>; width: <%=avgOfCompletedTasks %>%" class="progress-bar rounded-pill"
+																<div style="background-color:<%=bckColor %>; width: <%=avgOfCompletedTasks %>%" title="<%=avgOfCompletedTasks %>% completed tasks" class="progress-bar rounded-pill"
 																	role="progressbar" aria-valuenow="75" aria-valuemin="0" 
 																		aria-valuemax="100"></div>															
 															<%															

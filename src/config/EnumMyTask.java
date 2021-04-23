@@ -64,7 +64,7 @@ public class EnumMyTask {
 	
 	public enum SKYZERTASKSTATUS {
 		INCOMPLETE(0),
-		COMPLETED(1);
+		COMPLETED(100);
 		
 		int value;
 		private SKYZERTASKSTATUS(int value) {

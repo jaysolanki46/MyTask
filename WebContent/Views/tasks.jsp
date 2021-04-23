@@ -62,19 +62,11 @@
 	try{
 		projectId =  new String(Base64.getDecoder().decode(request.getParameter("project")));
 		
-		
 	} catch (Exception e) {
 		session.setAttribute("status", "info");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("./projects.jsp");
 		dispatcher.forward(request, response);
 	}
-	
-	// Number of tasks
-	Map<Integer, String> taskList = new HashMap<Integer, String>();
-	taskList.put(1, "Task 1");
-	taskList.put(2, "Task 2");
-	taskList.put(3, "Task 3");
-	//taskList.put(4, "Task 4");
 	
 	// 5 days
 	Calendar now = Calendar.getInstance();
@@ -108,6 +100,15 @@
     color: #fff;
     text-align: center;
     line-height: 40px;
+}
+
+.valuePadding {
+  border: 1px inset #ccc;
+}
+.valuePadding input {
+  border: none;
+  padding:0px;
+  outline: none;
 }
 </style>
 </head>
@@ -257,17 +258,23 @@
 													</div>
 													</div>
 													<div class="row">
-														<div class="col-md-6">
+														<div class="col-md-4">
 															<label for="taskDetailDate">Date</label>
 															<input type="date" id="taskDetailDate" name="taskDetailDate" 
 																max="31-12-3000" min="01-01-1000" class="form-control">
 														</div>
-														<div class="col-md-6">
+														<div class="col-md-4">
 															<label for="departmentSelect">Hours <span
 																	style="color: red;">*</span></label> 
 																<input class="form-control" type="number" min="0" max="12"
 																	value="0" id="taskDetailHours"
 																	name="taskDetailHours">
+														</div>
+														<div class="col-md-4">
+															<label for="percentage">Percentage %</label> 
+															<input class="form-control" type="number" min="0" max="100"
+																	value="0" id="percentage"
+																	name="percentage">
 														</div>
 													</div>	
 													<div class="row">
@@ -283,11 +290,6 @@
 													</div>
 												</div>
 												<div class="modal-footer">
-													<div style="margin-right: auto; margin-left: 0.5rem;">
-														<input class="" id="taskIsCompleted"
-															name="taskIsCompleted" type="checkbox">
-														<label class="" for="customCheck1">Complete</label>
-													</div>
 													<button type="submit" title="Search"
 														class="btn btn-sm btn-light active mr-3 center_div card-button"
 														style="background-color:<%=bckColor%>; "
@@ -342,17 +344,16 @@
 							    <% 
 							    Integer key = 0;
 						        String name = "";
+						        Integer taskPercentage = 0;
 						        String assignee =  "";
 						        String profileColor = "green";
-						        Boolean isCompleted = false;
 						        
 						        	rsTask = stTask.executeQuery("SELECT * FROM tasks where project = "+ projectId +"  AND team_member = "+ userid +"");
 						        
 								    while(rsTask.next()) {
 								    	key = rsTask.getInt("id");
 								        name = rsTask.getString("name");
-								        isCompleted = rsTask.getBoolean("is_completed");
-								        System.out.print(isCompleted);
+								        taskPercentage = rsTask.getInt("percentage");
 								        
 								        	rsNested = stNested.executeQuery("SELECT * FROM users where id = "+ rsTask.getInt("team_member") +"");
 								        	if(rsNested.next()) assignee = rsNested.getString("name");
@@ -427,12 +428,20 @@
 																							    value="<%=yyyyMMddFormate.format(now.getTime()) %>" class="form-control">
 																						    </div>
 																					    </div>
-																					    <div class="col">
+																					   		<div class="col-md-6">
 																						    <div class="form-group" style="text-align: start;">
 																						        <label for="departmentSelect">Hours <span style="color: red;">*</span></label>
 																						        <input class="form-control" type="number" min="0" max="12" value=<%=taskHours %> id="taskDetailHours" name="taskDetailHours">
 																						    </div>
-																					    </div>
+																						    </div>
+																							 <div class="col-md-6">
+																							 	<div class="form-group" style="text-align: start;">	
+																								<label for="percentage">Percentage %</label> 
+																								<input class="form-control" type="number" min="0" max="100"
+																										value=<%=taskPercentage %> id="percentage"
+																										name="percentage">
+																								</div>
+																							</div>
 																				    </div>
 																				    <div class="row">
 																					    <div class="col">
@@ -445,9 +454,6 @@
 																            </div>
 																            <div class="modal-footer">
 																            <div style="margin-right: auto;margin-left: 0.5rem;">
-																            	<input class="" id="taskIsCompleted" name="taskIsCompleted" type="checkbox"  
-																            	<% if(isCompleted) { %>checked="checked"<%  } %>>
-																				<label class="" for="customCheck1">Complete</label>
 																            </div>
 																            	<button type="submit" title="Search"
 																					class="btn btn-sm btn-light active mr-3 center_div card-button"
@@ -551,12 +557,14 @@
 							        name = "";
 							        assignee = "";
 							        profileColor = "purple";
+							        taskPercentage = 0;
 						        
 								        rsTask = stTask.executeQuery("SELECT * FROM tasks where project = "+ projectId +"  AND team_member != "+ userid +"");
 								        
 									    while(rsTask.next()) {
 									    	key = rsTask.getInt("id");
 									        name = rsTask.getString("name");
+									        taskPercentage = rsTask.getInt("percentage");
 									        
 									        	rsNested = stNested.executeQuery("SELECT * FROM users where id = "+ rsTask.getInt("team_member") +"");
 									        	if(rsNested.next()) assignee = rsNested.getString("name");
@@ -632,12 +640,20 @@
 																							    value="<%=yyyyMMddFormate.format(now.getTime()) %>" class="form-control">
 																						    </div>
 																					    </div>
-																					    <div class="col">
+																					    <div class="col-md-6">
 																						    <div class="form-group" style="text-align: start;">
 																						        <label for="departmentSelect">Hours <span style="color: red;">*</span></label>
 																						        <input class="form-control" type="number" min="0" max="12" value=<%=taskHours %> id="taskDetailHours" name="taskDetailHours">
 																						    </div>
 																					    </div>
+																					     <div class="col-md-6">
+																							 	<div class="form-group" style="text-align: start;">	
+																								<label for="percentage">Percentage %</label> 
+																								<input class="form-control" type="number" min="0" max="100"
+																										value=<%=taskPercentage %> id="percentage"
+																										name="percentage">
+																								</div>
+																							</div>
 																				    </div>
 																				    <div class="row">
 																					    <div class="col">
@@ -649,10 +665,6 @@
 																				    </div>
 																            </div>
 																            <div class="modal-footer">
-																            <div style="margin-right: auto;margin-left: 0.5rem;">
-																            	<input class="" id="customCheck1" type="checkbox">
-																				<label class="" for="customCheck1">Complete</label>
-																            </div>
 																            	<button type="submit" title="Search"
 																					class="btn btn-sm btn-light active mr-3 center_div card-button"
 																					style="background-color:<%=bckColor %>; "

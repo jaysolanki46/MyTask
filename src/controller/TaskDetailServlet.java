@@ -57,20 +57,15 @@ public class TaskDetailServlet extends HttpServlet {
 			taskDetail.setCreatedBy(new User(Integer.valueOf(session.getAttribute("userId").toString())));
 			taskDetail.setUpdatedOn(LocalDate.now().toString());
 			taskDetail.setUpdatedBy(new User(Integer.valueOf(session.getAttribute("userId").toString())));
-				
 			isInsert = taskDetailDAO.insert(taskDetail);
-			if(request.getParameterValues("taskIsCompleted") != null) { 
-				
-				Task task = new Task();
-				task.setId(Integer.valueOf(request.getParameter("hiddenTaskId")));
-				task.setIsCompleted(true);
-				task.setUpdatedOn(LocalDate.now().toString());
-				task.setUpdatedBy(new User(Integer.valueOf(session.getAttribute("userId").toString())));
-				
-				isUpdate = taskDAO.isCompleted(task);
-			} else {
-				isUpdate = true;
-			}
+			
+			// FOR UPDATE PERCENTAGE ON TASK
+			Task task = new Task();
+			task.setId(Integer.valueOf(request.getParameter("hiddenTaskId")));
+			task.setPercentage(Integer.valueOf(request.getParameter("percentage")));
+			task.setUpdatedOn(LocalDate.now().toString());
+			task.setUpdatedBy(new User(Integer.valueOf(session.getAttribute("userId").toString())));
+			isUpdate = taskDAO.updateTaskPercentage(task);
 			
 			if(isInsert && isUpdate) session.setAttribute("status", "insert");
 			else session.setAttribute("status", "error");

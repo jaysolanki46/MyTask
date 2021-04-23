@@ -7,7 +7,7 @@ public class Task {
 	private Project project;
 	private User team_member;
 	private String description;
-	private Boolean isCompleted;
+	private Integer percentage;
 	private String createdOn;
 	private User createdBy;
 	private String updatedOn;
@@ -36,12 +36,6 @@ public class Task {
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public Boolean getIsCompleted() {
-		return isCompleted;
-	}
-	public void setIsCompleted(Boolean isCompleted) {
-		this.isCompleted = isCompleted;
 	}
 	public String getCreatedOn() {
 		return createdOn;
@@ -73,6 +67,12 @@ public class Task {
 	public void setTeam_member(User team_member) {
 		this.team_member = team_member;
 	}
+	public Integer getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(Integer percentage) {
+		this.percentage = percentage;
+	}
 	public Task() {
 	}
 	public Task(Integer id) {
@@ -82,7 +82,8 @@ public class Task {
 	@Override
 	public String toString() {
 		return "Task [id=" + id + ", name=" + name + ", project=" + project + ", team_member=" + team_member
-				+ ", description=" + description + ", isCompleted=" + isCompleted + ", createdOn=" + createdOn
-				+ ", createdBy=" + createdBy + ", updatedOn=" + updatedOn + ", updatedBy=" + updatedBy + "]";
+				+ ", description=" + description + ", percentage=" + percentage
+				+ ", createdOn=" + createdOn + ", createdBy=" + createdBy + ", updatedOn=" + updatedOn + ", updatedBy="
+				+ updatedBy + "]";
 	}
 }

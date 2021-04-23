@@ -44,16 +44,16 @@ public class TaskDAO {
 		return true;
 	}
 	
-	public boolean isCompleted(Task task) {
+	public boolean updateTaskPercentage(Task task) {
 		
 		try {
 			new DBConfig();
 			cnn = DBConfig.connection();
         	
             PreparedStatement preparedStatement =  cnn.prepareStatement("Update tasks set "
-            		+ "is_completed = ? , updated_on = ?, updated_by = ?"
+            		+ "percentage = ? , updated_on = ?, updated_by = ?"
             		+ " where id = ?", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setBoolean(1, task.getIsCompleted());
+            preparedStatement.setInt(1, task.getPercentage());
             preparedStatement.setString(2, task.getUpdatedOn());
             preparedStatement.setInt(3, task.getUpdatedBy().getId());
             preparedStatement.setInt(4, task.getId());
