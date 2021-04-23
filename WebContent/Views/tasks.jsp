@@ -1,5 +1,6 @@
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
+<%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
 <%@page import="javafx.util.Pair"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" import="java.sql.*" %>
@@ -39,6 +40,11 @@
 	Statement stNested = null;
 	ResultSet rsNested = null;
 	stNested = dbConnNested.createStatement();
+	
+	Connection dbConnTeamMember= DBConfig.connection(); ;
+	Statement stTeamMember = null;
+	ResultSet rsTeamMember = null;
+	stTeamMember = dbConnTeamMember.createStatement();
 	
 	Connection dbConnHours= DBConfig.connection(); ;
 	Statement stHours = null;
@@ -151,10 +157,14 @@
                                         </h1>
                                     </div>
                                     <div class="col-12 col-xl-auto mb-3">
-                                        <button 
+                                   		<button 
                                         data-toggle="modal" data-target="#projectModelLg"
                                         class="btn btn-sm btn-light active mr-3 center_div card-button"
-											style="background-color:<%=bckColor %>; "><i class="fas fa-plus"></i>&nbsp;Create New Task</button>
+											style="background-color:<%=bckColor %>; "><i class="fas fa-keyboard"></i>&nbsp;Update This Project</button>
+                                        <button 
+                                        data-toggle="modal" data-target="#taskModelLg"
+                                        class="btn btn-sm btn-light active mr-3 center_div card-button"
+											style="background-color:<%=bckColor %>; "><i class="fas fa-plus"></i>&nbsp;Create a New Task</button>
                                     </div>
                                 </div>
                             </div>
@@ -165,7 +175,7 @@
                         <div class="row">
                         	
                         	<!-- Model create a new task -->
-                        	<div class="modal fade" id="projectModelLg" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
+                        	<div class="modal fade" id="taskModelLg" tabindex="-1" role="dialog" aria-labelledby="taskModelLg" aria-hidden="true">
 							    <div class="modal-dialog modal-lg" role="document">
 							    	<form action="<%=request.getContextPath()%>/TaskServlet" method="post">
 							        <div class="modal-content">
@@ -227,6 +237,94 @@
 							    </div>
 							</div>
                         	<!-- End Model create a new task -->
+                        	
+                        	<!-- Model update a project -->
+                        	<div class="modal fade" id="projectModelLg" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
+							    <div class="modal-dialog modal-lg" role="document">
+							        <div class="modal-content">
+							            <div class="modal-header">
+							                <h5 class="modal-title">Update a Project</h5>
+							                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+							            </div>
+							            <form action="<%=request.getContextPath()%>/ProjectServlet" method="post">
+							            <div class="modal-body">
+							                	<div class="row">
+							                		<div class="col">
+													    <div class="form-group">
+														    <label for="projectNameInput">Project name <span style="color: red;">*</span></label>
+														    <input style="height: fit-content;" class="form-control" id="projectName" 
+														    	name="projectName" type="text" placeholder="Ex. IKR Project" value="<%=rs.getString("name") %>">
+														    <input style="height: fit-content;" class="form-control" id="editProjectId" 
+														    	name="editProjectId" type="hidden" value="<%=projectId %>">
+													    </div>
+												    </div>
+												    <div class="col">
+													    <div class="form-group">
+													        <label for="departmentSelect">Department <span style="color: red;">*</span></label>
+													        <select style="height: fit-content;" class="form-control" id="projectDepartment" name="projectDepartment">
+													        <%
+													        	rsNested = stNested .executeQuery("SELECT * FROM departments where id = "+ userdepartment +" OR id = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +"");
+													        
+														        while(rsNested.next())
+															    {   
+																	%>
+															    		<option value="<%=rsNested .getInt("id") %>"
+															    		<%
+															    			if(rs.getInt("department") == rsNested.getInt("id")){
+															    				%>selected<%
+															    			}
+															    		%>
+															    		>
+															    		<%=rsNested .getString("name") %></option>
+															    	<%
+															    }  
+													        %>
+													        </select>
+													    </div>
+												    </div>
+											    </div>
+											    <div class="form-group">
+											        <label for="teamMemberSelect">Team members <span style="color: red;">*</span></label><br/>
+											        <select style="height: fit-content;" class="form-control" id="projectTeam" name="projectTeam" multiple="multiple">
+											           <%
+													        	rsNested = stNested.executeQuery("SELECT * FROM users");
+													        
+														        while(rsNested.next())
+															    {   
+																	%>
+															    		<option value="<%=rsNested.getString("id") %>"
+															    		
+															    			<%
+															    				rsTeamMember = stTeamMember.executeQuery("SELECT * FROM project_team where project = "+ projectId +" AND team_member = "+ rsNested.getString("id") +"");
+															    				if(rsTeamMember.next()) {
+															    					%>selected<%
+															    				}
+															    			%>
+															    		
+															    		>
+															    		<%=rsNested.getString("name") %></option>
+															    	<%
+															    }  
+													       %>
+											        </select>
+											    </div>
+											    <div class="form-group">
+												    <label for="descriptionTextarea">Description</label>
+												    <textarea class="form-control" id="projectDescription" name="projectDescription" rows="4"><%=rs.getString("description") %></textarea>
+											    </div>
+							            </div>
+							            <div class="modal-footer">
+							            	<button type="submit" title="Save"
+											class="btn btn-sm btn-light active mr-3 center_div card-button"
+											style="background-color:<%=bckColor %>; "
+											onclick="this.form.submit();">
+											<i class="fas fa-save"></i>&nbsp; Save</button>	
+							            </div>
+							            </form>
+							        </div>
+							    </div>
+							</div>
+                        	<!-- End Model update project -->
                             
                             <!--  Custom edit -->
                             <div class="modal fade" id="customTaskDetailModel" tabindex="-1" role="dialog" aria-labelledby="customTaskDetailModelLbl" aria-hidden="true">
@@ -348,7 +446,7 @@
 						        String assignee =  "";
 						        String profileColor = "green";
 						        
-						        	rsTask = stTask.executeQuery("SELECT * FROM tasks where project = "+ projectId +"  AND team_member = "+ userid +"");
+						        	rsTask = stTask.executeQuery("SELECT * FROM tasks INNER JOIN project_team ON project_team.team_member = tasks.team_member where tasks.project = "+ projectId +"  AND tasks.team_member = "+ userid +"");
 						        
 								    while(rsTask.next()) {
 								    	key = rsTask.getInt("id");
@@ -559,7 +657,7 @@
 							        profileColor = "purple";
 							        taskPercentage = 0;
 						        
-								        rsTask = stTask.executeQuery("SELECT * FROM tasks where project = "+ projectId +"  AND team_member != "+ userid +"");
+								        rsTask = stTask.executeQuery("SELECT * FROM tasks INNER JOIN project_team ON project_team.team_member = tasks.team_member where tasks.project = "+ projectId +"  AND tasks.team_member != "+ userid +"");
 								        
 									    while(rsTask.next()) {
 									    	key = rsTask.getInt("id");
@@ -769,7 +867,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#teamMemberSelect').multiselect();
-        
+        $('#projectTeam').multiselect();
         // hidden
         document.getElementById("tableMyTeamTasks").style.display = "none";
     });

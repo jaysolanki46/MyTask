@@ -210,9 +210,10 @@
 							        String profileColor = "green";
 							        
 									rs = st.executeQuery("select project.*, task.*, taskdetail.* from projects project " +  
+											"LEFT JOIN project_team project_team ON project.id = project_team.project " +
 											"LEFT JOIN tasks task ON project.id = task.project " +
 											"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
-											"where (project.id = "+ reportProject +") AND " + 
+											"where (project.id = "+ reportProject +") AND project_team.team_member = task.team_member AND " +
 											"taskdetail.task_detail_date between '"+ projectCreatedOn +"' and '"+ LocalDate.now() +"' order by project.id DESC");
 
 									while(rs.next()) {   

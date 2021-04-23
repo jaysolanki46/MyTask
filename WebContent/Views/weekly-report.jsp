@@ -186,7 +186,7 @@
 						    <thead>
 							      <tr>
 							      	<th style="width: 10%;">Project</th>
-							        <th style="text-align: center;  width: 30%;">Task</th>
+							        <th style="text-align: center;  width: 20%;">Task</th>
 							        <th>Assignee</th>
 							        <%
 							        
@@ -220,9 +220,10 @@
 						        String profileColor = "green";
 						        
 								rs = st.executeQuery("select project.*, task.*, taskdetail.* from projects project " +  
+										"LEFT JOIN project_team project_team ON project.id = project_team.project " +
 										"LEFT JOIN tasks task ON project.id = task.project " +
 										"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
-										"where (project.department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND " + 
+										"where (project.department = "+ userdepartment +" OR project.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND project_team.team_member = task.team_member AND " + 
 										"taskdetail.task_detail_date between '"+ reportStartDate +"' and '"+ reportEndDate +"' order by project.id DESC");
 
 								while(rs.next()) {   
