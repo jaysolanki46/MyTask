@@ -175,13 +175,15 @@
 										</div>
                                 <!-- End of weekly datepicker -->
                                 </nav>
-                                
-                               
                             </div>
                         </header>
                     <!-- Main page content-->
                     <div class="container">
-                            
+                            <button type="submit" title="Search"
+											class="btn btn-sm btn-light active mr-3 center_div card-button"
+											style="background-color:<%=bckColor %>; "
+											onclick="exportTableToCSV('Weekly-report.csv');">
+											<i class="fas fa-file-csv"></i>&nbsp; Export</button>	
                             <table id="weeklyDataTable" class="table table-bordered" style="border: hidden;">
 						    <thead>
 							      <tr>
@@ -352,8 +354,108 @@
 								    }
 							     %>	
 						    </tbody>
+						  </table>
+						  
+						  <!-- Hidden table for export -->
+						  <div style="display: none;">
+						  <table id="exportWeeklyDataTable" class="table table-bordered">
+						    <thead>
+							      <tr>
+							      	<th style="width: 10%;">Project</th>
+							        <th style="text-align: center;  width: 20%;">Task</th>
+							        <th>Assignee</th>
+							        <%
+							        
+								        now = currentWeek;
+								        delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
+								        now.add(Calendar.DAY_OF_MONTH, delta);
+							        
+								        for (int i = 0; i < 5; i++)
+								        {
+								        	%><th style="text-align: -webkit-center;"><%='\"'+ddMMFormate.format(now.getTime()) + " , " + daysList[i] + '\"' %></th><% 
+								        	
+								        			
+									        // For report search query
+											if (i == 0) reportStartDate = yyyyMMddFormate.format(now.getTime());
+								        	if (i == 4) reportEndDate = yyyyMMddFormate.format(now.getTime());
+								        			
+								        	now.add(Calendar.DAY_OF_MONTH, 1);
+								        }
+							        	
+							        %>
+							       
+							        <th style="text-align: center;">Total hours</th>
+							      </tr>
+							    </thead>
+						    
+						    <tbody>
+						      <% 
+							    key = 0;
+						        name = "";
+						        assignee =  "";
+						        profileColor = "green";
+						        
+								rs = st.executeQuery("select project.*, task.*, taskdetail.* from projects project " +  
+										"LEFT JOIN project_team project_team ON project.id = project_team.project " +
+										"LEFT JOIN tasks task ON project.id = task.project " +
+										"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
+										"where (project.department = "+ userdepartment +" OR project.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND project_team.team_member = task.team_member AND " + 
+										"taskdetail.task_detail_date between '"+ reportStartDate +"' and '"+ reportEndDate +"' order by project.id DESC");
+
+								while(rs.next()) {   
+									    	key = rs.getInt("task.id");
+									        name = rs.getString("task.name");
+									        rsNested = stNested.executeQuery("SELECT * FROM users where id = "+ rs.getInt("task.team_member") +"");
+								        	if(rsNested.next()) assignee = rsNested.getString("name");
+							        	
+								        %>
+								        	<tr>
+										        <td><%='\"'+rs.getString("project.name") + '\"'%></td>
+										        <td style="text-align: inherit;"><%='\"'+name + '\"'%></td>
+										        <td><%=assignee %></td>
+										        <%
+										        
+											     	// 5 days
+											    	now = currentWeek;
+											        delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
+											        now.add(Calendar.DAY_OF_MONTH, delta );
+											        taskColumnTotal = 0; taskRowTotal = 0;
+										        
+											        for (int i = 0; i < 5; i++)
+											        {
+											        	%>
+											        		<td><% // Getting hours from task_details
+											        				Integer taskId = key;
+											        				String taskDate = yyyyMMddFormate.format(now.getTime());
+											        				Integer taskHours = 0;
+											        				String taskDescription = "";
+											        				
+											        				if(taskDate.equals(rs.getString("taskdetail.task_detail_date"))){
+											        					taskHours = rs.getInt("taskdetail.hours");
+											        					taskDescription = rs.getString("taskdetail.description");
+											        				}
+								        							taskRowTotal += taskHours;
+								        							
+											        			%><label id="hoursLable" name="hoursLable" style="cursor: pointer;" class=""><%
+											        				if(taskHours > 0)
+											        					%><%=taskHours + ":00"%><%
+											        				else
+											        					%><%="-"%></label></td><% 
+											            now.add(Calendar.DAY_OF_MONTH, 1);
+											        } %>
+											        <td><label class="total-hours-text"><%=taskRowTotal %>:00</label></td>
+										      </tr>
+								        <%
+								    }
+							     %>	
+						    </tbody>
 						   
 						  </table>
+						  </div>
+						  <!-- End hidden table for export -->
+						  
+						  
+						  
                     </div>
                 </main>
             </div>
@@ -465,4 +567,39 @@ $('#weeklyDataTable tbody').on('click', 'tr.group-start', function() {
   oTable.draw(false);
 });
 
+function exportTableToCSV(filename) {
+	
+	var csv = [];
+	var rows = document.getElementById('exportWeeklyDataTable').getElementsByTagName('tr');
+	
+	for(var i = 0; i < rows.length; i++) {
+		var row = [];
+		var cols = rows[i].querySelectorAll("td, th");
+		
+		for(var j = 0; j < cols.length; j++) {
+			row.push(cols[j].innerText);
+		}
+		
+		csv.push(row.join(","));
+	}
+	
+	downloadCSV(csv.join("\n"), filename);
+}
+
+function downloadCSV(csv, filename) {
+	
+	var csvFile;
+	var downloadLink;
+	
+	csvFile = new Blob([csv], {type: "text/csv"});
+	
+	downloadLink = document.createElement("a");
+	downloadLink.download = filename;
+	downloadLink.href = window.URL.createObjectURL(csvFile);
+	downloadLink.style.display = "none";
+	
+	document.body.appendChild(downloadLink);
+	
+	downloadLink.click();
+}
 </script>

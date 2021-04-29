@@ -446,7 +446,7 @@
 						        String assignee =  "";
 						        String profileColor = "green";
 						        
-						        	rsTask = stTask.executeQuery("SELECT * FROM tasks INNER JOIN project_team ON project_team.team_member = tasks.team_member where tasks.project = "+ projectId +"  AND tasks.team_member = "+ userid +"");
+						        	rsTask = stTask.executeQuery("SELECT * FROM tasks INNER JOIN project_team ON project_team.team_member = tasks.team_member where tasks.project = "+ projectId +"  AND tasks.team_member = "+ userid +" group by tasks.id");
 						        
 								    while(rsTask.next()) {
 								    	key = rsTask.getInt("id");
@@ -460,6 +460,12 @@
 								        	<tr>
 										        <td style="text-align: inherit;">
 										        	<%=name %> 
+										        	<div class="progress rounded-pill"
+													style="height: 0.5rem; margin-top: 0.5rem;">
+										        	<div style="background-color:<%=bckColor %>; 
+										        			width: <%=rsTask.getInt("percentage") %>%" title="<%=rsTask.getInt("percentage") %>% completed" class="progress-bar rounded-pill"
+															role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+													</div>
 										        </td>
 										        <td>
 													<div id="profileImage" style="background: <%=profileColor %>" title=<%=assignee %>>
@@ -657,7 +663,7 @@
 							        profileColor = "purple";
 							        taskPercentage = 0;
 						        
-								        rsTask = stTask.executeQuery("SELECT * FROM tasks INNER JOIN project_team ON project_team.team_member = tasks.team_member where tasks.project = "+ projectId +"  AND tasks.team_member != "+ userid +"");
+								        rsTask = stTask.executeQuery("SELECT * FROM tasks INNER JOIN project_team ON project_team.team_member = tasks.team_member where tasks.project = "+ projectId +"  AND tasks.team_member != "+ userid +" group by tasks.id");
 								        
 									    while(rsTask.next()) {
 									    	key = rsTask.getInt("id");
@@ -671,6 +677,12 @@
 								        	<tr>
 										        <td style="text-align: inherit;">
 										        	<%=name %> 
+										        	<div class="progress rounded-pill"
+													style="height: 0.5rem; margin-top: 0.5rem;">
+										        	<div style="background-color:<%=bckColor %>; 
+										        			width: <%=rsTask.getInt("percentage") %>%" title="<%=rsTask.getInt("percentage") %>% completed" class="progress-bar rounded-pill"
+															role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+													</div>
 										        </td>
 										        <td>
 													<div id="profileImage" style="background: <%=profileColor %>" title=<%=assignee %>>

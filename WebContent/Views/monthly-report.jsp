@@ -171,6 +171,11 @@
                     <!-- Main page content-->
                     <div class="container">
                             <div style="overflow: auto;    height: 40rem;    width: 100%;">
+                            <button type="submit" title="Search"
+											class="btn btn-sm btn-light active mr-3 center_div card-button"
+											style="background-color:<%=bckColor %>; "
+											onclick="exportTableToCSV('Monthly-report.csv');">
+											<i class="fas fa-file-csv"></i>&nbsp; Export</button>	
                             <table id="weeklyDataTable" class="table table-bordered" style="border: hidden;">
 						    <thead>
 							      <tr>
