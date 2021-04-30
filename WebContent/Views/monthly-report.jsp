@@ -206,12 +206,12 @@
 						        String assignee =  "";
 						        String profileColor = "green";
 						        
-						        rs = st.executeQuery("select project.*, task.*, taskdetail.* from projects project " +  
+						        rs = st.executeQuery("select project.*, task.* from projects project " +  
 						        		"LEFT JOIN project_team project_team ON project.id = project_team.project " +
 						        		"LEFT JOIN tasks task ON project.id = task.project " +
 										"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
 										"where (project.department = "+ userdepartment +" OR project.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND project_team.team_member = task.team_member AND " + 
-										"MONTH(taskdetail.task_detail_date) = "+ reportMonth +" AND YEAR(taskdetail.task_detail_date) = "+ reportYear +" order by project.id DESC");
+										"MONTH(taskdetail.task_detail_date) = "+ reportMonth +" AND YEAR(taskdetail.task_detail_date) = "+ reportYear +" group by task.name order by project.id DESC");
 						        
 						        	while(rs.next()) {   
 						        		key = rs.getInt("task.id");
@@ -246,22 +246,21 @@
 											        		<td>
 											        			<% // Getting hours from task_details
 											        				Integer taskId = key;
-											        				String tableDate = yyyyMMFormate.format(now.getTime()); 
-
-											        				String taskDate = rs.getString("taskdetail.task_detail_date");
-											        				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(taskDate);
-											        				String taskYearMonth = String.valueOf(date.getYear() + 1900) + "-" + String.format("%02d", date.getMonth() + 1);
-											        				
-											        				//System.out.println(tableDate + "=" + taskYearMonth + " " +  i + "=" + date.getDate());
+											        				String tableDate = yyyyMMddFormate.format(now.getTime()); 
 											        				Integer taskHours = 0;
 											        				String taskDescription = "";
 											        				
-											        				if(tableDate.equals(taskYearMonth) && i == date.getDate()){
-											        					taskHours = rs.getInt("taskdetail.hours");
-											        					taskDescription = rs.getString("taskdetail.description");
+											        				rsNested = stNested.executeQuery("SELECT taskdetail.* FROM task_details taskdetail where taskdetail.task = "+ taskId +" AND " 
+											        						+ "day(taskdetail.task_detail_date) = "+ String.format("%02d", i) + " AND "
+											        						+ "month(taskdetail.task_detail_date) = month('"+ tableDate + "') AND "
+											        						+ "year(taskdetail.task_detail_date) = year('"+ tableDate + "');"
+											        						);
+											        				
+											        				if(rsNested.next()){
+											        					taskHours = rsNested.getInt("taskdetail.hours");
+											        					taskDescription = rsNested.getString("taskdetail.description");
 											        				}
 								        							taskRowTotal += taskHours;
-								        							
 											        			%>
 											        			
 											        			<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class=""

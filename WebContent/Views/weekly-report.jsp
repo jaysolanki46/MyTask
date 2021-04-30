@@ -221,12 +221,12 @@
 						        String assignee =  "";
 						        String profileColor = "green";
 						        
-								rs = st.executeQuery("select project.*, task.*, taskdetail.* from projects project " +  
+								rs = st.executeQuery("select project.*, task.* from projects project " +  
 										"LEFT JOIN project_team project_team ON project.id = project_team.project " +
 										"LEFT JOIN tasks task ON project.id = task.project " +
 										"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
 										"where (project.department = "+ userdepartment +" OR project.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND project_team.team_member = task.team_member AND " + 
-										"taskdetail.task_detail_date between '"+ reportStartDate +"' and '"+ reportEndDate +"' order by project.id DESC");
+										"taskdetail.task_detail_date between '"+ reportStartDate +"' and '"+ reportEndDate +"' group by task.name order by project.id DESC");
 
 								while(rs.next()) {   
 									    	key = rs.getInt("task.id");
@@ -266,9 +266,11 @@
 											        				Integer taskHours = 0;
 											        				String taskDescription = "";
 											        				
-											        				if(taskDate.equals(rs.getString("taskdetail.task_detail_date"))){
-											        					taskHours = rs.getInt("taskdetail.hours");
-											        					taskDescription = rs.getString("taskdetail.description");
+											        				rsNested = stNested.executeQuery("SELECT taskdetail.* FROM task_details taskdetail where taskdetail.task = "+ taskId +" AND taskdetail.task_detail_date = '"+ taskDate +"'");
+											        				System.out.println(taskId + " " + taskDate);
+											        				if(rsNested.next()){
+											        					taskHours = rsNested.getInt("taskdetail.hours");
+											        					taskDescription = rsNested.getString("taskdetail.description");
 											        				}
 								        							taskRowTotal += taskHours;
 								        							
@@ -281,70 +283,10 @@
 											        				else
 											        					%><%="-"%>
 											        			</label>
-													        	
-													        	<!-- Start Disabled Model update task -->
-									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
-																    <div class="modal-dialog modal-sm" role="document">
-																    	<form action="<%=request.getContextPath()%>/TaskDetailServlet" method="post">
-																    	<fieldset disabled="disabled">
-																        <div class="modal-content">
-																            <div class="modal-header">
-																                <h5 class="modal-title"><%=name %> - <%=ddMMyyyyFormate.format(now.getTime()) %></h5>
-																                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-																            </div>
-																            <div class="modal-body">
-																                	<div class="row">
-																                		<div class="col" style="display: none;">
-																						    <div class="form-group" style="text-align: start;">
-																							    <label for="projectNameInput">Date <span style="color: red;">*</span></label>
-																							    <input type="text" id="hiddenProjectId" name="hiddenProjectId"
-																							    value=<%=rs.getInt("task.id") %> class="form-control">
-																							    <input type="text" id="hiddenTaskId" name="hiddenTaskId"
-																							    value=<%=rs.getInt("task.id") %> class="form-control">
-																							    <input type="date" id="taskDetailDate" name="taskDetailDate" max="31-12-3000" min="01-01-1000" 
-																							    value="<%=yyyyMMddFormate.format(now.getTime()) %>" class="form-control">
-																						    </div>
-																					    </div>
-																					    <div class="col">
-																						    <div class="form-group" style="text-align: start;">
-																						        <label for="departmentSelect">Hours <span style="color: red;">*</span></label>
-																						        <input class="form-control" type="number" min="0" max="12" value=<%=taskHours %> id="taskDetailHours" name="taskDetailHours">
-																						    </div>
-																					    </div>
-																				    </div>
-																				    <div class="row">
-																					    <div class="col">
-																						    <div class="form-group" style="text-align: start;">
-																						        <label for="departmentSelect">Description<span style="color: red;">*</span></label>
-																						        <textarea class="form-control" id="taskDetailDescription" name="taskDetailDescription" rows="4"><%=taskDescription %></textarea>
-																						    </div>
-																					    </div>
-																				    </div>
-																            </div>
-																            <div class="modal-footer">
-																            <div style="margin-right: auto;margin-left: 0.5rem;">
-																            	<input class="" id="customCheck1" type="checkbox">
-																				<label class="" for="customCheck1">Complete</label>
-																            </div>
-																            	<button type="submit" title="Search"
-																					class="btn btn-sm btn-light active mr-3 center_div card-button"
-																					style="background-color:<%=bckColor %>; "
-																					onclick="this.form.submit();">
-																					<i class="fas fa-save"></i>&nbsp; Save</button>	
-																            </div>
-																        </div>
-																        </form>
-																        </fieldset>
-																    </div>
-																</div>
-									                        	<!-- End Disabled Model update task -->
 													        </td>
-											        	
-											        	
 											        	<% 
 											            now.add(Calendar.DAY_OF_MONTH, 1);
 											        }
-										        
 										        %>
 										        <td>
 										        	<label class="total-hours-text"><%=taskRowTotal %>:00</label>
@@ -395,12 +337,12 @@
 						        assignee =  "";
 						        profileColor = "green";
 						        
-								rs = st.executeQuery("select project.*, task.*, taskdetail.* from projects project " +  
+								rs = st.executeQuery("select project.*, task.* from projects project " +  
 										"LEFT JOIN project_team project_team ON project.id = project_team.project " +
 										"LEFT JOIN tasks task ON project.id = task.project " +
 										"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
 										"where (project.department = "+ userdepartment +" OR project.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND project_team.team_member = task.team_member AND " + 
-										"taskdetail.task_detail_date between '"+ reportStartDate +"' and '"+ reportEndDate +"' order by project.id DESC");
+										"taskdetail.task_detail_date between '"+ reportStartDate +"' and '"+ reportEndDate +"' group by task.name order by project.id DESC");
 
 								while(rs.next()) {   
 									    	key = rs.getInt("task.id");
@@ -430,9 +372,10 @@
 											        				Integer taskHours = 0;
 											        				String taskDescription = "";
 											        				
-											        				if(taskDate.equals(rs.getString("taskdetail.task_detail_date"))){
-											        					taskHours = rs.getInt("taskdetail.hours");
-											        					taskDescription = rs.getString("taskdetail.description");
+											        				rsNested = stNested.executeQuery("SELECT taskdetail.* FROM task_details taskdetail where taskdetail.task = "+ taskId +" AND taskdetail.task_detail_date = '"+ taskDate +"'");
+											        				if(rsNested.next()){
+											        					taskHours = rsNested.getInt("taskdetail.hours");
+											        					taskDescription = rsNested.getString("taskdetail.description");
 											        				}
 								        							taskRowTotal += taskHours;
 								        							

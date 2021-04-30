@@ -214,12 +214,12 @@
 							        String assignee =  "";
 							        String profileColor = "green";
 							        
-									rs = st.executeQuery("select project.*, task.*, taskdetail.* from projects project " +  
+									rs = st.executeQuery("select project.*, task.* from projects project " +  
 											"LEFT JOIN project_team project_team ON project.id = project_team.project " +
 											"LEFT JOIN tasks task ON project.id = task.project " +
 											"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
 											"where (project.id = "+ reportProject +") AND project_team.team_member = task.team_member AND " +
-											"taskdetail.task_detail_date between '"+ projectCreatedOn +"' and '"+ LocalDate.now() +"' order by project.id DESC");
+											"taskdetail.task_detail_date between '"+ projectCreatedOn +"' and '"+ LocalDate.now() +"' group by task.name order by project.id DESC");
 
 									while(rs.next()) {   
 									   	key = rs.getInt("task.id");
@@ -243,10 +243,16 @@
 														Integer taskHours = 0;
 														String taskDescription = "";
 														
-														if (tableDate.equals(rs.getString("taskdetail.task_detail_date"))) {
-															taskHours = rs.getInt("taskdetail.hours");
-															taskDescription = rs.getString("taskdetail.description");
-														}
+														rsNested = stNested.executeQuery("SELECT taskdetail.* FROM task_details taskdetail where taskdetail.task = "+ taskId +" AND " 
+								        						+ "day(taskdetail.task_detail_date) = day('"+ tableDate + "') AND "
+								        						+ "month(taskdetail.task_detail_date) = month('"+ tableDate + "') AND "
+								        						+ "year(taskdetail.task_detail_date) = year('"+ tableDate + "');"
+								        						);
+								        				
+								        				if(rsNested.next()){
+								        					taskHours = rsNested.getInt("taskdetail.hours");
+								        					taskDescription = rsNested.getString("taskdetail.description");
+								        				}
 														taskRowTotal += taskHours;
 													%> 
 													<label id="hoursLable" name="hoursLable"
