@@ -319,7 +319,6 @@
 								   key = 0;
 							       name = "";
 							       assignee =  "";
-							       profileColor = "green";
 							       taskColumnTotal = 0;
 							        
 									rs = st.executeQuery("select project.*, task.* from projects project " +  
@@ -374,7 +373,6 @@
 								</tr>
 								 <%
 								 		taskColumnTotal += taskRowTotal;
-								 		System.out.println("col:" + taskRowTotal);
 								   }
 							     %>	
 						    </tbody>

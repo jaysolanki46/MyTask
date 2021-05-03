@@ -185,7 +185,7 @@
 											style="background-color:<%=bckColor %>; "
 											onclick="exportTableToCSV('Task-report.csv');">
 											<i class="fas fa-file-csv"></i>&nbsp; Export</button>	
-                            <table id="weeklyDataTable" class="table table-bordered" style="border: hidden;">
+                            <table id="taskDataTable" class="table table-bordered" style="border: hidden;">
 						    <thead>
 							      <tr>
 							      	<th>Project</th>
@@ -285,12 +285,108 @@
 							    			<%
 							    		}
 							    		%>
-							    		<th>
-							    			<label class="total-hours-text"><%=taskColumnTotal %>:00</label>
-							    		</th>
+							    		<th><label class="total-hours-text"><%=taskColumnTotal %>:00</label></th>
 							    	</tr>
 							 </tfoot>
 						  </table>
+						  
+						  <!-- Hidden table for export -->
+						  <div style="display: none;">
+						  <table id="exportTaskDataTable" class="table table-bordered" style="border: hidden;">
+						    <thead>
+							      <tr>
+							      	<th>Project</th>
+							        <th style="text-align: center;">Task</th>
+							        <th>Assignee</th>
+							        <%
+							        	rs = st.executeQuery("SELECT * FROM tasks where id = " + reportTask + "");	
+							        
+							        	while(rs.next()){
+							        		taskCreatedOn = rs.getString("created_on");
+									        for (LocalDate date = LocalDate.parse(taskCreatedOn); date.isBefore(LocalDate.now().plusDays(1)); date = date.plusDays(1)) {
+									        	%><th style="text-align: -webkit-center;"><%=date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear() %></th><% 
+									        }
+							        	}
+							        
+							        %><th style="text-align: center;">Total hours</th>
+							      </tr>
+							    </thead>
+						    <tbody>
+							     <% 
+								    key = 0;
+							        name = "";
+							        assignee =  "";
+							        taskColumnTotal = 0;
+							        
+									rs = st.executeQuery("select project.*, task.* from projects project " +  
+											"LEFT JOIN tasks task ON project.id = task.project " +
+											"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
+											"where (task.id = "+ reportTask +") AND " + 
+											"taskdetail.task_detail_date between '"+ taskCreatedOn +"' and '"+ LocalDate.now() +"' group by task.name order by project.id DESC");
+
+									while(rs.next()) {   
+									   	key = rs.getInt("task.id");
+									    name = rs.getString("task.name");
+									    rsNested = stNested.executeQuery("SELECT * FROM users where id = "+ rs.getInt("task.team_member") +"");
+									   	if(rsNested.next()) assignee = rsNested.getString("name");
+								        	
+								%>
+								<tr>
+									<td><%=rs.getString("project.name") %></td>
+									<td style="text-align: inherit;"><%=name%></td>
+									<td><%=assignee.toUpperCase()%></td>
+									<%
+										 taskRowTotal = 0;
+									
+										for (LocalDate date = LocalDate.parse(taskCreatedOn); date.isBefore(LocalDate.now().plusDays(1)); date = date.plusDays(1)) {
+								        	%><td><%
+													// Getting hours from task_details
+														Integer taskId = key;
+														String tableDate = date.getYear() + "-" + String.format("%02d", date.getMonthValue()) + "-" + String.format("%02d", date.getDayOfMonth());
+														Integer taskHours = 0;
+														String taskDescription = "";
+														
+														rsNested = stNested.executeQuery("SELECT taskdetail.* FROM task_details taskdetail where taskdetail.task = "+ taskId +" AND " 
+								        						+ "day(taskdetail.task_detail_date) = day('"+ tableDate + "') AND "
+								        						+ "month(taskdetail.task_detail_date) = month('"+ tableDate + "') AND "
+								        						+ "year(taskdetail.task_detail_date) = year('"+ tableDate + "');"
+								        						);
+								        				
+								        				if(rsNested.next()){
+								        					taskHours = rsNested.getInt("taskdetail.hours");
+								        					taskDescription = rsNested.getString("taskdetail.description");
+								        				}
+														taskRowTotal += taskHours;
+													%><label id="hoursLable" name="hoursLable" style="cursor: pointer;" class=""><%
+											        		if(taskHours > 0)
+											        			%><%=taskHours + ":00"%><%
+											        		else
+											        			%><%="-"%></label></td><%
+													}
+									%><td><label class="total-hours-text"><%=taskRowTotal %>:00</label></td>
+								</tr>
+								 <%
+								 		taskColumnTotal += taskRowTotal;
+								   }
+							     %>	
+						    </tbody>
+						    <tfoot>
+							    	<tr>
+							    		<th style="text-align: inherit;">Total hours:</th>
+							    		<%
+							    		for (LocalDate date = LocalDate.parse(taskCreatedOn); date.isBefore(LocalDate.now().plusDays(3)); date = date.plusDays(1)) {
+							    			%>
+							    				<th>-</th>
+							    			<%
+							    		}
+							    		%>
+							    		<th><label class="total-hours-text"><%=taskColumnTotal %>:00</label></th>
+							    	</tr>
+							 </tfoot>
+						  </table>
+						  </div>
+						  <!-- End hidden table for export -->
+						  
                     		</div>
                     		<%
                     		}
@@ -335,7 +431,7 @@ $("#datepicker").datepicker( {
 
 var collapsedGroups = {};
 
-var oTable = $('#weeklyDataTable').DataTable({
+var oTable = $('#taskDataTable').DataTable({
   paging: false,
   "language": {
     "search": "Table search: "
@@ -365,10 +461,44 @@ var oTable = $('#weeklyDataTable').DataTable({
   }
 });
 
-$('#weeklyDataTable tbody').on('click', 'tr.group-start', function() {
+$('#taskDataTable tbody').on('click', 'tr.group-start', function() {
   var name = $(this).data('name');
   collapsedGroups[name] = !collapsedGroups[name];
   oTable.draw(false);
 });
+function exportTableToCSV(filename) {
+	
+	var csv = [];
+	var rows = document.getElementById('exportTaskDataTable').getElementsByTagName('tr');
+	
+	for(var i = 0; i < rows.length; i++) {
+		var row = [];
+		var cols = rows[i].querySelectorAll("td, th");
+		
+		for(var j = 0; j < cols.length; j++) {
+			row.push(cols[j].innerText);
+		}
+		
+		csv.push(row.join(","));
+	}
+	
+	downloadCSV(csv.join("\n"), filename);
+}
 
+function downloadCSV(csv, filename) {
+	
+	var csvFile;
+	var downloadLink;
+	
+	csvFile = new Blob([csv], {type: "text/csv"});
+	
+	downloadLink = document.createElement("a");
+	downloadLink.download = filename;
+	downloadLink.href = window.URL.createObjectURL(csvFile);
+	downloadLink.style.display = "none";
+	
+	document.body.appendChild(downloadLink);
+	
+	downloadLink.click();
+}
 </script>
