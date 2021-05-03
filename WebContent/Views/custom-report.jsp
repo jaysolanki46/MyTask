@@ -216,7 +216,22 @@
 								%>
 								<tr>
 									<td><%=rs.getString("project.name") %></td>
-									<td style="text-align: inherit;"><%=name%></td>
+									<td style="text-align: inherit;"><%=name%>
+									<div class="progress rounded-pill" title="<%=rs.getInt("task.percentage") %>% completed"
+													style="height: 0.5rem; margin-top: 0.5rem;">
+										        	<div style="
+										        			<%
+										        				if(rs.getInt("task.percentage") >= 0 && rs.getInt("task.percentage") <=50) {
+										        					%>background-color: <%=bckColor %>;<%
+										        				} else if(rs.getInt("task.percentage") >= 50 && rs.getInt("task.percentage") < 100) {
+										        					%>background-color:#ebb20c;<%
+										        				} else {
+										        					%>background-color:#06794f;<%
+										        				}
+										        			%>width: <%=rs.getInt("task.percentage") %>%" class="progress-bar rounded-pill"
+															role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+													</div>
+									</td>
 									<td><div id="profileImage" style="background: <%=profileColor %>" title="<%=assignee %>"><%=assignee.toUpperCase().substring(0, 2) %></div></td>
 									<%
 										taskColumnTotal = 0; taskRowTotal = 0;
@@ -304,7 +319,22 @@
 								%>
 								<tr>
 									<td><%=rs.getString("project.name") %></td>
-									<td style="text-align: inherit;"><%=name%></td>
+									<td style="text-align: inherit;"><%=name%>
+									<div class="progress rounded-pill" title="<%=rs.getInt("task.percentage") %>% completed"
+													style="height: 0.5rem; margin-top: 0.5rem;">
+										        	<div style="
+										        			<%
+										        				if(rs.getInt("task.percentage") >= 0 && rs.getInt("task.percentage") <=50) {
+										        					%>background-color: <%=bckColor %>;<%
+										        				} else if(rs.getInt("task.percentage") >= 50 && rs.getInt("task.percentage") < 100) {
+										        					%>background-color:#ebb20c;<%
+										        				} else {
+										        					%>background-color:#06794f;<%
+										        				}
+										        			%>width: <%=rs.getInt("task.percentage") %>%" class="progress-bar rounded-pill"
+															role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+													</div>
+									</td>
 									<td><%=assignee %></td>
 									<%
 										taskColumnTotal = 0; taskRowTotal = 0;
@@ -396,7 +426,7 @@ var oTable = $('#customDataTable').DataTable({
     "search": "Table search: "
   },
   order: [
-    [1, 'asc']
+    [0, 'asc']
   ],
   rowGroup: {
     // Uses the 'row group' plugin

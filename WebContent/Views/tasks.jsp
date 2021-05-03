@@ -459,11 +459,19 @@
 								        %>
 								        	<tr>
 										        <td style="text-align: inherit;">
-										        	<%=name %> 
+										        	<%=name %>
 										        	<div class="progress rounded-pill"
 													style="height: 0.5rem; margin-top: 0.5rem;">
-										        	<div style="background-color:<%=bckColor %>; 
-										        			width: <%=rsTask.getInt("percentage") %>%" title="<%=rsTask.getInt("percentage") %>% completed" class="progress-bar rounded-pill"
+										        	<div style="
+										        			<%
+										        				if(rsTask.getInt("percentage") >= 0 && rsTask.getInt("percentage") <=50) {
+										        					%>background-color: <%=bckColor %>;<%
+										        				} else if(rsTask.getInt("percentage") >= 50 && rsTask.getInt("percentage") < 100) {
+										        					%>background-color:#ebb20c;<%
+										        				} else {
+										        					%>background-color:#06794f;<%
+										        				}
+										        			%>width: <%=rsTask.getInt("percentage") %>%" title="<%=rsTask.getInt("percentage") %>% completed" class="progress-bar rounded-pill"
 															role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
 													</div>
 										        </td>
@@ -677,10 +685,18 @@
 								        	<tr>
 										        <td style="text-align: inherit;">
 										        	<%=name %> 
-										        	<div class="progress rounded-pill"
+										        	<div class="progress rounded-pill" title="<%=rsTask.getInt("percentage") %>% completed"
 													style="height: 0.5rem; margin-top: 0.5rem;">
-										        	<div style="background-color:<%=bckColor %>; 
-										        			width: <%=rsTask.getInt("percentage") %>%" title="<%=rsTask.getInt("percentage") %>% completed" class="progress-bar rounded-pill"
+										        	<div style="
+										        			<%
+										        				if(rsTask.getInt("percentage") >= 0 && rsTask.getInt("percentage") <=50) {
+										        					%>background-color: <%=bckColor %>;<%
+										        				} else if(rsTask.getInt("percentage") >= 50 && rsTask.getInt("percentage") < 100) {
+										        					%>background-color:#ebb20c;<%
+										        				} else {
+										        					%>background-color:#06794f;<%
+										        				}
+										        			%>width: <%=rsTask.getInt("percentage") %>%" class="progress-bar rounded-pill"
 															role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
 													</div>
 										        </td>
