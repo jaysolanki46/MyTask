@@ -281,7 +281,6 @@
 											        				String taskDescription = "";
 											        				
 											        				rsNested = stNested.executeQuery("SELECT taskdetail.* FROM task_details taskdetail where taskdetail.task = "+ taskId +" AND taskdetail.task_detail_date = '"+ taskDate +"'");
-											        				System.out.println(taskId + " " + taskDate);
 											        				if(rsNested.next()){
 											        					taskHours = rsNested.getInt("taskdetail.hours");
 											        					taskDescription = rsNested.getString("taskdetail.description");
@@ -320,6 +319,7 @@
 							      	<th style="width: 10%;">Project</th>
 							        <th style="text-align: center;  width: 20%;">Task</th>
 							        <th>Assignee</th>
+							        <th>Progress</th>
 							        <%
 							        
 								        now = currentWeek;
@@ -369,6 +369,7 @@
 										        <td><%='\"'+rs.getString("project.name") + '\"'%></td>
 										        <td style="text-align: inherit;"><%='\"'+name + '\"'%></td>
 										        <td><%=assignee %></td>
+										        <td><%=rs.getInt("task.percentage") %>%</td>
 										        <%
 										        
 											     	// 5 days

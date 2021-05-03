@@ -313,6 +313,7 @@
 							      	<th>Project</th>
 							        <th style="text-align: center;">Task</th>
 							        <th>Assignee</th>
+							        <th>Progress</th>
 							        <%
 							        	rs = st.executeQuery("SELECT * FROM tasks where id = " + reportTask + "");	
 							        
@@ -350,6 +351,7 @@
 									<td><%=rs.getString("project.name") %></td>
 									<td style="text-align: inherit;"><%=name%></td>
 									<td><%=assignee.toUpperCase()%></td>
+									<td><%=rs.getInt("task.percentage") %>%</td>
 									<%
 										 taskRowTotal = 0;
 									
@@ -389,9 +391,9 @@
 							    	<tr>
 							    		<th style="text-align: inherit;">Total hours:</th>
 							    		<%
-							    		for (LocalDate date = LocalDate.parse(taskCreatedOn); date.isBefore(LocalDate.now().plusDays(3)); date = date.plusDays(1)) {
+							    		for (LocalDate date = LocalDate.parse(taskCreatedOn); date.isBefore(LocalDate.now().plusDays(4)); date = date.plusDays(1)) {
 							    			%>
-							    				<th>-</th>
+							    				<th></th>
 							    			<%
 							    		}
 							    		%>

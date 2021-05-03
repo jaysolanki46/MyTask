@@ -283,6 +283,7 @@
 							      	<th>Project</th>
 							        <th style="text-align: center;">Task</th>
 							        <th>Assignee</th>
+							        <th>Progress</th>
 							        <%
 							        
 								        for (LocalDate date = LocalDate.parse(reportStartDate); date.isBefore(LocalDate.parse(reportEndDate).plusDays(1)); date = date.plusDays(1))
@@ -319,23 +320,9 @@
 								%>
 								<tr>
 									<td><%=rs.getString("project.name") %></td>
-									<td style="text-align: inherit;"><%=name%>
-									<div class="progress rounded-pill" title="<%=rs.getInt("task.percentage") %>% completed"
-													style="height: 0.5rem; margin-top: 0.5rem;">
-										        	<div style="
-										        			<%
-										        				if(rs.getInt("task.percentage") >= 0 && rs.getInt("task.percentage") <=50) {
-										        					%>background-color: <%=bckColor %>;<%
-										        				} else if(rs.getInt("task.percentage") >= 50 && rs.getInt("task.percentage") < 100) {
-										        					%>background-color:#ebb20c;<%
-										        				} else {
-										        					%>background-color:#06794f;<%
-										        				}
-										        			%>width: <%=rs.getInt("task.percentage") %>%" class="progress-bar rounded-pill"
-															role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-													</div>
-									</td>
-									<td><%=assignee %></td>
+									<td style="text-align: inherit;"><%=name%></td>
+									<td><%=assignee%></td>
+									<td><%=rs.getInt("task.percentage")%>%</td>
 									<%
 										taskColumnTotal = 0; taskRowTotal = 0;
 									

@@ -310,6 +310,7 @@
 							      	<th style="width: 10%;">Project</th>
 							        <th style="text-align: center;  width: 30%;">Task</th>
 							        <th>Assignee</th>
+							        <th>Progress</th>
 							        <%
 							        
 								        now = currentMonth;
@@ -351,6 +352,7 @@
 										        <td><%=rs.getString("project.name") %></td>
 										        <td style="text-align: inherit;"><%=name %></td>
 										        <td><%=assignee.toUpperCase() %></td>
+										        <td><%=rs.getInt("task.percentage") %>%</td>
 										        <%
 											     	// 5 days
 											    	now = currentMonth;
