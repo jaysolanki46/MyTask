@@ -21,8 +21,8 @@ public class TaskDAO {
 			cnn = DBConfig.connection();
         	
             PreparedStatement preparedStatement =  cnn.prepareStatement("Insert into tasks "
-            		+ "(name, project, team_member, description, created_on, created_by, updated_on, updated_by)"
-            		+ " values (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            		+ "(name, project, team_member, description, created_on, created_by, updated_on, updated_by, due_date)"
+            		+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, task.getName());
             preparedStatement.setInt(2, task.getProject().getId());
             preparedStatement.setInt(3, task.getTeam_member().getId());
@@ -31,6 +31,7 @@ public class TaskDAO {
             preparedStatement.setInt(6, task.getCreatedBy().getId());
             preparedStatement.setString(7, task.getUpdatedOn());
             preparedStatement.setInt(8, task.getUpdatedBy().getId());
+            preparedStatement.setString(9, task.getDueDate());
 
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();

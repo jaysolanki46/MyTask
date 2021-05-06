@@ -210,7 +210,7 @@
 															avgOfCompletedTasks = ((double)completedTasks/(double)totalTask) * 100;
 															System.out.println(avgOfCompletedTasks) ;
 															%>
-																<div style="background-color:<%=bckColor %>; width: <%=avgOfCompletedTasks %>%" title="<%=avgOfCompletedTasks %>% completed tasks" class="progress-bar rounded-pill"
+																<div style="background-color:<%=bckColor %>; width: <%=avgOfCompletedTasks %>%" title="<%=rsNested.getInt(1) %> task(s) completed" class="progress-bar rounded-pill"
 																	role="progressbar" aria-valuenow="75" aria-valuemin="0" 
 																		aria-valuemax="100"></div>															
 															<%															

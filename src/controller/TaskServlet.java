@@ -47,6 +47,7 @@ public class TaskServlet extends HttpServlet {
 			task.setName(request.getParameter("name"));
 			task.setProject(new Project(Integer.valueOf(request.getParameter("hiddenProjectId").toString())));
 			task.setTeam_member(new User(Integer.valueOf(request.getParameter("teamMember").toString())));
+			task.setDueDate(request.getParameter("taskDueDate"));
 			task.setDescription(request.getParameter("description"));
 			task.setCreatedOn(LocalDate.now().toString());
 			task.setCreatedBy(new User(Integer.valueOf(session.getAttribute("userId").toString())));

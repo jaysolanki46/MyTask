@@ -199,32 +199,44 @@
 													    </div>
 												    </div>
 											    </div>
-											    <div class="form-group">
-											        <label for="teamMemberSelect">Team members <span style="color: red;">*</span></label><br/>
-											        <select class="form-control" id="teamMember" name="teamMember">
-											        	<option>Select member...</option>
-											        <%
-											        	rsNested = stNested.executeQuery("SELECT * FROM project_team where project = "+ projectId +"");
-											        	List<Integer> projectTeamMemberList = new ArrayList<Integer>();
-											        	String projectTeamStr = "";
-										        		while(rsNested.next()) {
-										        			projectTeamMemberList.add(rsNested.getInt("team_member"));		
-										        		}
-										        		
-										        		projectTeamStr = projectTeamMemberList.toString().replace("[", "").replace("]", "").replace(" ", "");
-										        		
-										        		rsNested = stNested.executeQuery("SELECT * FROM users where id IN ("+ projectTeamStr +")");
-										        		while(rsNested.next()) {
-										        			%><option value="<%=rsNested.getInt("id") %>"><%=rsNested.getString("name") %></option><%		
-										        		}
-											        %>
-											        </select>
-											    </div>
-											    <div class="form-group">
-												    <label for="descriptionTextarea">Description</label>
-												    <textarea class="form-control" id="description" name="description" rows="4"></textarea>
-											    </div>
-							            </div>
+											    <div class="row">
+							                		<div class="col">
+													    <div class="form-group">
+													        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
+													        <select class="form-control" id="teamMember" name="teamMember">
+													        	<option>Select member...</option>
+													        <%
+													        	rsNested = stNested.executeQuery("SELECT * FROM project_team where project = "+ projectId +"");
+													        	List<Integer> projectTeamMemberList = new ArrayList<Integer>();
+													        	String projectTeamStr = "";
+												        		while(rsNested.next()) {
+												        			projectTeamMemberList.add(rsNested.getInt("team_member"));		
+												        		}
+												        		
+												        		projectTeamStr = projectTeamMemberList.toString().replace("[", "").replace("]", "").replace(" ", "");
+												        		
+												        		rsNested = stNested.executeQuery("SELECT * FROM users where id IN ("+ projectTeamStr +")");
+												        		while(rsNested.next()) {
+												        			%><option value="<%=rsNested.getInt("id") %>"><%=rsNested.getString("name") %></option><%		
+												        		}
+													        %>
+													        </select>
+													    </div>
+													  </div>
+													  <div class="col">  
+													    <div class="form-group">
+															<label for="taskDueDate">Due Date</label>
+															<input type="date" id="taskDueDate" name="taskDueDate" 
+																max="31-12-3000" min="01-01-1000" class="form-control">
+													    </div>
+													  </div>
+											</div>
+												<div class="form-group">
+													<label for="descriptionTextarea">Description</label>
+													<textarea class="form-control" id="description"
+														name="description" rows="4"></textarea>
+												</div>
+											</div>
 							            <div class="modal-footer">
 							            	<button type="submit" title="Search"
 											class="btn btn-sm btn-light active mr-3 center_div card-button"
@@ -356,19 +368,19 @@
 													</div>
 													</div>
 													<div class="row">
-														<div class="col-md-4">
+														<div class="col-md-6">
 															<label for="taskDetailDate">Date</label>
 															<input type="date" id="taskDetailDate" name="taskDetailDate" 
 																max="31-12-3000" min="01-01-1000" class="form-control">
 														</div>
-														<div class="col-md-4">
+														<div class="col-md-3">
 															<label for="departmentSelect">Hours <span
 																	style="color: red;">*</span></label> 
 																<input class="form-control" type="number" min="0" max="12"
 																	value="0" id="taskDetailHours"
 																	name="taskDetailHours">
 														</div>
-														<div class="col-md-4">
+														<div class="col-md-3">
 															<label for="percentage">Percentage %</label> 
 															<input class="form-control" type="number" min="0" max="100"
 																	value="0" id="percentage"

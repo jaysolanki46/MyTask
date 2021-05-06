@@ -443,7 +443,7 @@ var oTable = $('#monthlyDataTable').DataTable({
     "search": "Table search: "
   },
   order: [
-    [1, 'asc']
+    [0, 'asc']
   ],
   rowGroup: {
     // Uses the 'row group' plugin

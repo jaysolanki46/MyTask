@@ -51,7 +51,7 @@ public class UserServlet extends HttpServlet {
 
 			if(isUpdate) {
 				sessionStatus.setAttribute("status", "update");
-				response.sendRedirect("./Views/profile.jsp");
+				response.sendRedirect("./");
 			} else {
 				sessionStatus.setAttribute("status", "error");
 				response.sendRedirect("./Views/profile.jsp");
