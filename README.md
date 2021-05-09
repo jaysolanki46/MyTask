@@ -1,11 +1,13 @@
-# MyTask
+# 🖥 MyTask
 
-MyTask is a user-friendly time tracker and timesheet web tool that lets Skyzer to track work hours across projects. 
+## 🎙 Inroduction
+MyTask is a user-friendly time tracker and timesheet web tool that allows Skyzer Technologies to track their work hours across the projects. 
 
-
-# Features 
-
+## 📑 Features 
 - Keep time track on project
 - Report breakdown by project and task 
 - Export report as csv
 - Invite team members 
+
+##  👨🏽‍🏫  Demo
+<i>Coming soon...</i>
