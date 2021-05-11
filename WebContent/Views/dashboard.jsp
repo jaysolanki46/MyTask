@@ -1,10 +1,10 @@
 <%@page import="com.sun.org.apache.xalan.internal.xsltc.compiler.sym"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
-<%@page import="java.util.Base64"%>
+<%@page import="java.util.*"%>
 <%@page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
+<%@page import="config.EnumMyTask.SKYZERUSERACTIVE"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" import="java.sql.*" %>
 <%@ page language="java" import="java.util.Arrays" %>
@@ -51,7 +51,7 @@
 	System.out.println(pieProject);
 	ArrayList<String> tasks = new ArrayList<String>();
 	ArrayList<String> taskHours = new ArrayList<String>();
-	rs = st.executeQuery("SELECT * FROM projects order by id DESC LIMIT 1");
+	rs = st.executeQuery("SELECT * FROM projects where department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC LIMIT 1");
 	if(rs.next()){
 		
 		if(pieProject == null) 
@@ -66,6 +66,25 @@
 				taskHours.add(rsNested.getString("total_hours"));
 		}
 	}
+	
+	// Bar Chart
+	String barUser = request.getParameter("barUser");
+	ArrayList<String> xList = new ArrayList<String>();
+	ArrayList<String> yListProgress = new ArrayList<String>();
+	ArrayList<String> yListHoursSpent = new ArrayList<String>();
+
+	if(barUser == null)
+		barUser = userid;
+	
+	rs = st.executeQuery("SELECT tasks.*, COALESCE(sum(task_details.hours), 0) as total_hours FROM tasks LEFT JOIN task_details ON tasks.id = task_details.task where tasks.team_member = "+ barUser +" group by tasks.name");
+	
+	while(rs.next()){
+		xList.add(rs.getString("tasks.name"));
+		yListProgress.add(rs.getString("tasks.percentage"));
+		yListHoursSpent.add(rs.getString("total_hours"));
+	}
+	System.out.println(barUser);
+	System.out.println(xList);
 	
 %>
 </head>
@@ -90,6 +109,7 @@
 
                 <!-- Begin Page Content -->
                 <div id="layoutSidenav_content">
+                <form action="<%=request.getContextPath()%>/Views/dashboard.jsp" method="post">
                 <main>
                     <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
                         <div class="container-fluid">
@@ -110,16 +130,15 @@
                     <!-- Main page content-->
                     <div class="container">
                         <div class="row">
-                        	
+                        	<!-- Begin Pie Chart -->
                         	<div class="col-xl-4 mb-4">
                                 <div class="card card-header-actions h-70">
-                                    <div class="card-header">
+                                    <div class="card-header" style="color: <%=bckColor %>;">
                                         Project Hours
                                         <div class="dropdown no-caret">
-                                        	<form action="<%=request.getContextPath()%>/Views/dashboard.jsp" method="post">
                                         	<select class="form-control" id="pieProject" name="pieProject" onchange="form.submit()">
 												<%
-													rs = st.executeQuery("SELECT id, name FROM projects");
+													rs = st.executeQuery("SELECT id, name FROM projects where department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC");
 	
 													while (rs.next()) {
 														%>
@@ -135,7 +154,6 @@
 													}
 												%>
 											</select>
-											</form>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -146,15 +164,58 @@
 			                        	%>
 			                        	<input type="hidden" id="pieTasks" value="<%=pieTasks %>">
                             			<input type="hidden" id="pieTaskHours" value="<%=pieTaskHours %>">
-                                        <canvas id="myChart" width="400" height="400"></canvas>
+                                        <canvas id="projectHours" width="400" height="400"></canvas>
                                     </div>
                                 </div>
                             </div>
-                        
+                        	<!-- End Pie Chart -->
                         	
+                        	<!-- Begin Bar Chart -->
+                        	<div class="col-xl-8 mb-8">
+                                <div class="card card-header-actions h-70">
+                                    <div class="card-header" style="color: <%=bckColor %>;">
+                                        Task Achievement
+                                        <div class="dropdown no-caret">
+                                        	<select class="form-control" id="barUser" name="barUser" onchange="form.submit()">
+												<%
+													rs = st.executeQuery("SELECT * FROM users where department = "+ userdepartment +" and active = "+ SKYZERUSERACTIVE.TRUE.getValue() +"");
+	
+													while (rs.next()) {
+														%>
+														<option value="<%=rs.getString("id")%>"
+																<%
+																if (barUser.equals(rs.getString("id"))) {%>
+																	selected
+																<%}
+															%>
+														><%=rs.getString("name")%></option>
+													<%
+													}
+												%>
+											</select>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+			                        	<%
+			                        		String barX = xList.toString().replace("[", "").replace("]", "").trim();
+			                        		String barYListProgress = yListProgress.toString().replace("[", "").replace("]", "").trim();
+			                        		String barYListHoursSpent = yListHoursSpent.toString().replace("[", "").replace("]", "").trim();
+				                        	if(barX.equals("null")) barX = "No Tasks";
+				                        	
+			                        	%>
+			                        	<input type="hidden" id="barX" value="<%=barX %>">
+			                        	<input type="hidden" id="barYListProgress" value="<%=barYListProgress %>">
+			                        	<input type="hidden" id="barYListHoursSpent" value="<%=barYListHoursSpent %>">
+                                        <canvas id="teamMember" width="800" height="400"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Bar Chart -->
+                            
                         </div>
                     </div>
                 </main>
+            	</form>
             </div>
                
 				<!-- End if Page Content -->
@@ -185,8 +246,9 @@
 	e.printStackTrace();
 } %>
 
-<!-- Pie Chart -->
+<!-- Charts -->
 <script src="../vendor/charts/pie-chart.js"></script>
+<script src="../vendor/charts/bar-chart.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('#projectTeam').multiselect();

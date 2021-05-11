@@ -1,4 +1,4 @@
-var ctx = document.getElementById('myChart').getContext('2d');
+var ctx = document.getElementById('projectHours').getContext('2d');
 var pieTasks = document.getElementById('pieTasks').value;
 var pieTaskHours = document.getElementById('pieTaskHours').value;
 
@@ -8,9 +8,7 @@ var myPieChart = new Chart(ctx, {
 		  labels: pieTasks.split(','),
 	      datasets: [{
 	      data: pieTaskHours.split(','),
-	      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#5a5c69'],
-	      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-	      hoverBorderColor: "rgba(234, 236, 244, 1)",
+	      backgroundColor: ['#5a5c69', '#36a2eb', '#cc65fe', '#ffce56', '#5a5c69', '#ff6384', '#A862D3'],
 	    }],
 	  },
 	  options: {

@@ -3,6 +3,7 @@
 <%@page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
+<%@page import="config.EnumMyTask.SKYZERUSERACTIVE"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" import="java.sql.*" %>
 <%@ page language="java" import="config.DBConfig" %>
@@ -131,7 +132,7 @@
 											        <label for="teamMemberSelect">Team members <span style="color: red;">*</span></label><br/>
 											        <select style="height: fit-content;" class="form-control" id="projectTeam" name="projectTeam" multiple="multiple">
 											           <%
-													        	rs = st.executeQuery("SELECT * FROM users");
+													        	rs = st.executeQuery("SELECT * FROM users where department = "+ userdepartment +" and active = "+ SKYZERUSERACTIVE.TRUE.getValue() +"");
 													        
 														        while(rs.next())
 															    {   

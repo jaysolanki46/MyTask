@@ -88,4 +88,18 @@ public class EnumMyTask {
 			return value;
 		}
 	}
+	
+	public enum SKYZERUSERACTIVE {
+		TRUE(1),
+		FALSE(0);
+		
+		int value;
+		private SKYZERUSERACTIVE(int value) {
+			this.value = value;
+		}
+		
+		public int getValue(){
+			return value;
+		}
+	}
 }
