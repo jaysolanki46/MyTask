@@ -216,9 +216,8 @@
 							        
 									rs = st.executeQuery("select project.*, task.* from projects project " +  
 											"LEFT JOIN tasks task ON project.id = task.project " +
-											"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
-											"where (task.id = "+ reportTask +") AND " + 
-											"taskdetail.task_detail_date between '"+ taskCreatedOn +"' and '"+ LocalDate.now() +"' group by task.name order by project.id DESC");
+											"where (task.id = "+ reportTask +") " + 
+											"group by task.name order by project.id DESC");
 
 									while(rs.next()) {   
 									   	key = rs.getInt("task.id");
@@ -313,6 +312,7 @@
 							      	<th>Project</th>
 							        <th style="text-align: center;">Task</th>
 							        <th>Assignee</th>
+							        <th>Comments / Description</th>
 							        <th>Progress</th>
 							        <%
 							        	rs = st.executeQuery("SELECT * FROM tasks where id = " + reportTask + "");	
@@ -336,9 +336,8 @@
 							        
 									rs = st.executeQuery("select project.*, task.* from projects project " +  
 											"LEFT JOIN tasks task ON project.id = task.project " +
-											"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
-											"where (task.id = "+ reportTask +") AND " + 
-											"taskdetail.task_detail_date between '"+ taskCreatedOn +"' and '"+ LocalDate.now() +"' group by task.name order by project.id DESC");
+											"where (task.id = "+ reportTask +") " + 
+											"group by task.name order by project.id DESC");
 
 									while(rs.next()) {   
 									   	key = rs.getInt("task.id");
@@ -351,6 +350,7 @@
 									<td><%=rs.getString("project.name") %></td>
 									<td style="text-align: inherit;"><%=name%></td>
 									<td><%=assignee.toUpperCase()%></td>
+									<td><%=rs.getString("task.description") %></td>
 									<td><%=rs.getInt("task.percentage") %>%</td>
 									<%
 										 taskRowTotal = 0;
@@ -391,7 +391,7 @@
 							    	<tr>
 							    		<th style="text-align: inherit;">Total hours:</th>
 							    		<%
-							    		for (LocalDate date = LocalDate.parse(taskCreatedOn); date.isBefore(LocalDate.now().plusDays(4)); date = date.plusDays(1)) {
+							    		for (LocalDate date = LocalDate.parse(taskCreatedOn); date.isBefore(LocalDate.now().plusDays(5)); date = date.plusDays(1)) {
 							    			%>
 							    				<th></th>
 							    			<%

@@ -203,9 +203,8 @@
 									rs = st.executeQuery("select project.*, task.* from projects project " +  
 											"LEFT JOIN project_team project_team ON project.id = project_team.project " +
 											"LEFT JOIN tasks task ON project.id = task.project " +
-											"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
-											"where (project.department = "+ userdepartment +" OR project.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND project_team.team_member = task.team_member AND " + 
-											"taskdetail.task_detail_date between '"+ reportStartDate +"' and '"+ reportEndDate +"' group by task.name order by project.id DESC");
+											"where (project.department = "+ userdepartment +" OR project.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND project_team.team_member = task.team_member " + 
+											"group by task.name order by project.id DESC");
 					                   		 
 									while(rs.next()) {   
 									   	key = rs.getInt("task.id");
@@ -283,6 +282,7 @@
 							      	<th>Project</th>
 							        <th style="text-align: center;">Task</th>
 							        <th>Assignee</th>
+							        <th>Comments / Description</th>
 							        <th>Progress</th>
 							        <%
 							        
@@ -307,9 +307,8 @@
 									rs = st.executeQuery("select project.*, task.* from projects project " +  
 											"LEFT JOIN project_team project_team ON project.id = project_team.project " +
 											"LEFT JOIN tasks task ON project.id = task.project " +
-											"LEFT JOIN task_details taskdetail ON taskdetail.task = task.id " +  
-											"where (project.department = "+ userdepartment +" OR project.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND project_team.team_member = task.team_member AND " + 
-											"taskdetail.task_detail_date between '"+ reportStartDate +"' and '"+ reportEndDate +"' group by task.name order by project.id DESC");
+											"where (project.department = "+ userdepartment +" OR project.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND project_team.team_member = task.team_member " + 
+											"group by task.name order by project.id DESC");
 					                   		 
 									while(rs.next()) {   
 									   	key = rs.getInt("task.id");
@@ -322,6 +321,7 @@
 									<td><%=rs.getString("project.name") %></td>
 									<td style="text-align: inherit;"><%=name%></td>
 									<td><%=assignee%></td>
+									<td><%=rs.getString("task.description") %></td>
 									<td><%=rs.getInt("task.percentage")%>%</td>
 									<%
 										taskColumnTotal = 0; taskRowTotal = 0;
