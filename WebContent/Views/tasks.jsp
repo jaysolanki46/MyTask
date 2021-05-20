@@ -471,7 +471,91 @@
 								        %>
 								        	<tr>
 										        <td style="text-align: inherit;">
-										        	<%=name %>
+										        	<a data-toggle="modal" data-target="#taskEditModelLg<%=key %>" style="cursor: pointer;" title="Edit Task"><i class="far fa-edit"></i>&nbsp;<%=name %></a>
+										        	
+										        	<!-- Model edit a task -->
+						                        	<div class="modal fade" id="taskEditModelLg<%=key %>" tabindex="-1" role="dialog" aria-labelledby="taskEditModelLg<%=key %>" aria-hidden="true">
+													    <div class="modal-dialog modal-lg" role="document">
+													    	<form action="<%=request.getContextPath()%>/TaskServlet" method="post">
+													    	<input type="hidden" name="hiddenTaskId" value="<%=key %>">
+													        <div class="modal-content">
+													            <div class="modal-header">
+													                <h5 class="modal-title">Edit task - <%=name %></h5>
+													                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+													            </div>
+													            <div class="modal-body">
+													                	<div class="row">
+													                		<div class="col">
+																			    <div class="form-group">
+																				    <label for="projectNameInput">Task name <span style="color: red;">*</span></label>
+																				    <input style="height: fit-content;" class="form-control" id="name" name="name" type="text" placeholder="Ex. IKR Project" value="<%=name %>">
+																			    </div>
+																		    </div>
+																		    <div class="col">
+																			    <div class="form-group">
+																			        <label for="departmentSelect">Project <span style="color: red;">*</span></label>
+																			        <input style="height: fit-content;" class="form-control" type="text" value="<%=rs.getString("name") %>" readonly="readonly">
+																			        <input style="height: fit-content;" class="form-control" id="hiddenProjectId" name="hiddenProjectId" type="hidden" value="<%=projectId %>">
+																			    </div>
+																		    </div>
+																	    </div>
+																	    <div class="row">
+													                		<div class="col">
+																			    <div class="form-group">
+																			        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
+																			        <select class="form-control" id="teamMember" name="teamMember">
+																			        	<option>Select member...</option>
+																			        <%
+																			        	rsNested = stNested.executeQuery("SELECT * FROM project_team where project = "+ projectId +"");
+																			        	projectTeamMemberList = new ArrayList<Integer>();
+																			        	projectTeamStr = "";
+																		        		while(rsNested.next()) {
+																		        			projectTeamMemberList.add(rsNested.getInt("team_member"));		
+																		        		}
+																		        		
+																		        		projectTeamStr = projectTeamMemberList.toString().replace("[", "").replace("]", "").replace(" ", "");
+																		        		
+																		        		rsNested = stNested.executeQuery("SELECT * FROM users where id IN ("+ projectTeamStr +")");
+																		        		while(rsNested.next()) {
+																		        			%><option value="<%=rsNested.getInt("id") %>"
+																		        			<%
+																				    			if(rsTask.getInt("team_member") == rsNested.getInt("id")){
+																				    				%>selected<%
+																				    			}
+																				    		%>
+																		        			><%=rsNested.getString("name") %></option><%		
+																		        		}
+																			        %>
+																			        </select>
+																			    </div>
+																			  </div>
+																			  <div class="col">  
+																			    <div class="form-group">
+																					<label for="taskDueDate">Due Date</label>
+																					<input type="date" id="taskDueDate" name="taskDueDate" 
+																						max="31-12-3000" min="01-01-1000" class="form-control" value=<%=rsTask.getString("due_date") %>>
+																			    </div>
+																			  </div>
+																	</div>
+																		<div class="form-group">
+																			<label for="descriptionTextarea">Description</label>
+																			<textarea class="form-control" id="description" value="<%=rsTask.getString("description") %>"
+																				name="description" rows="4"></textarea>
+																		</div>
+																	</div>
+													            <div class="modal-footer">
+													            	<button type="submit" title="Search"
+																	class="btn btn-sm btn-light active mr-3 center_div card-button"
+																	style="background-color:<%=bckColor %>; "
+																	onclick="this.form.submit();">
+																	<i class="fas fa-save"></i>&nbsp; Save</button>	
+													            </div>
+													        </div>
+													        </form>
+													    </div>
+													</div>
+						                        	<!-- End Model edit a task -->
+                        	 
 										        	<div class="progress rounded-pill"
 													style="height: 0.5rem; margin-top: 0.5rem;">
 										        	<div style="
@@ -696,7 +780,91 @@
 								        %>
 								        	<tr>
 										        <td style="text-align: inherit;">
-										        	<%=name %> 
+										        	<a data-toggle="modal" data-target="#taskEditModelLg<%=key %>" style="cursor: pointer;" title="Edit Task"><i class="far fa-edit"></i>&nbsp;<%=name %></a>
+										        	
+										        	<!-- Model edit a task -->
+						                        	<div class="modal fade" id="taskEditModelLg<%=key %>" tabindex="-1" role="dialog" aria-labelledby="taskEditModelLg<%=key %>" aria-hidden="true">
+													    <div class="modal-dialog modal-lg" role="document">
+													    	<form action="<%=request.getContextPath()%>/TaskServlet" method="post">
+													    	<input type="hidden" name="hiddenTaskId" value="<%=key %>">
+													        <div class="modal-content">
+													            <div class="modal-header">
+													                <h5 class="modal-title">Edit task - <%=name %></h5>
+													                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+													            </div>
+													            <div class="modal-body">
+													                	<div class="row">
+													                		<div class="col">
+																			    <div class="form-group">
+																				    <label for="projectNameInput">Task name <span style="color: red;">*</span></label>
+																				    <input style="height: fit-content;" class="form-control" id="name" name="name" type="text" placeholder="Ex. IKR Project" value="<%=name %>">
+																			    </div>
+																		    </div>
+																		    <div class="col">
+																			    <div class="form-group">
+																			        <label for="departmentSelect">Project <span style="color: red;">*</span></label>
+																			        <input style="height: fit-content;" class="form-control" type="text" value="<%=rs.getString("name") %>" readonly="readonly">
+																			        <input style="height: fit-content;" class="form-control" id="hiddenProjectId" name="hiddenProjectId" type="hidden" value="<%=projectId %>">
+																			    </div>
+																		    </div>
+																	    </div>
+																	    <div class="row">
+													                		<div class="col">
+																			    <div class="form-group">
+																			        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
+																			        <select class="form-control" id="teamMember" name="teamMember">
+																			        	<option>Select member...</option>
+																			        <%
+																			        	rsNested = stNested.executeQuery("SELECT * FROM project_team where project = "+ projectId +"");
+																			        	projectTeamMemberList = new ArrayList<Integer>();
+																			        	projectTeamStr = "";
+																		        		while(rsNested.next()) {
+																		        			projectTeamMemberList.add(rsNested.getInt("team_member"));		
+																		        		}
+																		        		
+																		        		projectTeamStr = projectTeamMemberList.toString().replace("[", "").replace("]", "").replace(" ", "");
+																		        		
+																		        		rsNested = stNested.executeQuery("SELECT * FROM users where id IN ("+ projectTeamStr +")");
+																		        		while(rsNested.next()) {
+																		        			%><option value="<%=rsNested.getInt("id") %>"
+																		        			<%
+																				    			if(rsTask.getInt("team_member") == rsNested.getInt("id")){
+																				    				%>selected<%
+																				    			}
+																				    		%>
+																		        			><%=rsNested.getString("name") %></option><%		
+																		        		}
+																			        %>
+																			        </select>
+																			    </div>
+																			  </div>
+																			  <div class="col">  
+																			    <div class="form-group">
+																					<label for="taskDueDate">Due Date</label>
+																					<input type="date" id="taskDueDate" name="taskDueDate" 
+																						max="31-12-3000" min="01-01-1000" class="form-control" value=<%=rsTask.getString("due_date") %>>
+																			    </div>
+																			  </div>
+																	</div>
+																		<div class="form-group">
+																			<label for="descriptionTextarea">Description</label>
+																			<textarea class="form-control" id="description" value="<%=rsTask.getString("description") %>"
+																				name="description" rows="4"></textarea>
+																		</div>
+																	</div>
+													            <div class="modal-footer">
+													            	<button type="submit" title="Search"
+																	class="btn btn-sm btn-light active mr-3 center_div card-button"
+																	style="background-color:<%=bckColor %>; "
+																	onclick="this.form.submit();">
+																	<i class="fas fa-save"></i>&nbsp; Save</button>	
+													            </div>
+													        </div>
+													        </form>
+													    </div>
+													</div>
+						                        	<!-- End Model edit a task -->
+
 										        	<div class="progress rounded-pill" title="<%=rsTask.getInt("percentage") %>% completed"
 													style="height: 0.5rem; margin-top: 0.5rem;">
 										        	<div style="

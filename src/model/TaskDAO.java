@@ -70,4 +70,36 @@ public class TaskDAO {
         }
 		return true;
 	}
+
+	public boolean update(Task task) throws ClassNotFoundException {
+		
+		try {
+			
+			new DBConfig();
+			cnn = DBConfig.connection();
+        	
+            PreparedStatement preparedStatement =  cnn.prepareStatement("Update tasks set "
+            		+ "name = ? , project = ?, team_member = ?, description = ?, updated_on = ?, updated_by = ?, due_date = ?"
+            		+ " where id = ?", Statement.RETURN_GENERATED_KEYS);
+            
+            preparedStatement.setString(1, task.getName());
+            preparedStatement.setInt(2, task.getProject().getId());
+            preparedStatement.setInt(3, task.getTeam_member().getId());
+            preparedStatement.setString(4, task.getDescription());
+            preparedStatement.setString(5, task.getUpdatedOn());
+            preparedStatement.setInt(6, task.getUpdatedBy().getId());
+            preparedStatement.setString(7, task.getDueDate());
+            preparedStatement.setInt(8, task.getId());
+
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+            
+            rs = preparedStatement.getGeneratedKeys();
+            
+        } catch (SQLException e) {
+           	e.printStackTrace();
+           	return false;
+        }
+		return true;
+	}
 }
