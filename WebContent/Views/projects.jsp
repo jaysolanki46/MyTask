@@ -100,13 +100,13 @@
 							                <h5 class="modal-title">Create a new project</h5>
 							                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 							            </div>
-							            <form action="<%=request.getContextPath()%>/ProjectServlet" method="post">
+							            <form id="project" action="<%=request.getContextPath()%>/ProjectServlet" method="post">
 							            <div class="modal-body">
 							                	<div class="row">
 							                		<div class="col">
 													    <div class="form-group">
 														    <label for="projectNameInput">Project name <span style="color: red;">*</span></label>
-														    <input style="height: fit-content;" class="form-control" id="projectName" name="projectName" type="text" placeholder="Ex. IKR Project">
+														    <input style="height: fit-content;" class="form-control" id="projectName" name="projectName" type="text" placeholder="Ex. IKR Project" required>
 													    </div>
 												    </div>
 												    <div class="col">
@@ -130,7 +130,7 @@
 											    </div>
 											    <div class="form-group">
 											        <label for="teamMemberSelect">Team members <span style="color: red;">*</span></label><br/>
-											        <select style="height: fit-content;" class="form-control" id="projectTeam" name="projectTeam" multiple="multiple">
+											        <select style="height: fit-content;" class="form-control" id="projectTeam" name="projectTeam" multiple="multiple" required>
 											           <%
 													        	rs = st.executeQuery("SELECT * FROM users where department = "+ userdepartment +" and active = "+ SKYZERUSERACTIVE.TRUE.getValue() +"");
 													        
@@ -150,17 +150,15 @@
 											    </div>
 							            </div>
 							            <div class="modal-footer">
-							            	<button type="submit" title="Save"
-											class="btn btn-sm btn-light active mr-3 center_div card-button"
-											style="background-color:<%=bckColor %>; "
-											onclick="this.form.submit();">
-											<i class="fas fa-save"></i>&nbsp; Save</button>	
+							            	<button title="Save" class="btn btn-sm btn-light active mr-3 center_div card-button"
+												style="background-color:<%=bckColor %>; " onclick="validate()">
+							            		<i class="fas fa-save"></i>&nbsp; Save
+							            	</button>
 							            </div>
 							            </form>
 							        </div>
 							    </div>
 							</div>
-                        	
                             
                             <!-- Project card -->
                             <% 
@@ -270,11 +268,10 @@
 } catch (Exception e) {
 	e.printStackTrace();
 } %>
-</html>
-
 
 <script type="text/javascript">
     $(document).ready(function() {
         $('#projectTeam').multiselect();
     });
 </script>
+</html>
