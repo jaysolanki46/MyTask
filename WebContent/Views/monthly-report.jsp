@@ -209,8 +209,8 @@
 						        rs = st.executeQuery("select project.*, task.* from projects project " +  
 						        		"LEFT JOIN project_team project_team ON project.id = project_team.project " +
 						        		"LEFT JOIN tasks task ON project.id = task.project " +
-										"where (project.department = "+ userdepartment +" OR project.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND project_team.team_member = task.team_member " + 
-										"group by task.name order by project.id DESC");
+										"where (project.department = "+ userdepartment +" OR project.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND project_team.team_member = task.team_member AND " + 
+										"(MONTH(project.created_on) <= '"+ reportMonth +"' AND YEAR(project.created_on) <= '"+ reportYear +"') group by task.name order by project.id DESC");
 						        
 						        	while(rs.next()) {   
 						        		key = rs.getInt("task.id");
@@ -337,8 +337,8 @@
 						        rs = st.executeQuery("select project.*, task.* from projects project " +  
 						        		"LEFT JOIN project_team project_team ON project.id = project_team.project " +
 						        		"LEFT JOIN tasks task ON project.id = task.project " +
-										"where (project.department = "+ userdepartment +" OR project.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND project_team.team_member = task.team_member " + 
-										"group by task.name order by project.id DESC");
+										"where (project.department = "+ userdepartment +" OR project.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND project_team.team_member = task.team_member AND " + 
+						        		"(MONTH(project.created_on) <= '"+ reportMonth +"' AND YEAR(project.created_on) <= '"+ reportYear +"') group by task.name order by project.id DESC");
 						        
 						        	while(rs.next()) {   
 						        		key = rs.getInt("task.id");
