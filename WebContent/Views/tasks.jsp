@@ -616,7 +616,7 @@
 													        	
 													        	<!-- Model update task -->
 									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
-																    <div class="modal-dialog modal-sm" role="document">
+																    <div class="modal-dialog modal-md" role="document">
 																    	<form action="<%=request.getContextPath()%>/TaskDetailServlet" method="post">
 																        <div class="modal-content">
 																            <div class="modal-header">
@@ -659,6 +659,18 @@
 																						    </div>
 																					    </div>
 																				    </div>
+																				    <% 
+																						String due_date = ddMMyyyyFormate.format(new SimpleDateFormat("yyyy-MM-dd").parse(rsTask.getString("due_date")));
+																				    	
+																				    	if(due_date != null) { %>
+																					    <div class="row">
+																							<div class="col">
+																								<div class="alert alert-warning" role="alert" style="padding: 0.75rem; margin: 0rem; text-align: left;">
+																									Task end date is <%=due_date %> 
+																								</div>	
+																							</div>
+																						</div>
+																					<% 	} %>
 																            </div>
 																            <div class="modal-footer">
 																            <div style="margin-right: auto;margin-left: 0.5rem;">
@@ -925,7 +937,7 @@
 											        		
 											        		<!-- Start Disabled Model update task -->
 									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
-																    <div class="modal-dialog modal-sm" role="document">
+																    <div class="modal-dialog modal-md" role="document">
 																    	<form action="<%=request.getContextPath()%>/TaskDetailServlet" method="post">
 																    	<fieldset disabled="disabled">
 																        <div class="modal-content">
@@ -969,6 +981,18 @@
 																						    </div>
 																					    </div>
 																				    </div>
+																				    <% 
+																						String due_date = ddMMyyyyFormate.format(new SimpleDateFormat("yyyy-MM-dd").parse(rsTask.getString("due_date")));
+																				    	
+																				    	if(due_date != null) { %>
+																					    <div class="row">
+																							<div class="col">
+																								<div class="alert alert-warning" role="alert" style="padding: 0.75rem; margin: 0rem; text-align: left;">
+																									Task end date is <%=due_date %> 
+																								</div>	
+																							</div>
+																						</div>
+																					<% 	} %>
 																            </div>
 																            <div class="modal-footer">
 																            	<button type="submit" title="Search"
