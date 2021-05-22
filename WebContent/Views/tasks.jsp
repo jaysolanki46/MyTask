@@ -177,7 +177,7 @@
                         	<!-- Model create a new task -->
                         	<div class="modal fade" id="taskModelLg" tabindex="-1" role="dialog" aria-labelledby="taskModelLg" aria-hidden="true">
 							    <div class="modal-dialog modal-lg" role="document">
-							    	<form action="<%=request.getContextPath()%>/TaskServlet" method="post">
+							    	<form id="taskForm" action="<%=request.getContextPath()%>/TaskServlet" method="post">
 							        <div class="modal-content">
 							            <div class="modal-header">
 							                <h5 class="modal-title">Create a new task</h5>
@@ -193,7 +193,7 @@
 												    </div>
 												    <div class="col">
 													    <div class="form-group">
-													        <label for="departmentSelect">Project <span style="color: red;">*</span></label>
+													        <label for="departmentSelect">Project </label>
 													        <input style="height: fit-content;" class="form-control" type="text" value="<%=rs.getString("name") %>" readonly="readonly">
 													        <input style="height: fit-content;" class="form-control" id="hiddenProjectId" name="hiddenProjectId" type="hidden" value="<%=projectId %>">
 													    </div>
@@ -204,7 +204,7 @@
 													    <div class="form-group">
 													        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
 													        <select class="form-control" id="teamMember" name="teamMember">
-													        	<option>Select member...</option>
+													        	<option value="0">Select member...</option>
 													        <%
 													        	rsNested = stNested.executeQuery("SELECT * FROM project_team where project = "+ projectId +"");
 													        	List<Integer> projectTeamMemberList = new ArrayList<Integer>();
@@ -238,11 +238,13 @@
 												</div>
 											</div>
 							            <div class="modal-footer">
-							            	<button type="submit" title="Search"
+							            	<!-- <button type="submit" title="Search"
 											class="btn btn-sm btn-light active mr-3 center_div card-button"
 											style="background-color:<%=bckColor %>; "
 											onclick="this.form.submit();">
-											<i class="fas fa-save"></i>&nbsp; Save</button>	
+											<i class="fas fa-save"></i>&nbsp; Save</button>	-->
+											<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
+												style="background-color:<%=bckColor %>;" title="Save" onclick="validateTaskForm()" value="Save">
 							            </div>
 							        </div>
 							        </form>
@@ -258,7 +260,7 @@
 							                <h5 class="modal-title">Update a Project</h5>
 							                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 							            </div>
-							            <form action="<%=request.getContextPath()%>/ProjectServlet" method="post">
+							            <form id="projectForm" action="<%=request.getContextPath()%>/ProjectServlet" method="post">
 							            <div class="modal-body">
 							                	<div class="row">
 							                		<div class="col">
@@ -326,11 +328,13 @@
 											    </div>
 							            </div>
 							            <div class="modal-footer">
-							            	<button type="submit" title="Save"
+							            	<!--  <button type="submit" title="Save"
 											class="btn btn-sm btn-light active mr-3 center_div card-button"
 											style="background-color:<%=bckColor %>; "
 											onclick="this.form.submit();">
-											<i class="fas fa-save"></i>&nbsp; Save</button>	
+											<i class="fas fa-save"></i>&nbsp; Save</button>	-->
+											<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
+												style="background-color:<%=bckColor %>;" title="Save" onclick="validateProjectForm()" value="Save">
 							            </div>
 							            </form>
 							        </div>
@@ -341,11 +345,11 @@
                             <!--  Custom edit -->
                             <div class="modal fade" id="customTaskDetailModel" tabindex="-1" role="dialog" aria-labelledby="customTaskDetailModelLbl" aria-hidden="true">
                             	<div class="modal-dialog modal-md" role="document">
-										<form action="<%=request.getContextPath()%>/TaskDetailServlet"
+										<form id="customTaskHoursForm" action="<%=request.getContextPath()%>/TaskDetailServlet"
 											method="post">
 											<div class="modal-content">
 												<div class="modal-header">
-													<h5 class="modal-title">Custom Task Details Update</h5>
+													<h5 class="modal-title">Custom update</h5>
 													<button class="close" type="button" data-dismiss="modal"
 														aria-label="Close">
 														<span aria-hidden="true">×</span>
@@ -377,21 +381,20 @@
 															<label for="departmentSelect">Hours <span
 																	style="color: red;">*</span></label> 
 																<input class="form-control" type="number" min="0" max="12"
-																	value="0" id="taskDetailHours"
+																	value="0" id="customTaskDetailHours"
 																	name="taskDetailHours">
 														</div>
 														<div class="col-md-3">
 															<label for="percentage">Percentage %</label> 
 															<input class="form-control" type="number" min="0" max="100"
-																	value="0" id="percentage"
+																	value="0" id="customPercentage"
 																	name="percentage">
 														</div>
 													</div>	
 													<div class="row">
 														<div class="col">
 															<div class="form-group" style="text-align: start;">
-																<label for="departmentSelect">Description<span
-																	style="color: red;">*</span></label>
+																<label for="departmentSelect">Description</label>
 																<textarea class="form-control"
 																	id="taskDetailDescription" name="taskDetailDescription"
 																	rows="4"></textarea>
@@ -400,12 +403,14 @@
 													</div>
 												</div>
 												<div class="modal-footer">
-													<button type="submit" title="Search"
+													<!-- <button type="submit" title="Search"
 														class="btn btn-sm btn-light active mr-3 center_div card-button"
 														style="background-color:<%=bckColor%>; "
 														onclick="this.form.submit();">
 														<i class="fas fa-save"></i>&nbsp; Save
-													</button>
+													</button> -->
+													<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
+														style="background-color:<%=bckColor %>;" title="Save" onclick="validateCustomTaskHoursForm()" value="Save">
 												</div>
 											</div>
 										</form>
@@ -476,7 +481,7 @@
 										        	<!-- Model edit a task -->
 						                        	<div class="modal fade" id="taskEditModelLg<%=key %>" tabindex="-1" role="dialog" aria-labelledby="taskEditModelLg<%=key %>" aria-hidden="true">
 													    <div class="modal-dialog modal-lg" role="document">
-													    	<form action="<%=request.getContextPath()%>/TaskServlet" method="post">
+													    	<form id="editTaskForm" action="<%=request.getContextPath()%>/TaskServlet" method="post">
 													    	<input type="hidden" name="hiddenTaskId" value="<%=key %>">
 													        <div class="modal-content">
 													            <div class="modal-header">
@@ -488,12 +493,12 @@
 													                		<div class="col">
 																			    <div class="form-group">
 																				    <label for="projectNameInput">Task name <span style="color: red;">*</span></label>
-																				    <input style="height: fit-content;" class="form-control" id="name" name="name" type="text" placeholder="Ex. IKR Project" value="<%=name %>">
+																				    <input style="height: fit-content;" class="form-control" id="editTaskName" name="name" type="text" placeholder="Ex. IKR Project" value="<%=name %>">
 																			    </div>
 																		    </div>
 																		    <div class="col">
 																			    <div class="form-group">
-																			        <label for="departmentSelect">Project <span style="color: red;">*</span></label>
+																			        <label for="departmentSelect">Project </label>
 																			        <input style="height: fit-content;" class="form-control" type="text" value="<%=rs.getString("name") %>" readonly="readonly">
 																			        <input style="height: fit-content;" class="form-control" id="hiddenProjectId" name="hiddenProjectId" type="hidden" value="<%=projectId %>">
 																			    </div>
@@ -503,7 +508,7 @@
 													                		<div class="col">
 																			    <div class="form-group">
 																			        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
-																			        <select class="form-control" id="teamMember" name="teamMember">
+																			        <select class="form-control" id="editTaskTeamMember" name="teamMember">
 																			        	<option>Select member...</option>
 																			        <%
 																			        	rsNested = stNested.executeQuery("SELECT * FROM project_team where project = "+ projectId +"");
@@ -532,8 +537,11 @@
 																			  <div class="col">  
 																			    <div class="form-group">
 																					<label for="taskDueDate">Due Date</label>
-																					<input type="date" id="taskDueDate" name="taskDueDate" 
-																						max="31-12-3000" min="01-01-1000" class="form-control" value=<%=rsTask.getString("due_date") %>>
+																					<input type="date" id="editTaskDueDate" name="taskDueDate" 
+																						max="31-12-3000" min="01-01-1000" class="form-control" 
+																						<% if(rsTask.getString("due_date") != null) {%>
+																							value=<%=rsTask.getString("due_date") %>
+																						<% } %>>
 																			    </div>
 																			  </div>
 																	</div>
@@ -544,11 +552,13 @@
 																		</div>
 																	</div>
 													            <div class="modal-footer">
-													            	<button type="submit" title="Search"
+													            	<!-- <button type="submit" title="Search"
 																	class="btn btn-sm btn-light active mr-3 center_div card-button"
 																	style="background-color:<%=bckColor %>; "
 																	onclick="this.form.submit();">
-																	<i class="fas fa-save"></i>&nbsp; Save</button>	
+																	<i class="fas fa-save"></i>&nbsp; Save</button>	-->
+																	<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
+																		style="background-color:<%=bckColor %>;" title="Save" onclick="validateEditTaskForm()" value="Save">
 													            </div>
 													        </div>
 													        </form>
@@ -614,10 +624,10 @@
 											        			data-target="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" 
 											        			><%=taskHours %>:00</label>
 													        	
-													        	<!-- Model update task -->
+													        	<!-- Model update task hours -->
 									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
 																    <div class="modal-dialog modal-md" role="document">
-																    	<form action="<%=request.getContextPath()%>/TaskDetailServlet" method="post">
+																    	<form id="updateTaskHoursForm" action="<%=request.getContextPath()%>/TaskDetailServlet" method="post">
 																        <div class="modal-content">
 																            <div class="modal-header">
 																                <h5 class="modal-title"><%=name %> - <%=ddMMyyyyFormate.format(now.getTime()) %></h5>
@@ -627,7 +637,7 @@
 																                	<div class="row">
 																                		<div class="col" style="display: none;">
 																						    <div class="form-group" style="text-align: start;">
-																							    <label for="projectNameInput">Date <span style="color: red;">*</span></label>
+																							    <label for="projectNameInput">Date</label>
 																							    <input type="text" id="hiddenProjectId" name="hiddenProjectId"
 																							    value=<%=rs.getInt("id") %> class="form-control">
 																							    <input type="text" id="hiddenTaskId" name="hiddenTaskId"
@@ -638,7 +648,7 @@
 																					    </div>
 																					   		<div class="col-md-6">
 																						    <div class="form-group" style="text-align: start;">
-																						        <label for="departmentSelect">Hours <span style="color: red;">*</span></label>
+																						        <label for="departmentSelect">Hours</label>
 																						        <input class="form-control" type="number" min="0" max="12" value=<%=taskHours %> id="taskDetailHours" name="taskDetailHours">
 																						    </div>
 																						    </div>
@@ -654,38 +664,40 @@
 																				    <div class="row">
 																					    <div class="col">
 																						    <div class="form-group" style="text-align: start;">
-																						        <label for="departmentSelect">Description<span style="color: red;">*</span></label>
+																						        <label for="departmentSelect">Description</label>
 																						        <textarea class="form-control" id="taskDetailDescription" name="taskDetailDescription" rows="4"><%=taskDescription %></textarea>
 																						    </div>
 																					    </div>
 																				    </div>
 																				    <% 
-																						String due_date = ddMMyyyyFormate.format(new SimpleDateFormat("yyyy-MM-dd").parse(rsTask.getString("due_date")));
-																				    	
-																				    	if(due_date != null) { %>
-																					    <div class="row">
+																				    	if(rsTask.getString("due_date") != null) {
+																				    		String due_date = ddMMyyyyFormate.format(new SimpleDateFormat("yyyy-MM-dd").parse(rsTask.getString("due_date")));	
+																				    		%><div class="row">
 																							<div class="col">
 																								<div class="alert alert-warning" role="alert" style="padding: 0.75rem; margin: 0rem; text-align: left;">
-																									Task end date is <%=due_date %> 
+																									Task due date is <%=due_date %> 
 																								</div>	
 																							</div>
 																						</div>
-																					<% 	} %>
+																				    <% 	} %>
+																				    	
 																            </div>
 																            <div class="modal-footer">
 																            <div style="margin-right: auto;margin-left: 0.5rem;">
 																            </div>
-																            	<button type="submit" title="Search"
+																            	<!-- <button type="submit" title="Search"
 																					class="btn btn-sm btn-light active mr-3 center_div card-button"
 																					style="background-color:<%=bckColor %>; "
 																					onclick="this.form.submit();">
-																					<i class="fas fa-save"></i>&nbsp; Save</button>	
+																					<i class="fas fa-save"></i>&nbsp; Save</button>	-->
+																					<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
+																						style="background-color:<%=bckColor %>;" title="Save" onclick="validateUpdateTaskHoursForm()" value="Save">
 																            </div>
 																        </div>
 																        </form>
 																    </div>
 																</div>
-									                        	<!-- End Model update task -->
+									                        	<!-- End Model update task hours -->
 													        </td>
 											        	<% 
 											            now.add(Calendar.DAY_OF_MONTH, 1);
@@ -814,7 +826,7 @@
 																		    </div>
 																		    <div class="col">
 																			    <div class="form-group">
-																			        <label for="departmentSelect">Project <span style="color: red;">*</span></label>
+																			        <label for="departmentSelect">Project </label>
 																			        <input style="height: fit-content;" class="form-control" type="text" value="<%=rs.getString("name") %>" readonly="readonly">
 																			        <input style="height: fit-content;" class="form-control" id="hiddenProjectId" name="hiddenProjectId" type="hidden" value="<%=projectId %>">
 																			    </div>
@@ -854,7 +866,10 @@
 																			    <div class="form-group">
 																					<label for="taskDueDate">Due Date</label>
 																					<input type="date" id="taskDueDate" name="taskDueDate" 
-																						max="31-12-3000" min="01-01-1000" class="form-control" value=<%=rsTask.getString("due_date") %>>
+																						max="31-12-3000" min="01-01-1000" class="form-control" 
+																						<% if(rsTask.getString("due_date") != null) {%>
+																							value=<%=rsTask.getString("due_date") %>
+																						<% } %>>
 																			    </div>
 																			  </div>
 																	</div>
@@ -949,7 +964,7 @@
 																                	<div class="row">
 																                		<div class="col" style="display: none;">
 																						    <div class="form-group" style="text-align: start;">
-																							    <label for="projectNameInput">Date <span style="color: red;">*</span></label>
+																							    <label for="projectNameInput">Date</label>
 																							    <input type="text" id="hiddenProjectId" name="hiddenProjectId"
 																							    value=<%=rs.getInt("id") %> class="form-control">
 																							    <input type="text" id="hiddenTaskId" name="hiddenTaskId"
@@ -960,46 +975,46 @@
 																					    </div>
 																					    <div class="col-md-6">
 																						    <div class="form-group" style="text-align: start;">
-																						        <label for="departmentSelect">Hours <span style="color: red;">*</span></label>
-																						        <input class="form-control" type="number" min="0" max="12" value=<%=taskHours %> id="taskDetailHours" name="taskDetailHours">
+																						        <label for="departmentSelect">Hours</label>
+																						        <input class="form-control" type="number" min="0" max="12" value=<%=taskHours %>>
 																						    </div>
 																					    </div>
 																					     <div class="col-md-6">
 																							 	<div class="form-group" style="text-align: start;">	
 																								<label for="percentage">Percentage %</label> 
 																								<input class="form-control" type="number" min="0" max="100"
-																										value=<%=taskPercentage %> id="percentage"
-																										name="percentage">
+																										value=<%=taskPercentage %>>
 																								</div>
 																							</div>
 																				    </div>
 																				    <div class="row">
 																					    <div class="col">
 																						    <div class="form-group" style="text-align: start;">
-																						        <label for="departmentSelect">Description<span style="color: red;">*</span></label>
-																						        <textarea class="form-control" id="taskDetailDescription" name="taskDetailDescription" rows="4"><%=taskDescription %></textarea>
+																						        <label for="departmentSelect">Description</label>
+																						        <textarea class="form-control" rows="4"><%=taskDescription %></textarea>
 																						    </div>
 																					    </div>
 																				    </div>
-																				    <% 
-																						String due_date = ddMMyyyyFormate.format(new SimpleDateFormat("yyyy-MM-dd").parse(rsTask.getString("due_date")));
-																				    	
-																				    	if(due_date != null) { %>
-																					    <div class="row">
+																				   <% 
+																				    	if(rsTask.getString("due_date") != null) {
+																				    		String due_date = ddMMyyyyFormate.format(new SimpleDateFormat("yyyy-MM-dd").parse(rsTask.getString("due_date")));	
+																				    		%><div class="row">
 																							<div class="col">
 																								<div class="alert alert-warning" role="alert" style="padding: 0.75rem; margin: 0rem; text-align: left;">
-																									Task end date is <%=due_date %> 
+																									Task due date is <%=due_date %> 
 																								</div>	
 																							</div>
 																						</div>
-																					<% 	} %>
+																				    <% 	} %>
 																            </div>
 																            <div class="modal-footer">
-																            	<button type="submit" title="Search"
+																            	<!-- <button type="submit" title="Search"
 																					class="btn btn-sm btn-light active mr-3 center_div card-button"
 																					style="background-color:<%=bckColor %>; "
 																					onclick="this.form.submit();">
-																					<i class="fas fa-save"></i>&nbsp; Save</button>	
+																					<i class="fas fa-save"></i>&nbsp; Save</button>	-->
+																					<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
+																						style="background-color:<%=bckColor %>;" title="Save" onclick="validateUpdateTaskHoursForm()" value="Save">
 																            </div>
 																        </div>
 																        </form>

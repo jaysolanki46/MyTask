@@ -31,6 +31,7 @@ public class TaskDAO {
             preparedStatement.setInt(6, task.getCreatedBy().getId());
             preparedStatement.setString(7, task.getUpdatedOn());
             preparedStatement.setInt(8, task.getUpdatedBy().getId());
+            if(task.getDueDate() == "") task.setDueDate(null);
             preparedStatement.setString(9, task.getDueDate());
 
             System.out.println(preparedStatement);
@@ -88,6 +89,7 @@ public class TaskDAO {
             preparedStatement.setString(4, task.getDescription());
             preparedStatement.setString(5, task.getUpdatedOn());
             preparedStatement.setInt(6, task.getUpdatedBy().getId());
+            if(task.getDueDate() == "") task.setDueDate(null);
             preparedStatement.setString(7, task.getDueDate());
             preparedStatement.setInt(8, task.getId());
 

@@ -41,15 +41,12 @@ public class TaskServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
 		String hiddenTaskId = request.getParameter("hiddenTaskId");
 		
 		if(hiddenTaskId != null)
 			this.update(hiddenTaskId, request, response);
 		else
 			this.insert(request, response);
-		
-		
 	}
 	
 	private void insert(HttpServletRequest request, HttpServletResponse response) throws IOException {

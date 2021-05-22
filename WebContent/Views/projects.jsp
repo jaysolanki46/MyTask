@@ -100,13 +100,14 @@
 							                <h5 class="modal-title">Create a new project</h5>
 							                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 							            </div>
-							            <form id="project" action="<%=request.getContextPath()%>/ProjectServlet" method="post">
+							            <form id="projectForm" action="<%=request.getContextPath()%>/ProjectServlet" method="post">
 							            <div class="modal-body">
 							                	<div class="row">
 							                		<div class="col">
 													    <div class="form-group">
 														    <label for="projectNameInput">Project name <span style="color: red;">*</span></label>
-														    <input style="height: fit-content;" class="form-control" id="projectName" name="projectName" type="text" placeholder="Ex. IKR Project" required>
+														    <input style="height: fit-content;" class="form-control" id="projectName" name="projectName" 
+														    type="text" placeholder="Ex. IKR Project">
 													    </div>
 												    </div>
 												    <div class="col">
@@ -128,32 +129,46 @@
 													    </div>
 												    </div>
 											    </div>
-											    <div class="form-group">
-											        <label for="teamMemberSelect">Team members <span style="color: red;">*</span></label><br/>
-											        <select style="height: fit-content;" class="form-control" id="projectTeam" name="projectTeam" multiple="multiple" required>
-											           <%
-													        	rs = st.executeQuery("SELECT * FROM users where department = "+ userdepartment +" and active = "+ SKYZERUSERACTIVE.TRUE.getValue() +"");
-													        
-														        while(rs.next())
-															    {   
-																	%>
-															    		<option value="<%=rs.getString("id") %>">
-															    		<%=rs.getString("name") %></option>
-															    	<%
-															    }  
-													       %>
-											        </select>
-											    </div>
-											    <div class="form-group">
-												    <label for="descriptionTextarea">Description</label>
-												    <textarea class="form-control" id="projectDescription" name="projectDescription" rows="4"></textarea>
-											    </div>
-							            </div>
+												<div class="row">
+													<div class="col">
+														<div class="form-group">
+															<label for="teamMemberSelect">Team members <span
+																style="color: red;">*</span></label><br /> <select
+																style="height: fit-content;" class="form-control"
+																id="projectTeam" name="projectTeam" multiple="multiple">
+																<%
+																rs = st.executeQuery("SELECT * FROM users where department = " + userdepartment + " and active = "
+																		+ SKYZERUSERACTIVE.TRUE.getValue() + "");
+
+																while (rs.next()) {
+																%>
+																<option value="<%=rs.getString("id")%>">
+																	<%=rs.getString("name")%></option>
+																<%
+																}
+																%>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col">
+														<div class="form-group">
+															<label for="descriptionTextarea">Description</label>
+															<textarea class="form-control" id="projectDescription"
+																name="projectDescription" rows="4"></textarea>
+														</div>
+													</div>
+												</div>
+											</div>
 							            <div class="modal-footer">
-							            	<button title="Save" class="btn btn-sm btn-light active mr-3 center_div card-button"
-												style="background-color:<%=bckColor %>; " onclick="validate()">
+							            	<!-- <button type="submit" title="Save" class="btn btn-sm btn-light active mr-3 center_div card-button"
+												style="background-color:<%=bckColor %>;">
 							            		<i class="fas fa-save"></i>&nbsp; Save
-							            	</button>
+							            	</button> -->
+							            	<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
+												style="background-color:<%=bckColor %>;" title="Save" onclick="validateProjectForm()" value="Save">
+						
 							            </div>
 							            </form>
 							        </div>
@@ -268,10 +283,4 @@
 } catch (Exception e) {
 	e.printStackTrace();
 } %>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#projectTeam').multiselect();
-    });
-</script>
 </html>
