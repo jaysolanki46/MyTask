@@ -9,7 +9,7 @@ var myBarChart = new Chart(ctx, {
 		  labels: barX.split(','),
 	      datasets: [
 			{
-				label: 'Progress',
+				label: 'Progress %',
 				data: barYListProgress.split(','),
 				backgroundColor: '#ff6384',
 		    },
