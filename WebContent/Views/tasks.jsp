@@ -403,12 +403,6 @@
 													</div>
 												</div>
 												<div class="modal-footer">
-													<!-- <button type="submit" title="Search"
-														class="btn btn-sm btn-light active mr-3 center_div card-button"
-														style="background-color:<%=bckColor%>; "
-														onclick="this.form.submit();">
-														<i class="fas fa-save"></i>&nbsp; Save
-													</button> -->
 													<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
 														style="background-color:<%=bckColor %>;" title="Save" onclick="validateCustomTaskHoursForm()" value="Save">
 												</div>
@@ -685,13 +679,11 @@
 																            <div class="modal-footer">
 																            <div style="margin-right: auto;margin-left: 0.5rem;">
 																            </div>
-																            	<!-- <button type="submit" title="Search"
+																            	<button type="submit" title="Search"
 																					class="btn btn-sm btn-light active mr-3 center_div card-button"
 																					style="background-color:<%=bckColor %>; "
 																					onclick="this.form.submit();">
-																					<i class="fas fa-save"></i>&nbsp; Save</button>	-->
-																					<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
-																						style="background-color:<%=bckColor %>;" title="Save" onclick="validateUpdateTaskHoursForm()" value="Save">
+																					<i class="fas fa-save"></i>&nbsp; Save</button>
 																            </div>
 																        </div>
 																        </form>
@@ -1014,7 +1006,7 @@
 																					onclick="this.form.submit();">
 																					<i class="fas fa-save"></i>&nbsp; Save</button>	-->
 																					<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
-																						style="background-color:<%=bckColor %>;" title="Save" onclick="validateUpdateTaskHoursForm()" value="Save">
+																						style="background-color:<%=bckColor %>;" title="Save" value="Save">
 																            </div>
 																        </div>
 																        </form>

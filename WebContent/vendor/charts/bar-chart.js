@@ -11,12 +11,12 @@ var myBarChart = new Chart(ctx, {
 			{
 				label: 'Progress %',
 				data: barYListProgress.split(','),
-				backgroundColor: '#ff6384',
+				backgroundColor: '#b81b44',
 		    },
 			{
 				label: 'Hours Spent',
 				data: barYListHoursSpent.split(','),
-				backgroundColor: '#36a2eb',
+				backgroundColor: '#0066cb',
 		    }
 		],
 	  },
@@ -24,7 +24,6 @@ var myBarChart = new Chart(ctx, {
 		    plugins: {
 			      title: {
 			        display: true,
-			        text: 'Member Tasks'
 			      },
 			    },
 			    responsive: false,

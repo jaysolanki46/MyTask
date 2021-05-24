@@ -8,7 +8,7 @@ var myPieChart = new Chart(ctx, {
 		  labels: pieTasks.split(','),
 	      datasets: [{
 	      data: pieTaskHours.split(','),
-	      backgroundColor: ['#5a5c69', '#36a2eb', '#cc65fe', '#ffce56', '#5a5c69', '#ff6384', '#A862D3'],
+	      backgroundColor: ['#b81b44', '#0066cb', '#BC5090', '#FF6361', '#FFA600', '#6050DC', '#D52DB7', '#FF2E7E', '#FF6B45', '#FFAB05'],
 	    }],
 	  },
 	  options: {
@@ -19,7 +19,6 @@ var myPieChart = new Chart(ctx, {
 		      },
 		      title: {
 		        display: true,
-		        text: 'Project Based Chart'
 		      }
 		    }
 		  },

@@ -1,16 +1,17 @@
-<%@page import="com.sun.org.apache.xalan.internal.xsltc.compiler.sym"%>
-<%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
-<%@page import="java.util.*"%>
-<%@page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
-<%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
-<%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
-<%@page import="config.EnumMyTask.SKYZERUSERACTIVE"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page language="java" import="java.sql.*" %>
-<%@ page language="java" import="java.util.Arrays" %>
-<%@ page language="java" import="config.DBConfig" %>
+<%@ page import="com.sun.org.apache.xalan.internal.xsltc.compiler.sym"%>
+<%@ page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
+<%@ page import="java.util.*"%>
+<%@ page language="java" import="java.text.SimpleDateFormat"%>
+<%@ page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
+<%@ page import="config.EnumMyTask.SKYZERPAYMENTS"%>
+<%@ page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
+<%@ page import="config.EnumMyTask.SKYZERUSERACTIVE"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" import="java.sql.*"%>
+<%@ page language="java" import="java.util.Arrays"%>
+<%@ page language="java" import="config.DBConfig"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <% try { %>
@@ -48,7 +49,6 @@
 	
 	// Pie Chart
 	String pieProject = request.getParameter("pieProject");
-	System.out.println(pieProject);
 	ArrayList<String> tasks = new ArrayList<String>();
 	ArrayList<String> taskHours = new ArrayList<String>();
 	rs = st.executeQuery("SELECT * FROM projects where department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC LIMIT 1");
@@ -83,9 +83,50 @@
 		yListProgress.add(rs.getString("tasks.percentage"));
 		yListHoursSpent.add(rs.getString("total_hours"));
 	}
-	System.out.println(barUser);
-	System.out.println(xList);
 	
+	// Line Chart
+	String lineProject = request.getParameter("lineProject");
+	String project = "";
+	String projectCreatedOn = "";
+	ArrayList<String> monthlyProjectHoursList = new ArrayList<String>();
+	
+	rs = st.executeQuery("SELECT * FROM projects where department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC LIMIT 1");
+	if(rs.next()){
+		
+		if(lineProject == null) 
+			lineProject = rs.getString(1);
+		
+			rsNested = stNested.executeQuery("select * from projects WHERE id = "+ lineProject +"");
+			if(rsNested.next()) {	
+				project = rsNested.getString("projects.name");
+				projectCreatedOn = rsNested.getString("projects.created_on");
+			}
+		
+			// Get monthly hours
+			Calendar createdOnCalendar = Calendar.getInstance();
+			Calendar nowCalendar = Calendar.getInstance(); // Get cuurent date
+			SimpleDateFormat yyyyMMddFormate = new SimpleDateFormat("yyyy-MM-dd");
+			createdOnCalendar.setTime(yyyyMMddFormate.parse(projectCreatedOn));
+			
+			while (createdOnCalendar.before(nowCalendar)) {
+	            String date = yyyyMMddFormate.format(createdOnCalendar.getTime()).toUpperCase();
+	            System.out.println(date);
+	            
+	            rsNested = stNested.executeQuery("select projects.id, projects.name, projects.created_on, task_details.id, task_details.task_detail_date, "
+	    				+ "concat(month(task_details.task_detail_date), '-', year(task_details.task_detail_date)) as months, "
+	    				+ "sum(task_details.hours) as hours  from projects "
+	    				+ "LEFT JOIN tasks ON projects.id = tasks.project "
+	    				+ "LEFT JOIN task_details ON tasks.id = task_details.task "
+	    				+ "WHERE projects.id = "+ lineProject +" and month(task_details.task_detail_date) = month('"+ date +"') group by months order by task_details.task_detail_date");
+	            
+	            if(rsNested.next()) {	
+					monthlyProjectHoursList.add(rsNested.getString("hours"));
+	            } else {
+	            	monthlyProjectHoursList.add("0");
+	            }
+	            createdOnCalendar.add(Calendar.MONTH, 1);
+	        }
+	}	
 %>
 </head>
 <body id="page-top">
@@ -211,9 +252,51 @@
                                 </div>
                             </div>
                             <!-- End Bar Chart -->
-                            
                         </div>
+                        
+                        <div class="row">
+                    	<!-- Begin Line Chart -->
+                        	<div class="col-xl-12 mb-12">
+                                <div class="card card-header-actions h-70">
+                                    <div class="card-header" style="color: <%=bckColor %>;">
+                                        Annual Project Overview
+                                        <div class="dropdown no-caret">
+                                        	<select class="form-control" id="lineProject" name="lineProject" onchange="form.submit()">
+												<%
+													rs = st.executeQuery("SELECT id, name FROM projects where department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC");
+	
+													while (rs.next()) {
+														%>
+														<option value="<%=rs.getString("id")%>"
+															<%
+															if (lineProject.equals(rs.getString("id"))) {%>
+																selected
+															<%}
+															%>
+														>
+														<%=rs.getString("name")%></option>
+													<%
+													}
+												%>
+											</select>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                   		<%
+			                        		String monthlyProjectHours = monthlyProjectHoursList.toString().replace("[", "").replace("]", "").trim();
+				                        	
+			                        	%>
+	                                    <input type="hidden" id="project" value="<%=project %>">
+	                                    <input type="hidden" id="projectCreatedOn" value="<%=projectCreatedOn %>">
+	                                    <input type="hidden" id="monthlyProjectHours" value="<%=monthlyProjectHours %>">
+                                        <canvas id="annualProjectOverview" width="800" height="200"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Line Chart -->
+                    	</div>
                     </div>
+                    
                 </main>
             	</form>
             </div>
@@ -249,6 +332,7 @@
 <!-- Charts -->
 <script src="../vendor/charts/pie-chart.js"></script>
 <script src="../vendor/charts/bar-chart.js"></script>
+<script src="../vendor/charts/line-chart.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('#projectTeam').multiselect();
