@@ -362,6 +362,7 @@
 														<!-- To make use same insert method gave select name="hiddenTaskId", however, it is not hidden at all-->
 														<input type="hidden" id="hiddenProjectId" name="hiddenProjectId" value=<%=projectId %> class="form-control">
 														<select class="form-control" id="hiddenTaskId" name="hiddenTaskId">
+																<option value="0">Select a task...</option>
 														        <%
 														        	rsNested = stNested.executeQuery("SELECT * FROM tasks where project = "+ projectId +"  AND team_member = "+ userid +"");
 													        		while(rsNested.next()) {
@@ -503,7 +504,7 @@
 																			    <div class="form-group">
 																			        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
 																			        <select class="form-control" id="editTaskTeamMember" name="teamMember">
-																			        	<option>Select member...</option>
+																			        	<option value="0">Select member...</option>
 																			        <%
 																			        	rsNested = stNested.executeQuery("SELECT * FROM project_team where project = "+ projectId +"");
 																			        	projectTeamMemberList = new ArrayList<Integer>();
@@ -621,7 +622,7 @@
 													        	<!-- Model update task hours -->
 									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
 																    <div class="modal-dialog modal-md" role="document">
-																    	<form id="updateTaskHoursForm" action="<%=request.getContextPath()%>/TaskDetailServlet" method="post">
+																    	<form id="inlineTaskHoursForm" action="<%=request.getContextPath()%>/TaskDetailServlet" method="post">
 																        <div class="modal-content">
 																            <div class="modal-header">
 																                <h5 class="modal-title"><%=name %> - <%=ddMMyyyyFormate.format(now.getTime()) %></h5>
@@ -643,14 +644,15 @@
 																					   		<div class="col-md-6">
 																						    <div class="form-group" style="text-align: start;">
 																						        <label for="departmentSelect">Hours</label>
-																						        <input class="form-control" type="number" min="0" max="12" value=<%=taskHours %> id="taskDetailHours" name="taskDetailHours">
+																						        <input class="form-control" type="number" min="0" max="12" value=<%=taskHours %>
+																						         id="inlineTaskDetailHours" name="taskDetailHours">
 																						    </div>
 																						    </div>
 																							 <div class="col-md-6">
 																							 	<div class="form-group" style="text-align: start;">	
 																								<label for="percentage">Percentage %</label> 
 																								<input class="form-control" type="number" min="0" max="100"
-																										value=<%=taskPercentage %> id="percentage"
+																										value=<%=taskPercentage %> id="inlinePercentage"
 																										name="percentage">
 																								</div>
 																							</div>
@@ -659,7 +661,8 @@
 																					    <div class="col">
 																						    <div class="form-group" style="text-align: start;">
 																						        <label for="departmentSelect">Description</label>
-																						        <textarea class="form-control" id="taskDetailDescription" name="taskDetailDescription" rows="4"><%=taskDescription %></textarea>
+																						        <textarea class="form-control" id="inlineTaskDetailDescription" 
+																						        name="taskDetailDescription" rows="4"><%=taskDescription %></textarea>
 																						    </div>
 																					    </div>
 																				    </div>
@@ -679,11 +682,14 @@
 																            <div class="modal-footer">
 																            <div style="margin-right: auto;margin-left: 0.5rem;">
 																            </div>
-																            	<button type="submit" title="Search"
+																            	<!-- <button type="submit" title="Search"
 																					class="btn btn-sm btn-light active mr-3 center_div card-button"
 																					style="background-color:<%=bckColor %>; "
 																					onclick="this.form.submit();">
-																					&nbsp; Save</button>
+																					&nbsp; Save</button>-->
+																					<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
+																						onclick="validateUpdateTaskHoursForm()"
+																						style="background-color:<%=bckColor %>;" title="Save" value="Save">
 																            </div>
 																        </div>
 																        </form>
