@@ -683,7 +683,7 @@
 																					class="btn btn-sm btn-light active mr-3 center_div card-button"
 																					style="background-color:<%=bckColor %>; "
 																					onclick="this.form.submit();">
-																					<i class="fas fa-save"></i>&nbsp; Save</button>
+																					&nbsp; Save</button>
 																            </div>
 																        </div>
 																        </form>

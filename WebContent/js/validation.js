@@ -7,8 +7,17 @@ function validateProjectForm() {
 	var projectTeam = document.getElementById("projectTeam").value;
 
 	if (projectName.trim().length == 0) {
+		// Remove old style
+		$('.multiselect').removeAttr('style');
+		
+		$('#projectName').focus();
 		$('#projectName').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
+	
 	} else if (projectTeam < 1) {
+		// Remove old style
+		$('#projectName').removeAttr('style');
+		
+		$('.multiselect').focus();
 		$('.multiselect').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
 	} else {
 		document.getElementById("projectForm").submit();
@@ -79,11 +88,14 @@ function validateUpdateTaskHoursForm() {
 function validateCustomTaskHoursForm() {
 	var taskDetailHours = document.getElementById("customTaskDetailHours").value;
 	var percentage = document.getElementById("customPercentage").value;
+	var taskDetailDate = document.getElementById("taskDetailDate").value;
 
 	if (taskDetailHours < 0 || taskDetailHours == "" || taskDetailHours > 12) {
 		$('#customTaskDetailHours').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
 	} else if (percentage < 0 || percentage == "" || percentage > 100) {
 		$('#customPercentage').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
+	} else if (taskDetailDate == "") {
+		$('#taskDetailDate').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
 	} else {
 		document.getElementById("customTaskHoursForm").submit();
 	}
