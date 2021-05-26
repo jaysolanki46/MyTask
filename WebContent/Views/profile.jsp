@@ -63,15 +63,18 @@
                     <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
                         <div class="container-fluid">
                             <div class="page-header-content">
-                                <div class="row align-items-center justify-content-between pt-3">
+                                <div class="row align-items-center justify-content-between " style="height: 4rem;">
                                     <div class="col-auto mb-3">
-                                        <h1 class="page-header-title" style="color: <%=bckColor %>; font-weight: bold; font-size: x-large;">
+                                        <h1 class="page-header-title center_div" style="color: <%=bckColor %>; font-weight: bold; font-size: x-large;">
                                             <div class="page-header-icon">
                                           		<i class="fas fa-user"></i>  
                                             </div>
                                             Profile
                                         </h1>
                                     </div>
+                                     <button
+                                       		 class="btn btn-sm btn-light active mr-3 center_div card-button" title="Tutorial"
+												style="background-color:<%=bckColor %>; "><i class="fas fa-video"></i></button>
                                 </div>
                             </div>
                         </div>

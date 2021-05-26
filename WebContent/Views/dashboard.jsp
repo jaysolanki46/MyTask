@@ -155,7 +155,7 @@
                     <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
                         <div class="container-fluid">
                             <div class="page-header-content">
-                                <div class="row align-items-center justify-content-between pt-3">
+                                <div class="row align-items-center justify-content-between" style="height: 4rem;">
                                     <div class="col-auto mb-3">
                                         <h1 class="page-header-title" style="color: <%=bckColor %>; font-weight: bold; font-size: x-large;">
                                             <div class="page-header-icon">
@@ -164,6 +164,18 @@
                                             Dashboard
                                         </h1>
                                     </div>
+                                    <div class="col-12 col-xl-auto mb-3">
+										<button
+                                        class="btn btn-sm btn-light active mr-3 center_div card-button popup-modal" 
+                                        	id="dashboardTutorial"  title="Tutorial" href="#tutorialPopup" 
+											style="background-color:<%=bckColor %>; "><i class="fas fa-video"></i></button>
+                                    </div>
+                                    
+                                    <div id="tutorialPopup" class="mfp-hide embed-responsive embed-responsive-21by9">
+								      <iframe class="embed-responsive-item" width="854" height="480" src="https://www.youtube.com/embed/qN3OueBm9F4" 
+								      frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+								    </div>
+      
                                 </div>
                             </div>
                         </div>
@@ -175,8 +187,8 @@
                         	<div class="col-xl-4 mb-4">
                                 <div class="card card-header-actions h-70">
                                     <div class="card-header" style="color: <%=bckColor %>;">
-                                        Project Hours
-                                        <div class="dropdown no-caret">
+                                        Hours Per Project
+                                        <div class="dropdown no-caret" style="margin-left: auto; margin-right: 1rem;">
                                         	<select class="form-control" id="pieProject" name="pieProject" onchange="form.submit()">
 												<%
 													rs = st.executeQuery("SELECT id, name FROM projects where department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC");
@@ -196,6 +208,7 @@
 												%>
 											</select>
                                         </div>
+                                        <i class="fas fa-question-circle" title="Select project to see how much time each task took to complete"></i>
                                     </div>
                                     <div class="card-body">
 	                                    <%
@@ -215,8 +228,8 @@
                         	<div class="col-xl-8 mb-8">
                                 <div class="card card-header-actions h-70">
                                     <div class="card-header" style="color: <%=bckColor %>;">
-                                        Task Achievement
-                                        <div class="dropdown no-caret">
+                                        Member Task Achievement
+                                        <div class="dropdown no-caret" style="margin-left: auto; margin-right: 1rem;">
                                         	<select class="form-control" id="barUser" name="barUser" onchange="form.submit()">
 												<%
 													rs = st.executeQuery("SELECT * FROM users where department = "+ userdepartment +" and active = "+ SKYZERUSERACTIVE.TRUE.getValue() +"");
@@ -235,6 +248,7 @@
 												%>
 											</select>
                                         </div>
+                                        <i class="fas fa-question-circle" title="Select a user to see their task achievement"></i>
                                     </div>
                                     <div class="card-body">
 			                        	<%
@@ -259,8 +273,8 @@
                         	<div class="col-xl-12 mb-12">
                                 <div class="card card-header-actions h-70">
                                     <div class="card-header" style="color: <%=bckColor %>;">
-                                        Annual Project Overview
-                                        <div class="dropdown no-caret">
+                                        Project Overview
+                                        <div class="dropdown no-caret" style="margin-left: auto; margin-right: 1rem;">
                                         	<select class="form-control" id="lineProject" name="lineProject" onchange="form.submit()">
 												<%
 													rs = st.executeQuery("SELECT id, name FROM projects where department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC");
@@ -280,6 +294,7 @@
 												%>
 											</select>
                                         </div>
+                                        <i class="fas fa-question-circle" title="Select project to see, how much time the team has spent on this project since it started"></i>
                                     </div>
                                     <div class="card-body">
                                    		<%
@@ -335,7 +350,10 @@
 <script src="../vendor/charts/line-chart.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#projectTeam').multiselect();
+        $('#dashboardTutorial').magnificPopup({
+            type:'inline',
+            midClick: true
+          });
     });
 </script>
 </html>

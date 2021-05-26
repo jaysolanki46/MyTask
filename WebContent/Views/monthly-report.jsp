@@ -129,17 +129,25 @@
                             <div class="card-body"  style="padding: 0px;">
                                <div class="container-fluid">
 		                            <div class="page-header-content">
-		                                <div class="row align-items-center justify-content-between pt-3">
+		                                <div class="row align-items-center justify-content-between" style="height: 4rem;">
 		                                    <div class="col-auto mb-3">
-		                                        <h1 class="page-header-title" style="color: <%=bckColor %>; font-weight: bold;font-size: x-large;">
+		                                        <h1 class="page-header-title center_div" style="color: <%=bckColor %>; font-weight: bold;font-size: x-large;">
 		                                            <div class="page-header-icon">
 		                                          		<i class="fas fa-clipboard-list"></i>
 		                                            </div>
 		                                            Reports
 		                                        </h1>
 		                                    </div>
-		                                    
+		                                     <button
+	                                        	class="btn btn-sm btn-light active mr-3 center_div card-button popup-modal" 
+	                                        	id="monthly-reportTutorial"  title="Tutorial" href="#tutorialPopup" 
+												style="background-color:<%=bckColor %>; "><i class="fas fa-video"></i></button>
 		                                </div>
+		                                
+		                                <div id="tutorialPopup" class="mfp-hide embed-responsive embed-responsive-21by9">
+									      <iframe class="embed-responsive-item" width="854" height="480" src="https://www.youtube.com/embed/qN3OueBm9F4" 
+									      frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+									    </div>
 		                            </div>
 		                        </div>
 		                        <hr style="margin: 0rem;">
@@ -429,6 +437,13 @@
 
 
 <script type="text/javascript">
+$(document).ready(function() {
+    $('#monthly-reportTutorial').magnificPopup({
+        type:'inline',
+        midClick: true
+      });
+});
+
 $("#datepicker").datepicker( {
     format: "MM-yyyy",
     startView: "months", 

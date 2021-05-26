@@ -147,7 +147,7 @@
                     <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
                         <div class="container-fluid">
                             <div class="page-header-content">
-                                <div class="row align-items-center justify-content-between pt-3">
+                                <div class="row align-items-center justify-content-between" style="height: 4rem;">
                                     <div class="col-auto mb-3">
                                         <h1 class="page-header-title" style="color: <%=bckColor %>; font-weight: bold;font-size: x-large;">
                                             <div class="page-header-icon">
@@ -164,8 +164,17 @@
                                         <button 
                                         data-toggle="modal" data-target="#taskModelLg"
                                         class="btn btn-sm btn-light active mr-3 center_div card-button"
-											style="background-color:<%=bckColor %>; "><i class="fas fa-plus"></i>&nbsp;Create a New Task</button>
+											style="background-color:<%=bckColor %>; "><i class="fas fa-plus"></i>&nbsp;Create New Task</button>
+                                    	<button
+                                        class="btn btn-sm btn-light active mr-3 center_div card-button popup-modal" 
+                                        	id="tasksTutorial"  title="Tutorial" href="#tutorialPopup" 
+											style="background-color:<%=bckColor %>; "><i class="fas fa-video"></i></button>
                                     </div>
+                                    
+                                    <div id="tutorialPopup" class="mfp-hide embed-responsive embed-responsive-21by9">
+								      <iframe class="embed-responsive-item" width="854" height="480" src="https://www.youtube.com/embed/qN3OueBm9F4" 
+								      frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+								    </div>
                                 </div>
                             </div>
                         </div>
@@ -1113,6 +1122,10 @@
     $(document).ready(function() {
         $('#teamMemberSelect').multiselect();
         $('#projectTeam').multiselect();
+        $('#tasksTutorial').magnificPopup({
+            type:'inline',
+            midClick: true
+         });
         // hidden
         document.getElementById("tableMyTeamTasks").style.display = "none";
     });
