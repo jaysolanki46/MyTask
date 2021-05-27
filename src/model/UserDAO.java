@@ -56,4 +56,23 @@ public class UserDAO {
         }
 		return true;
 	}
+	
+	public ResultSet getUserDetails(User user) throws ClassNotFoundException {
+		
+		try {
+			new DBConfig();
+			cnn = DBConfig.connection();
+        	
+			PreparedStatement preparedStatement = cnn
+					.prepareStatement("select * from users where id = ?");
+			preparedStatement.setInt(1, user.getId());
+
+			System.out.println(preparedStatement);
+			rs = preparedStatement.executeQuery();
+            
+        } catch (SQLException e) {
+           	e.printStackTrace();
+        }
+		return rs;
+	}
 }

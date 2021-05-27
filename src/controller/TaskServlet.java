@@ -18,14 +18,17 @@ import bean.Project;
 import bean.ProjectTeam;
 import bean.Task;
 import bean.User;
+import config.Email;
 import model.ProjectDAO;
 import model.TaskDAO;
+import model.UserDAO;
 
 @WebServlet("/TaskServlet")
 public class TaskServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private boolean isInsert, isUpdate;
 	private TaskDAO taskDAO;
+	private UserDAO userDAO;
 	private HttpSession session;
 	
     public TaskServlet() {
@@ -33,6 +36,7 @@ public class TaskServlet extends HttpServlet {
         isInsert = false;
         isUpdate = false;
         taskDAO = new TaskDAO();
+        userDAO = new UserDAO();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -66,8 +70,13 @@ public class TaskServlet extends HttpServlet {
 			task.setUpdatedBy(new User(Integer.valueOf(session.getAttribute("userId").toString())));
 			
 			isInsert = taskDAO.insert(task);
-			if(isInsert) session.setAttribute("status", "insert");
-			else session.setAttribute("status", "error");
+			if(isInsert) {
+				ResultSet rsUser = userDAO.getUserDetails(task.getTeam_member());
+				if(rsUser.next()) new Email().sendEmail(rsUser.getString("email"), rsUser.getString("name"), session.getAttribute("userName").toString(), request.getParameter("projectName"), task);
+				session.setAttribute("status", "insert");
+			} else {
+				session.setAttribute("status", "error");
+			}
 			
 			response.sendRedirect("./Views/tasks.jsp?project=" + Base64.getEncoder().encodeToString(request.getParameter("hiddenProjectId").getBytes()));
 			

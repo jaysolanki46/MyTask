@@ -187,9 +187,11 @@
                         	<div class="modal fade" id="taskModelLg" tabindex="-1" role="dialog" aria-labelledby="taskModelLg" aria-hidden="true">
 							    <div class="modal-dialog modal-lg" role="document">
 							    	<form id="taskForm" action="<%=request.getContextPath()%>/TaskServlet" method="post">
+							    	<!-- hidden projectName/Project Name, so we can use while we send email -->
+							    	<input type="hidden" name="projectName" value="<%=rs.getString("name") %>" />
 							        <div class="modal-content">
 							            <div class="modal-header">
-							                <h5 class="modal-title">Create a new task</h5>
+							                <h5 class="modal-title">Create new task</h5>
 							                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 							            </div>
 							            <div class="modal-body">
