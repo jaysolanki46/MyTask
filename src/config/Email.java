@@ -43,9 +43,15 @@ public class Email {
                 });
 	}
 	
-	public boolean sendEmail(String recipient, String assignedTo, String assignedBy, String projectName, Task task) {
+	public boolean sendEmail(String recipient, String oldAssignedTo, String assignedTo, String assignedBy, String projectName, Task task) {
 		
 		 try {
+			 	
+			   String assigneeRow = "";
+			   
+			   if(oldAssignedTo == null) assigneeRow = assignedTo;
+			   else assigneeRow = oldAssignedTo + " -> " + assignedTo;
+			 
 	           Message message = new MimeMessage(session);
 
 	           message.setFrom(new InternetAddress(username, assignedBy));
@@ -78,7 +84,7 @@ public class Email {
 	           		"</tr>\r\n" + 
 	           		"<tr style=\"height: 18px;\">\r\n" + 
 	           		"<td style=\"width: 17.9394%; height: 18px; text-align: justify; line-height: 1.5;\" valign=\"top\"><strong>Assignee</strong></td>\r\n" + 
-	           		"<td style=\"width: 69.1556%; height: 18px; line-height: 1.5; text-align: left;\" valign=\"top\">"+ assignedTo +"</td>\r\n" + 
+	           		"<td style=\"width: 69.1556%; height: 18px; line-height: 1.5; text-align: left;\" valign=\"top\">"+ assigneeRow + "</td>\r\n" + 
 	           		"</tr>\r\n" + 
 	           		"<tr style=\"height: 18px;\">\r\n" + 
 	           		"<td style=\"width: 17.9394%; height: 18px; text-align: justify; line-height: 1.5;\" valign=\"top\"><strong>Assigneed By</strong></td>\r\n" + 

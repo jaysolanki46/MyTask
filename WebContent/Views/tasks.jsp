@@ -505,7 +505,7 @@
 																		    <div class="col">
 																			    <div class="form-group">
 																			        <label for="departmentSelect">Project </label>
-																			        <input style="height: fit-content;" class="form-control" type="text" value="<%=rs.getString("name") %>" readonly="readonly">
+																			        <input style="height: fit-content;" class="form-control" name="projectName" type="text" value="<%=rs.getString("name") %>" readonly="readonly">
 																			        <input style="height: fit-content;" class="form-control" id="hiddenProjectId" name="hiddenProjectId" type="hidden" value="<%=projectId %>">
 																			    </div>
 																		    </div>
@@ -513,6 +513,7 @@
 																	    <div class="row">
 													                		<div class="col">
 																			    <div class="form-group">
+																			    	<input type="hidden" name="hiddenOldTeamMember" value="<%=rsTask.getInt("team_member") %>">
 																			        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
 																			        <select class="form-control" id="editTaskTeamMember" name="teamMember">
 																			        	<option value="0">Select member...</option>

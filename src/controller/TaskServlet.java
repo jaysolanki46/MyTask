@@ -72,7 +72,7 @@ public class TaskServlet extends HttpServlet {
 			isInsert = taskDAO.insert(task);
 			if(isInsert) {
 				ResultSet rsUser = userDAO.getUserDetails(task.getTeam_member());
-				if(rsUser.next()) new Email().sendEmail(rsUser.getString("email"), rsUser.getString("name"), session.getAttribute("userName").toString(), request.getParameter("projectName"), task);
+				if(rsUser.next()) new Email().sendEmail(rsUser.getString("email"), null, rsUser.getString("name"), session.getAttribute("userName").toString(), request.getParameter("projectName"), task);
 				session.setAttribute("status", "insert");
 			} else {
 				session.setAttribute("status", "error");
@@ -91,6 +91,7 @@ public class TaskServlet extends HttpServlet {
 		
 		try {
 			session = request.getSession();
+			Integer hiddenOldTeamMember = Integer.valueOf(request.getParameter("hiddenOldTeamMember"));
 			
 			Task task = new Task();
 			task.setId(Integer.valueOf(request.getParameter("hiddenTaskId")));
@@ -103,8 +104,18 @@ public class TaskServlet extends HttpServlet {
 			task.setUpdatedBy(new User(Integer.valueOf(session.getAttribute("userId").toString())));
 			
 			isUpdate = taskDAO.update(task);
-			if(isUpdate) session.setAttribute("status", "update");
-			else session.setAttribute("status", "error");
+			if(isUpdate) {
+				
+				if(hiddenOldTeamMember != task.getTeam_member().getId()) {
+					ResultSet rsOldUser = userDAO.getUserDetails(new User(hiddenOldTeamMember));
+					ResultSet rsUser = userDAO.getUserDetails(task.getTeam_member());
+					if(rsUser.next() && rsOldUser.next()) new Email().sendEmail(rsUser.getString("email"), rsOldUser.getString("name"), rsUser.getString("name"), session.getAttribute("userName").toString(), request.getParameter("projectName"), task);
+				}
+				
+				session.setAttribute("status", "update");
+			} else {
+				session.setAttribute("status", "error");
+			}
 			
 			response.sendRedirect("./Views/tasks.jsp?project=" + Base64.getEncoder().encodeToString(request.getParameter("hiddenProjectId").getBytes()));
 			
