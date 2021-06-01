@@ -15,7 +15,7 @@ public class ProjectTeamDAO {
 	private static Connection cnn;
 	private static ResultSet rs;
 	
-	public boolean insert(ProjectTeam projectTeam) throws ClassNotFoundException {
+	public boolean insert(ProjectTeam projectTeam) throws ClassNotFoundException, SQLException {
 		
 		try {
 			
@@ -36,11 +36,13 @@ public class ProjectTeamDAO {
         } catch (SQLException e) {
            	e.printStackTrace();
            	return false;
-        }
+        } finally {
+			cnn.close();
+		}
 		return true;
 	}
 	
-	public boolean resetProjectTeam(Project project) throws ClassNotFoundException {
+	public boolean resetProjectTeam(Project project) throws ClassNotFoundException, SQLException {
 		
 		try {
 			
@@ -58,7 +60,9 @@ public class ProjectTeamDAO {
         } catch (SQLException e) {
            	e.printStackTrace();
            	return false;
-        }
+        } finally {
+			cnn.close();
+		}
 		return true;
 	}
 }

@@ -39,7 +39,7 @@ public class ProjectDAO {
 		return rs;
 	}
 	
-	public ResultSet update(Project project) throws ClassNotFoundException {
+	public ResultSet update(Project project) throws ClassNotFoundException, SQLException {
 		
 		try {
 			
@@ -61,9 +61,11 @@ public class ProjectDAO {
             
             rs = preparedStatement.getGeneratedKeys();
             
-        } catch (SQLException e) {
+        } catch (Exception e) {
            	e.printStackTrace();
-        }
+        } finally {
+			cnn.close();
+		}
 		return rs;
 	}
 }

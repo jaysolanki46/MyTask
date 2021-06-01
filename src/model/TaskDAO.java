@@ -13,7 +13,7 @@ public class TaskDAO {
 	private static Connection cnn;
 	private static ResultSet rs;
 	
-	public boolean insert(Task task) throws ClassNotFoundException {
+	public boolean insert(Task task) throws ClassNotFoundException, SQLException {
 		
 		try {
 			
@@ -42,11 +42,13 @@ public class TaskDAO {
         } catch (SQLException e) {
            	e.printStackTrace();
            	return false;
-        }
+        } finally {
+			cnn.close();
+		}
 		return true;
 	}
 	
-	public boolean updateTaskPercentage(Task task) {
+	public boolean updateTaskPercentage(Task task) throws SQLException {
 		
 		try {
 			new DBConfig();
@@ -68,11 +70,13 @@ public class TaskDAO {
         } catch (Exception e) {
            	e.printStackTrace();
            	return false;
-        }
+        } finally {
+			cnn.close();
+		}
 		return true;
 	}
 
-	public boolean update(Task task) throws ClassNotFoundException {
+	public boolean update(Task task) throws ClassNotFoundException, SQLException {
 		
 		try {
 			
@@ -101,7 +105,9 @@ public class TaskDAO {
         } catch (SQLException e) {
            	e.printStackTrace();
            	return false;
-        }
+        } finally {
+			cnn.close();
+		}
 		return true;
 	}
 }

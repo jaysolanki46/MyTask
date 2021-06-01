@@ -9,7 +9,7 @@ public class UserDAO {
 	private static Connection cnn;
 	private static ResultSet rs;
 	
-	public static ResultSet authenticate(User user) throws ClassNotFoundException {
+	public static ResultSet authenticate(User user) throws ClassNotFoundException, SQLException {
 		
 		try {
 			
@@ -26,11 +26,13 @@ public class UserDAO {
             
         } catch (SQLException e) {
            	e.printStackTrace();
-        }
+        } finally {
+			cnn.close();
+		}
 		return rs;
 	}
 	
-	public boolean update(User user) throws ClassNotFoundException {
+	public boolean update(User user) throws ClassNotFoundException, SQLException {
 		
 		try {
         	
@@ -53,11 +55,13 @@ public class UserDAO {
         } catch (SQLException e) {
            	e.printStackTrace();
            	return false;
-        }
+        } finally {
+			cnn.close();
+		}
 		return true;
 	}
 	
-	public ResultSet getUserDetails(User user) throws ClassNotFoundException {
+	public ResultSet getUserDetails(User user) throws ClassNotFoundException, SQLException {
 		
 		try {
 			new DBConfig();
@@ -72,7 +76,9 @@ public class UserDAO {
             
         } catch (SQLException e) {
            	e.printStackTrace();
-        }
+        } finally {
+			cnn.close();
+		}
 		return rs;
 	}
 }
