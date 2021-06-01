@@ -117,7 +117,7 @@
 							    <div class="modal-dialog modal-lg" role="document">
 							        <div class="modal-content">
 							            <div class="modal-header">
-							                <h5 class="modal-title">Create a new project</h5>
+							                <h5 class="modal-title">Create new project</h5>
 							                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 							            </div>
 							            <form id="projectForm" action="<%=request.getContextPath()%>/ProjectServlet" method="post">
@@ -127,12 +127,12 @@
 													    <div class="form-group">
 														    <label for="projectNameInput">Project name <span style="color: red;">*</span></label>
 														    <input style="height: fit-content;" class="form-control" id="projectName" name="projectName" 
-														    type="text" placeholder="Ex. IKR Project">
+														    type="text" placeholder="Ex. IKR Project" required pattern=".*\S+.*" title="This field is required">
 													    </div>
 												    </div>
 												    <div class="col">
 													    <div class="form-group">
-													        <label for="departmentSelect">Department <span style="color: red;">*</span></label>
+													        <label for="departmentSelect">Department</label>
 													        <select style="height: fit-content;" class="form-control" id="projectDepartment" name="projectDepartment">
 													        <%
 													        	rs = st.executeQuery("SELECT * FROM departments where id = "+ userdepartment +" OR id = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +"");
@@ -155,7 +155,7 @@
 															<label for="teamMemberSelect">Team members <span
 																style="color: red;">*</span></label><br /> <select
 																style="height: fit-content;" class="form-control"
-																id="projectTeam" name="projectTeam" multiple="multiple">
+																id="projectTeam" name="projectTeam" multiple="multiple" required>
 																<%
 																rs = st.executeQuery("SELECT * FROM users where department = " + userdepartment + " and active = "
 																		+ SKYZERUSERACTIVE.TRUE.getValue() + "");
@@ -182,13 +182,10 @@
 												</div>
 											</div>
 							            <div class="modal-footer">
-							            	<!-- <button type="submit" title="Save" class="btn btn-sm btn-light active mr-3 center_div card-button"
+							            	<button type="submit" title="Save" class="btn btn-sm btn-light active mr-3 center_div card-button"
 												style="background-color:<%=bckColor %>;">
 							            		<i class="fas fa-save"></i>&nbsp; Save
-							            	</button> -->
-							            	<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
-												style="background-color:<%=bckColor %>;" title="Save" onclick="validateProjectForm()" value="Save">
-						
+							            	</button>
 							            </div>
 							            </form>
 							        </div>

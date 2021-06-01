@@ -209,7 +209,8 @@
 							                		<div class="col">
 													    <div class="form-group">
 														    <label for="projectNameInput">Task name <span style="color: red;">*</span></label>
-														    <input style="height: fit-content;" class="form-control" id="name" name="name" type="text" placeholder="Ex. IKR Project">
+														    <input style="height: fit-content;" class="form-control" id="name" name="name" type="text" placeholder="Ex. IKR Project"
+														    required pattern=".*\S+.*" title="This field is required">
 													    </div>
 												    </div>
 												    <div class="col">
@@ -224,8 +225,8 @@
 							                		<div class="col">
 													    <div class="form-group">
 													        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
-													        <select class="form-control" id="teamMember" name="teamMember">
-													        	<option value="0">Select member...</option>
+													        <select class="form-control" id="teamMember" name="teamMember" required>
+													        	<option value="">Select member...</option>
 													        <%
 													        	rsNested = stNested.executeQuery("SELECT * FROM project_team where project = "+ projectId +"");
 													        	List<Integer> projectTeamMemberList = new ArrayList<Integer>();
@@ -261,8 +262,7 @@
 							            <div class="modal-footer">
 							            	<button type="submit" title="Search"
 											class="btn btn-sm btn-light active mr-3 center_div card-button"
-											style="background-color:<%=bckColor %>; "
-											onclick="this.form.submit();">
+											style="background-color:<%=bckColor %>; ">
 											<i class="fas fa-save"></i>&nbsp; Save</button>
 							            </div>
 							        </div>
@@ -286,14 +286,15 @@
 													    <div class="form-group">
 														    <label for="projectNameInput">Project name <span style="color: red;">*</span></label>
 														    <input style="height: fit-content;" class="form-control" id="projectName" 
-														    	name="projectName" type="text" placeholder="Ex. IKR Project" value="<%=rs.getString("name") %>">
+														    	name="projectName" type="text" placeholder="Ex. IKR Project" value="<%=rs.getString("name") %>"
+														    	required pattern=".*\S+.*" title="This field is required">
 														    <input style="height: fit-content;" class="form-control" id="editProjectId" 
 														    	name="editProjectId" type="hidden" value="<%=projectId %>">
 													    </div>
 												    </div>
 												    <div class="col">
 													    <div class="form-group">
-													        <label for="departmentSelect">Department <span style="color: red;">*</span></label>
+													        <label for="departmentSelect">Department</label>
 													        <select style="height: fit-content;" class="form-control" id="projectDepartment" name="projectDepartment">
 													        <%
 													        	rsNested = stNested .executeQuery("SELECT * FROM departments where id = "+ userdepartment +" OR id = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +"");
@@ -318,7 +319,7 @@
 											    </div>
 											    <div class="form-group">
 											        <label for="teamMemberSelect">Team members <span style="color: red;">*</span></label><br/>
-											        <select style="height: fit-content;" class="form-control" id="projectTeam" name="projectTeam" multiple="multiple">
+											        <select style="height: fit-content;" class="form-control" id="projectTeam" name="projectTeam" multiple="multiple" required>
 											           <%
 													        	rsNested = stNested.executeQuery("SELECT * FROM users");
 													        
@@ -349,8 +350,7 @@
 							            <div class="modal-footer">
 							            	<button type="submit" title="Save"
 											class="btn btn-sm btn-light active mr-3 center_div card-button"
-											style="background-color:<%=bckColor %>; "
-											onclick="this.form.submit();">
+											style="background-color:<%=bckColor %>;">
 											<i class="fas fa-save"></i>&nbsp; Save</button>
 							            </div>
 							            </form>
@@ -375,11 +375,12 @@
 												<div class="modal-body">
 													<div class="row">
 													<div class="col-md-12">
-														<label for="userEmail">Task</label>
+														<label for="userEmail">Task<span
+																	style="color: red;">*</span></label>
 														<!-- To make use same insert method gave select name="hiddenTaskId", however, it is not hidden at all-->
 														<input type="hidden" id="hiddenProjectId" name="hiddenProjectId" value=<%=projectId %> class="form-control">
-														<select class="form-control" id="hiddenTaskId" name="hiddenTaskId">
-																<option value="0">Select a task...</option>
+														<select class="form-control" id="hiddenTaskId" name="hiddenTaskId" required>
+																<option value="">Select a task...</option>
 														        <%
 														        	rsNested = stNested.executeQuery("SELECT * FROM tasks where project = "+ projectId +"  AND team_member = "+ userid +"");
 													        		while(rsNested.next()) {
@@ -391,22 +392,22 @@
 													</div>
 													<div class="row">
 														<div class="col-md-6">
-															<label for="taskDetailDate">Date</label>
+															<label for="taskDetailDate">Date<span
+																	style="color: red;">*</span></label>
 															<input type="date" id="taskDetailDate" name="taskDetailDate" 
-																max="31-12-3000" min="01-01-1000" class="form-control">
+																max="31-12-3000" min="01-01-1000" class="form-control" required>
 														</div>
 														<div class="col-md-3">
-															<label for="departmentSelect">Hours <span
-																	style="color: red;">*</span></label> 
+															<label for="departmentSelect">Hours </label> 
 																<input class="form-control" type="number" min="0" max="12"
-																	value="0" id="customTaskDetailHours"
-																	name="taskDetailHours">
+																	 id="customTaskDetailHours"
+																	name="taskDetailHours" required>
 														</div>
 														<div class="col-md-3">
 															<label for="percentage">Percentage %</label> 
 															<input class="form-control" type="number" min="0" max="100"
 																	value="0" id="customPercentage"
-																	name="percentage">
+																	name="percentage" required>
 														</div>
 													</div>	
 													<div class="row">
@@ -423,8 +424,7 @@
 												<div class="modal-footer">
 													<button type="submit" title="Search"
 																	class="btn btn-sm btn-light active mr-3 center_div card-button"
-																	style="background-color:<%=bckColor %>; "
-																	onclick="this.form.submit();">
+																	style="background-color:<%=bckColor %>; ">
 																	<i class="fas fa-save"></i>&nbsp; Save</button>
 												</div>
 											</div>
@@ -508,7 +508,9 @@
 													                		<div class="col">
 																			    <div class="form-group">
 																				    <label for="projectNameInput">Task name <span style="color: red;">*</span></label>
-																				    <input style="height: fit-content;" class="form-control" id="editTaskName" name="name" type="text" placeholder="Ex. IKR Project" value="<%=name %>">
+																				    <input style="height: fit-content;" class="form-control" id="editTaskName" 
+																				    name="name" type="text" placeholder="Ex. IKR Project" value="<%=name %>"
+																				    required pattern=".*\S+.*" title="This field is required">
 																			    </div>
 																		    </div>
 																		    <div class="col">
@@ -524,8 +526,8 @@
 																			    <div class="form-group">
 																			    	<input type="hidden" name="hiddenOldTeamMember" value="<%=rsTask.getInt("team_member") %>">
 																			        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
-																			        <select class="form-control" id="editTaskTeamMember" name="teamMember">
-																			        	<option value="0">Select member...</option>
+																			        <select class="form-control" id="editTaskTeamMember" name="teamMember" required>
+																			        	<option value="">Select member...</option>
 																			        <%
 																			        	rsNested = stNested.executeQuery("SELECT * FROM project_team where project = "+ projectId +"");
 																			        	projectTeamMemberList = new ArrayList<Integer>();
@@ -554,7 +556,7 @@
 																			    <div class="form-group">
 																					<label for="taskDueDate">Due Date</label>
 																					<input type="date" id="editTaskDueDate" name="taskDueDate" 
-																						max="31-12-3000" min="01-01-1000" class="form-control" 
+																						max="31-12-3000" min="01-01-1000" class="form-control" required
 																						<% if(rsTask.getString("due_date") != null) {%>
 																							value=<%=rsTask.getString("due_date") %>
 																						<% } %>>
@@ -571,7 +573,7 @@
 													            	<button type="submit" title="Search"
 																	class="btn btn-sm btn-light active mr-3 center_div card-button"
 																	style="background-color:<%=bckColor %>; "
-																	onclick="this.form.submit();">
+																	>
 																	<i class="fas fa-save"></i>&nbsp; Save</button>
 													            </div>
 													        </div>
@@ -664,7 +666,7 @@
 																						    <div class="form-group" style="text-align: start;">
 																						        <label for="departmentSelect">Hours</label>
 																						        <input class="form-control" type="number" min="0" max="12" value=<%=taskHours %>
-																						         id="inlineTaskDetailHours" name="taskDetailHours">
+																						         id="inlineTaskDetailHours" name="taskDetailHours" required>
 																						    </div>
 																						    </div>
 																							 <div class="col-md-6">
@@ -672,7 +674,7 @@
 																								<label for="percentage">Percentage %</label> 
 																								<input class="form-control" type="number" min="0" max="100"
 																										value=<%=taskPercentage %> id="inlinePercentage"
-																										name="percentage">
+																										name="percentage" required>
 																								</div>
 																							</div>
 																				    </div>
@@ -703,9 +705,8 @@
 																            </div>
 																            	<button type="submit" title="Search"
 																					class="btn btn-sm btn-light active mr-3 center_div card-button"
-																					style="background-color:<%=bckColor %>; "
-																					onclick="this.form.submit();">
-																					&nbsp; Save</button>
+																					style="background-color:<%=bckColor %>; ">
+																					<i class="fas fa-save"></i>&nbsp; Save</button>
 																            </div>
 																        </div>
 																        </form>
@@ -835,7 +836,9 @@
 													                		<div class="col">
 																			    <div class="form-group">
 																				    <label for="projectNameInput">Task name <span style="color: red;">*</span></label>
-																				    <input style="height: fit-content;" class="form-control" id="name" name="name" type="text" placeholder="Ex. IKR Project" value="<%=name %>">
+																				    <input style="height: fit-content;" class="form-control" id="name" name="name" 
+																				    type="text" placeholder="Ex. IKR Project" value="<%=name %>"
+																				    required pattern=".*\S+.*" title="This field is required">
 																			    </div>
 																		    </div>
 																		    <div class="col">
@@ -851,8 +854,8 @@
 																			    <div class="form-group">
 																			    	<input type="hidden" name="hiddenOldTeamMember" value="<%=rsTask.getInt("team_member") %>">
 																			        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
-																			        <select class="form-control" id="teamMember" name="teamMember">
-																			        	<option>Select member...</option>
+																			        <select class="form-control" id="teamMember" name="teamMember" required>
+																			        	<option value="">Select member...</option>
 																			        <%
 																			        	rsNested = stNested.executeQuery("SELECT * FROM project_team where project = "+ projectId +"");
 																			        	projectTeamMemberList = new ArrayList<Integer>();
@@ -881,7 +884,7 @@
 																			    <div class="form-group">
 																					<label for="taskDueDate">Due Date</label>
 																					<input type="date" id="taskDueDate" name="taskDueDate" 
-																						max="31-12-3000" min="01-01-1000" class="form-control" 
+																						max="31-12-3000" min="01-01-1000" class="form-control" required
 																						<% if(rsTask.getString("due_date") != null) {%>
 																							value=<%=rsTask.getString("due_date") %>
 																						<% } %>>
@@ -898,7 +901,7 @@
 													            	<button type="submit" title="Search"
 																	class="btn btn-sm btn-light active mr-3 center_div card-button"
 																	style="background-color:<%=bckColor %>; "
-																	onclick="this.form.submit();">
+																	>
 																	<i class="fas fa-save"></i>&nbsp; Save</button>	
 													            </div>
 													        </div>
@@ -1026,7 +1029,7 @@
 																            	<button type="submit" title="Search"
 																					class="btn btn-sm btn-light active mr-3 center_div card-button"
 																					style="background-color:<%=bckColor %>; "
-																					onclick="this.form.submit();">
+																					>
 																					<i class="fas fa-save"></i>&nbsp; Save</button>
 																            </div>
 																        </div>

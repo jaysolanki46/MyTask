@@ -15,7 +15,7 @@ public class TaskDetailDAO {
 	private PreparedStatement preparedStatement;
 	
 	@SuppressWarnings("resource")
-	public boolean insert(TaskDetail taskDetail) throws ClassNotFoundException {
+	public boolean insert(TaskDetail taskDetail) throws ClassNotFoundException, SQLException {
 		
 		try {
 			
@@ -61,9 +61,11 @@ public class TaskDetailDAO {
                 rs = preparedStatement.getGeneratedKeys();
             }
             
-        } catch (SQLException e) {
+        } catch (Exception e) {
            	e.printStackTrace();
            	return false;
+        } finally {
+        	cnn.close();
         }
 		return true;
 	}
