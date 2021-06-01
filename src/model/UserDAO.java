@@ -23,12 +23,9 @@ public class UserDAO {
 
 			System.out.println(preparedStatement);
 			rs = preparedStatement.executeQuery();
-            
         } catch (SQLException e) {
            	e.printStackTrace();
-        } finally {
-			cnn.close();
-		}
+        }
 		return rs;
 	}
 	
@@ -76,9 +73,7 @@ public class UserDAO {
             
         } catch (SQLException e) {
            	e.printStackTrace();
-        } finally {
-			cnn.close();
-		}
+        }
 		return rs;
 	}
 }

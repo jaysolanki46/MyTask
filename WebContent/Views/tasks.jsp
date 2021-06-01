@@ -1,6 +1,7 @@
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
+<%@page import="config.EnumMyTask.SKYZERUSERACTIVE"%>
 <%@page import="javafx.util.Pair"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" import="java.sql.*" %>
@@ -321,7 +322,8 @@
 											        <label for="teamMemberSelect">Team members <span style="color: red;">*</span></label><br/>
 											        <select style="height: fit-content;" class="form-control" id="projectTeam" name="projectTeam" multiple="multiple" required>
 											           <%
-													        	rsNested = stNested.executeQuery("SELECT * FROM users");
+													        	rsNested = stNested.executeQuery("SELECT * FROM users where department = " + userdepartment + " and active = "
+																		+ SKYZERUSERACTIVE.TRUE.getValue() + "");
 													        
 														        while(rsNested.next())
 															    {   
@@ -400,7 +402,7 @@
 														<div class="col-md-3">
 															<label for="departmentSelect">Hours </label> 
 																<input class="form-control" type="number" min="0" max="12"
-																	 id="customTaskDetailHours"
+																	value="0" id="customTaskDetailHours"
 																	name="taskDetailHours" required>
 														</div>
 														<div class="col-md-3">
@@ -556,7 +558,7 @@
 																			    <div class="form-group">
 																					<label for="taskDueDate">Due Date</label>
 																					<input type="date" id="editTaskDueDate" name="taskDueDate" 
-																						max="31-12-3000" min="01-01-1000" class="form-control" required
+																						max="31-12-3000" min="01-01-1000" class="form-control"
 																						<% if(rsTask.getString("due_date") != null) {%>
 																							value=<%=rsTask.getString("due_date") %>
 																						<% } %>>
@@ -884,7 +886,7 @@
 																			    <div class="form-group">
 																					<label for="taskDueDate">Due Date</label>
 																					<input type="date" id="taskDueDate" name="taskDueDate" 
-																						max="31-12-3000" min="01-01-1000" class="form-control" required
+																						max="31-12-3000" min="01-01-1000" class="form-control"
 																						<% if(rsTask.getString("due_date") != null) {%>
 																							value=<%=rsTask.getString("due_date") %>
 																						<% } %>>

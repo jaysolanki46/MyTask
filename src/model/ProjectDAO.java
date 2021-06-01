@@ -63,9 +63,8 @@ public class ProjectDAO {
             
         } catch (Exception e) {
            	e.printStackTrace();
-        } finally {
-			cnn.close();
-		}
+        }
+		
 		return rs;
 	}
 }

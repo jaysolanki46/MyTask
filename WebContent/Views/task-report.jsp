@@ -164,7 +164,7 @@
 									<div class="card-body" style="padding: 10px;">
 										<form class="form-inline" action="#" method="post">
 											<label class="col-sm-0 col-form-label" style="margin-left: 0.5rem;margin-right: 0.5rem;">Select a Task:</label> 
-											<select class="form-control col-sm-4" id="selectProject" name="selectProject">
+											<select class="form-control col-sm-4" id="selectProject" name="selectProject" required>
 												<option value="">Select a Task...</option>
 												<%
 													rs = st.executeQuery("select task.* from tasks task LEFT JOIN projects project ON project.id = task.project  where department = " + userdepartment + " OR department = " + SKYZERDEPARTMENTS.GENERAL.getValue() + "");
@@ -185,8 +185,7 @@
 										
 											<button type="submit" title="Search"
 											class="btn btn-sm btn-light active mr-3 center_div card-button"
-											style="background-color:<%=bckColor %>; "
-											onclick="this.form.submit();">
+											style="background-color:<%=bckColor %>; ">
 											<i class="fas fa-search"></i>&nbsp; Search</button>	
 										</form>
                             		</div>
