@@ -175,7 +175,7 @@
 									    <div class="modal-dialog modal-xl" role="document">
 									        <div class="modal-content" style="height: 40rem;">
 									            <div class="modal-header">
-									                <h5 class="modal-title">Project Tutorial</h5>
+									                <h5 class="modal-title">Task Tutorial</h5>
 									                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 									            </div>
 									            <div class="modal-body">
@@ -259,13 +259,11 @@
 												</div>
 											</div>
 							            <div class="modal-footer">
-							            	<!-- <button type="submit" title="Search"
+							            	<button type="submit" title="Search"
 											class="btn btn-sm btn-light active mr-3 center_div card-button"
 											style="background-color:<%=bckColor %>; "
 											onclick="this.form.submit();">
-											<i class="fas fa-save"></i>&nbsp; Save</button>	-->
-											<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
-												style="background-color:<%=bckColor %>;" title="Save" onclick="validateTaskForm()" value="Save">
+											<i class="fas fa-save"></i>&nbsp; Save</button>
 							            </div>
 							        </div>
 							        </form>
@@ -349,13 +347,11 @@
 											    </div>
 							            </div>
 							            <div class="modal-footer">
-							            	<!--  <button type="submit" title="Save"
+							            	<button type="submit" title="Save"
 											class="btn btn-sm btn-light active mr-3 center_div card-button"
 											style="background-color:<%=bckColor %>; "
 											onclick="this.form.submit();">
-											<i class="fas fa-save"></i>&nbsp; Save</button>	-->
-											<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
-												style="background-color:<%=bckColor %>;" title="Save" onclick="validateProjectForm()" value="Save">
+											<i class="fas fa-save"></i>&nbsp; Save</button>
 							            </div>
 							            </form>
 							        </div>
@@ -425,8 +421,11 @@
 													</div>
 												</div>
 												<div class="modal-footer">
-													<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
-														style="background-color:<%=bckColor %>;" title="Save" onclick="validateCustomTaskHoursForm()" value="Save">
+													<button type="submit" title="Search"
+																	class="btn btn-sm btn-light active mr-3 center_div card-button"
+																	style="background-color:<%=bckColor %>; "
+																	onclick="this.form.submit();">
+																	<i class="fas fa-save"></i>&nbsp; Save</button>
 												</div>
 											</div>
 										</form>
@@ -564,18 +563,16 @@
 																	</div>
 																		<div class="form-group">
 																			<label for="descriptionTextarea">Description</label>
-																			<textarea class="form-control" id="description" value="<%=rsTask.getString("description") %>"
-																				name="description" rows="4"></textarea>
+																			<textarea class="form-control" id="description"
+																				name="description" rows="4"><%=rsTask.getString("description") %></textarea>
 																		</div>
 																	</div>
 													            <div class="modal-footer">
-													            	<!-- <button type="submit" title="Search"
+													            	<button type="submit" title="Search"
 																	class="btn btn-sm btn-light active mr-3 center_div card-button"
 																	style="background-color:<%=bckColor %>; "
 																	onclick="this.form.submit();">
-																	<i class="fas fa-save"></i>&nbsp; Save</button>	-->
-																	<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
-																		style="background-color:<%=bckColor %>;" title="Save" onclick="validateEditTaskForm()" value="Save">
+																	<i class="fas fa-save"></i>&nbsp; Save</button>
 													            </div>
 													        </div>
 													        </form>
@@ -704,14 +701,11 @@
 																            <div class="modal-footer">
 																            <div style="margin-right: auto;margin-left: 0.5rem;">
 																            </div>
-																            	<!-- <button type="submit" title="Search"
+																            	<button type="submit" title="Search"
 																					class="btn btn-sm btn-light active mr-3 center_div card-button"
 																					style="background-color:<%=bckColor %>; "
 																					onclick="this.form.submit();">
-																					&nbsp; Save</button>-->
-																					<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
-																						onclick="validateUpdateTaskHoursForm()"
-																						style="background-color:<%=bckColor %>;" title="Save" value="Save">
+																					&nbsp; Save</button>
 																            </div>
 																        </div>
 																        </form>
@@ -855,6 +849,7 @@
 																	    <div class="row">
 													                		<div class="col">
 																			    <div class="form-group">
+																			    	<input type="hidden" name="hiddenOldTeamMember" value="<%=rsTask.getInt("team_member") %>">
 																			        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
 																			        <select class="form-control" id="teamMember" name="teamMember">
 																			        	<option>Select member...</option>
@@ -895,8 +890,8 @@
 																	</div>
 																		<div class="form-group">
 																			<label for="descriptionTextarea">Description</label>
-																			<textarea class="form-control" id="description" value="<%=rsTask.getString("description") %>"
-																				name="description" rows="4"></textarea>
+																			<textarea class="form-control" id="description"
+																				name="description" rows="4"><%=rsTask.getString("description") %></textarea>
 																		</div>
 																	</div>
 													            <div class="modal-footer">
@@ -1028,13 +1023,11 @@
 																				    <% 	} %>
 																            </div>
 																            <div class="modal-footer">
-																            	<!-- <button type="submit" title="Search"
+																            	<button type="submit" title="Search"
 																					class="btn btn-sm btn-light active mr-3 center_div card-button"
 																					style="background-color:<%=bckColor %>; "
 																					onclick="this.form.submit();">
-																					<i class="fas fa-save"></i>&nbsp; Save</button>	-->
-																					<input type="button" class="btn btn-sm btn-light active mr-3 center_div card-button"
-																						style="background-color:<%=bckColor %>;" title="Save" value="Save">
+																					<i class="fas fa-save"></i>&nbsp; Save</button>
 																            </div>
 																        </div>
 																        </form>

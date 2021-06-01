@@ -38,74 +38,109 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
-function validateTaskForm() {
-	var name = document.getElementById("name").value;
-	var assignee = document.getElementById("teamMember").value;
-	var taskDueDate = document.getElementById("taskDueDate").value;
+function validateNewTaskForm() {
+	var name = document.getElementById("newTaskName").value;
+	var assignee = document.getElementById("newTaskTeamMember").value;
+	var taskDueDate = document.getElementById("newTaskDueDate").value;
 	var todayDate = formatDate(new Date());
 
 	if (name.trim().length == 0) {
 		
 		//Remove
-		$('#teamMember').removeAttr('style');
-		$('#taskDueDate').removeAttr('style');
+		$('#newTaskTeamMember').removeAttr('style');
+		$('#newTaskDueDate').removeAttr('style');
 		
-		$('#name').focus();
-		$('#name').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
+		$('#newTaskName').focus();
+		$('#newTaskName').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
 		
 	} else if (assignee < 1) {
 		
 		//Remove
-		$('#name').removeAttr('style');
-		$('#taskDueDate').removeAttr('style');
+		$('#newTaskName').removeAttr('style');
+		$('#newTaskDueDate').removeAttr('style');
 		
-		$('#teamMember').focus();
-		$('#teamMember').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
+		$('#newTaskTeamMember').focus();
+		$('#newTaskTeamMember').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
 	} else if (taskDueDate < todayDate && taskDueDate != "") {
 		
 		//Remove
-		$('#teamMember').removeAttr('style');
-		$('#name').removeAttr('style');
+		$('#newTaskTeamMember').removeAttr('style');
+		$('#newTaskName').removeAttr('style');
 		
-		$('#taskDueDate').focus();
-		$('#taskDueDate').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
+		$('#newTaskDueDate').focus();
+		$('#newTaskDueDate').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
 	} else {
-		document.getElementById("taskForm").submit();
+		document.getElementById("newTaskForm").submit();
 	}
 }
 
-function validateEditTaskForm() {
-	var name = document.getElementById("editTaskName").value;
-	var assignee = document.getElementById("editTaskTeamMember").value;
-	var taskDueDate = document.getElementById("editTaskDueDate").value;
+function validateMyTaskEditTaskForm() {
+	var name = document.getElementById("myTaskEditTaskName").value;
+	var assignee = document.getElementById("myTaskEditTaskTeamMember").value;
+	var taskDueDate = document.getElementById("myTaskEditTaskDueDate").value;
 	var todayDate = formatDate(new Date());
 
 	if (name.trim().length == 0) {
 		
 		//Remove
-		$('#editTaskTeamMember').removeAttr('style');
-		$('#editTaskDueDate').removeAttr('style');
+		$('#myTaskEditTaskTeamMember').removeAttr('style');
+		$('#myTaskEditTaskDueDate').removeAttr('style');
 		
-		$('#editTaskName').focus();
-		$('#editTaskName').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
+		$('#myTaskEditTaskName').focus();
+		$('#myTaskEditTaskName').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
 	} else if (assignee < 1) {
 		
 		//Remove
-		$('#editTaskName').removeAttr('style');
-		$('#editTaskDueDate').removeAttr('style');
+		$('#myTaskEditTaskName').removeAttr('style');
+		$('#myTaskEditTaskDueDate').removeAttr('style');
 		
-		$('#editTaskTeamMember').focus();
-		$('#editTaskTeamMember').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
+		$('#myTaskEditTaskTeamMember').focus();
+		$('#myTaskEditTaskTeamMember').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
 	} else if (taskDueDate < todayDate && taskDueDate != "") {
 		
 		//Remove
-		$('#editTaskName').removeAttr('style');
-		$('#editTaskTeamMember').removeAttr('style');
+		$('#myTaskEditTaskName').removeAttr('style');
+		$('#myTaskEditTaskTeamMember').removeAttr('style');
 		
-		$('#editTaskDueDate').focus();
-		$('#editTaskDueDate').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
+		$('#myTaskEditTaskDueDate').focus();
+		$('#myTaskEditTaskDueDate').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
 	} else {
-		document.getElementById("editTaskForm").submit();
+		document.getElementById("myTaskEditTaskForm").submit();
+	}
+}
+
+function validateMyTeamTaskEditTaskForm() {
+	var name = document.getElementById("myTeamTaskEditTaskName").value;
+	var assignee = document.getElementById("myTeamTaskEditTaskTeamMember").value;
+	var taskDueDate = document.getElementById("myTeamTaskEditTaskDueDate").value;
+	var todayDate = formatDate(new Date());
+
+	if (name.trim().length == 0) {
+		
+		//Remove
+		$('#myTeamTaskEditTaskTeamMember').removeAttr('style');
+		$('#myTeamTaskEditTaskDueDate').removeAttr('style');
+		
+		$('#myTeamTaskEditTaskName').focus();
+		$('#myTeamTaskEditTaskName').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
+	} else if (assignee < 1) {
+		
+		//Remove
+		$('#myTeamTaskEditTaskName').removeAttr('style');
+		$('#myTeamTaskEditTaskDueDate').removeAttr('style');
+		
+		$('#myTeamTaskEditTaskTeamMember').focus();
+		$('#myTeamTaskEditTaskTeamMember').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
+	} else if (taskDueDate < todayDate && taskDueDate != "") {
+		
+		//Remove
+		$('#myTeamTaskEditTaskName').removeAttr('style');
+		$('#myTeamTaskEditTaskTeamMember').removeAttr('style');
+		
+		$('#myTeamTaskEditTaskDueDate').focus();
+		$('#myTeamTaskEditTaskDueDate').attr('style', "border-radius: 5px; border:#FF0000 1px solid;");
+	} else {
+		document.getElementById("myTeamTaskEditTaskForm").submit();
 	}
 }
 
