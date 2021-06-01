@@ -72,10 +72,27 @@
                                             Profile
                                         </h1>
                                     </div>
-                                     <button
-                                       		 class="btn btn-sm btn-light active mr-3 center_div card-button" title="Tutorial"
-												style="background-color:<%=bckColor %>; "><i class="fas fa-video"></i></button>
+                                    <button
+                                        class="btn btn-sm btn-light active mr-3 center_div card-button popup-modal" 
+                                        	id="projectsTutorial"  title="Tutorial"  data-toggle="modal" data-target="#tutorialPopup"
+											style="background-color:<%=bckColor %>; "><i class="fas fa-video"></i></button>
+
                                 </div>
+                                
+                                <div class="modal fade" id="tutorialPopup" tabindex="-1" role="dialog" aria-labelledby="tutorialPopupLbl" style="display: none;" aria-hidden="true">
+									    <div class="modal-dialog modal-xl" role="document">
+									        <div class="modal-content" style="height: 40rem;">
+									            <div class="modal-header">
+									                <h5 class="modal-title">Project Tutorial</h5>
+									                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+									            </div>
+									            <div class="modal-body">
+									                <iframe height="100%" width="100%" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+									            </div>
+									        </div>
+									    </div>
+									</div>
+                                
                             </div>
                         </div>
                     </header>
@@ -207,10 +224,6 @@
 } %>
 
 <script type="text/javascript">
-
-    $(document).ready(function() {
-    });
-    
     function showPassword() {
     	  var inputPassword = document.getElementById("userPassword");
     	  if (inputPassword.type === "password") {

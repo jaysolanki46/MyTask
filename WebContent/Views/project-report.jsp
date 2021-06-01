@@ -123,15 +123,24 @@
 		                                        </h1>
 		                                    </div>
 		                                    <button
-	                                        	class="btn btn-sm btn-light active mr-3 center_div card-button popup-modal" 
-	                                        	id="project-reportTutorial"  title="Tutorial" href="#tutorialPopup" 
+	                                        class="btn btn-sm btn-light active mr-3 center_div card-button popup-modal" 
+	                                        	id="projectsTutorial"  title="Tutorial"  data-toggle="modal" data-target="#tutorialPopup"
 												style="background-color:<%=bckColor %>; "><i class="fas fa-video"></i></button>
 		                                </div>
 		                                
-		                                <div id="tutorialPopup" class="mfp-hide embed-responsive embed-responsive-21by9">
-									      <iframe class="embed-responsive-item" width="854" height="480" src="https://www.youtube.com/embed/qN3OueBm9F4" 
-									      frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-									    </div>
+		                                <div class="modal fade" id="tutorialPopup" tabindex="-1" role="dialog" aria-labelledby="tutorialPopupLbl" style="display: none;" aria-hidden="true">
+										    <div class="modal-dialog modal-xl" role="document">
+										        <div class="modal-content" style="height: 40rem;">
+										            <div class="modal-header">
+										                <h5 class="modal-title">Project Tutorial</h5>
+										                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+										            </div>
+										            <div class="modal-body">
+										                <iframe height="100%" width="100%" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+										            </div>
+										        </div>
+										    </div>
+										</div>
 									    
 		                            </div>
 		                        </div>
@@ -455,12 +464,6 @@
 
 
 <script type="text/javascript">
-$(document).ready(function() {
-    $('#project-reportTutorial').magnificPopup({
-        type:'inline',
-        midClick: true
-      });
-});
 
 $("#datepicker").datepicker( {
     format: "MM-yyyy",

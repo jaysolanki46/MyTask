@@ -459,13 +459,3 @@ th, td {
 .table100.ver6 .row100 td:hover {
   background-color: rgba(255,255,255,0.2);
 }
-
-#headerPopup{
-  width:75%;
-  margin:0 auto;
-}
-
-#headerPopup iframe{
-  width:100%;
-  margin:0 auto;
-}

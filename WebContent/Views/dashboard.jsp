@@ -150,7 +150,6 @@
 
                 <!-- Begin Page Content -->
                 <div id="layoutSidenav_content">
-                <form action="<%=request.getContextPath()%>/Views/dashboard.jsp" method="post">
                 <main>
                     <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
                         <div class="container-fluid">
@@ -167,14 +166,23 @@
                                     <div class="col-12 col-xl-auto mb-3">
 										<button
                                         class="btn btn-sm btn-light active mr-3 center_div card-button popup-modal" 
-                                        	id="dashboardTutorial"  title="Tutorial" href="#tutorialPopup" 
+                                        	id="dashboardTutorial"  title="Tutorial"  data-toggle="modal" data-target="#tutorialPopup"
 											style="background-color:<%=bckColor %>; "><i class="fas fa-video"></i></button>
                                     </div>
                                     
-                                    <div id="tutorialPopup" class="mfp-hide embed-responsive embed-responsive-21by9">
-								      <iframe class="embed-responsive-item" width="854" height="480" src="https://www.youtube.com/embed/qN3OueBm9F4" 
-								      frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-								    </div>
+                                   <div class="modal fade" id="tutorialPopup" tabindex="-1" role="dialog" aria-labelledby="tutorialPopupLbl" style="display: none;" aria-hidden="true">
+									    <div class="modal-dialog modal-xl" role="document">
+									        <div class="modal-content" style="height: 40rem;">
+									            <div class="modal-header">
+									                <h5 class="modal-title">Project Tutorial</h5>
+									                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+									            </div>
+									            <div class="modal-body">
+									                <iframe height="100%" width="100%" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+									            </div>
+									        </div> 
+									    </div>
+									</div>
       
                                 </div>
                             </div>
@@ -182,6 +190,7 @@
                     </header>
                     <!-- Main page content-->
                     <div class="container">
+                    <form action="<%=request.getContextPath()%>/Views/dashboard.jsp" method="post">
                         <div class="row">
                         	<!-- Begin Pie Chart -->
                         	<div class="col-xl-4 mb-4">
@@ -310,10 +319,11 @@
                             </div>
                             <!-- End Line Chart -->
                     	</div>
+                    	</form>
                     </div>
                     
                 </main>
-            	</form>
+            	
             </div>
                
 				<!-- End if Page Content -->
@@ -338,24 +348,17 @@
 <!-- Alert Status -->
 <%@include  file="../alert.html" %>
 <!-- Alert Status -->
+<!-- Charts -->
+<script src="../vendor/charts/pie-chart.js"></script>
+<script src="../vendor/charts/bar-chart.js"></script>
+<script src="../vendor/charts/line-chart.js"></script>
+
 </body>
 <% 
 } catch (Exception e) {
 	e.printStackTrace();
 } %>
 
-<!-- Charts -->
-<script src="../vendor/charts/pie-chart.js"></script>
-<script src="../vendor/charts/bar-chart.js"></script>
-<script src="../vendor/charts/line-chart.js"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#dashboardTutorial').magnificPopup({
-            type:'inline',
-            midClick: true
-          });
-    });
-</script>
 </html>
 
 
