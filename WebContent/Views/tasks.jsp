@@ -250,7 +250,7 @@
 													    <div class="form-group">
 															<label for="taskDueDate">Due Date</label>
 															<input type="date" id="taskDueDate" name="taskDueDate" 
-																max="31-12-3000" min="01-01-1000" class="form-control">
+																max="31-12-3000" min="01-01-2021" class="form-control">
 													    </div>
 													  </div>
 											</div>

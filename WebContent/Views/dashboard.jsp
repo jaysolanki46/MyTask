@@ -2,7 +2,7 @@
 <%@ page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
 <%@ page import="java.util.*"%>
 <%@ page language="java" import="java.text.SimpleDateFormat"%>
-<%@ page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
+<%@ page import="config.EnumMyTask.SKYZERTASKPROGESS"%>
 <%@ page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@ page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@ page import="config.EnumMyTask.SKYZERUSERACTIVE"%>

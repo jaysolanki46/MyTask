@@ -62,12 +62,12 @@ public class EnumMyTask {
 		}
 	}
 	
-	public enum SKYZERTASKSTATUS {
+	public enum SKYZERTASKPROGESS {
 		INCOMPLETE(0),
 		COMPLETED(100);
 		
 		int value;
-		private SKYZERTASKSTATUS(int value) {
+		private SKYZERTASKPROGESS(int value) {
 			this.value = value;
 		}
 		

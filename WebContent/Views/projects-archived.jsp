@@ -1,6 +1,6 @@
 <%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
 <%@page import="java.util.Base64"%>
-<%@page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
+<%@page import="config.EnumMyTask.SKYZERTASKPROGESS"%>
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@page import="config.EnumMyTask.SKYZERUSERACTIVE"%>
@@ -25,8 +25,7 @@ try {
 String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
 %><%@include  file="../session.jsp" %><%
-
-	if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
+if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 		bckColor = SKYZERTECHNOLOGIES.COLOR.getValue();
 		showSkyzerPaymentImg = SKYZERTECHNOLOGIES.LOGOSKYZERTECHNOLOGIES.getValue();
 		showSkyzerTechImg = SKYZERTECHNOLOGIES.LOGOSKYZERPAYMENTS.getValue();
@@ -53,19 +52,18 @@ String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 	
 	if(openProject != null){
 		stProjectStatus.executeUpdate("UPDATE projects set status = '"+ SKYZERPROJECTSTATUS.OPENED.getValue() +"', " +
-														"updated_on = '"+ LocalDate.now().toString() +"', " +
-														"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
-														"where id = '"+ new String(Base64.getDecoder().decode(request.getParameter("openProject"))) +"'");
+												"updated_on = '"+ LocalDate.now().toString() +"', " +
+												"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
+												"where id = '"+ new String(Base64.getDecoder().decode(request.getParameter("openProject"))) +"'");
 		session.setAttribute("status", "update");
 		
 	} else if (deleteProject != null) {
 		stProjectStatus.executeUpdate("UPDATE projects set status = '"+ SKYZERPROJECTSTATUS.DELETED.getValue() +"', " +
-														"updated_on = '"+ LocalDate.now().toString() +"', " +
-														"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
-														"where id = '"+ new String(Base64.getDecoder().decode(request.getParameter("deleteProject"))) +"'");
+												"updated_on = '"+ LocalDate.now().toString() +"', " +
+												"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
+												"where id = '"+ new String(Base64.getDecoder().decode(request.getParameter("deleteProject"))) +"'");
 		session.setAttribute("status", "update");
 	}
-	
 %>
 </head>
 <body id="page-top">
@@ -139,24 +137,24 @@ String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
                             <!-- Project card -->
                             <%
                             rs = st.executeQuery("SELECT * FROM projects where (status = "+ SKYZERPROJECTSTATUS.ARCHIVED.getValue() +") AND (department = "+ userdepartment +" OR " +
-                                                        						" department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") order by id DESC");
-                            	                            while(rs.next())
-                            					    {
+                                                                                    						" department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") order by id DESC");
+                                                        	                            while(rs.next())
+                                                        					    {
                             %>
 							    		<div class="col-lg-3 mb-3">
-		                                <div class="card lift lift-sm h-100" style="background-color:<%=bckColor %>;">
+		                                <div class="card lift lift-sm h-100" style="background-color:<%=bckColor%>;">
 		                                    <div class="card-body py-5" style="display: flex;">
-		                                        <a href="../Views/tasks.jsp?project=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes()) %>" style="text-decoration: none;">
+		                                        <a href="../Views/tasks.jsp?project=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>" style="text-decoration: none;">
 		                                        <h5 class="card-title mb-2" style="color:white;">
-		                                           <%=rs.getString("name") %>
+		                                           <%=rs.getString("name")%>
 		                                        </h5>
 		                                        </a>
-												<h5 style="margin-left: auto;"><span class="badge" style="background-color:white; color: <%=bckColor %>;">
+												<h5 style="margin-left: auto;"><span class="badge" style="background-color:white; color: <%=bckColor%>;">
 													<%
-														rsNested = stNested.executeQuery("SELECT * FROM departments where id = " + rs.getString("department"));
-														while(rsNested.next()) {
-															%><%=rsNested.getString("name") %><%
-														}
+													rsNested = stNested.executeQuery("SELECT * FROM departments where id = " + rs.getString("department"));
+																									while(rsNested.next()) {
+													%><%=rsNested.getString("name")%><%
+													}
 													%>
 												</span>
 												</h5>   
@@ -165,7 +163,7 @@ String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 													<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 													
 														<a class="dropdown-item" 
-														href="projects-archived.jsp?openProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes()) %>" 
+														href="projects-archived.jsp?openProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>" 
 														onclick="return confirm('Are you sure, you want to open this project?')"
 														style="color: green; font-weight: bold;">
                                                     		<div class="dropdown-item-icon">
@@ -174,7 +172,7 @@ String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 		                                                </a>
 		                                                <div class="dropdown-divider"></div>
 		                                                <a class="dropdown-item" 
-		                                                href="projects-archived.jsp?deleteProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes()) %>" 
+		                                                href="projects-archived.jsp?deleteProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>" 
 		                                                onclick="return confirm('Are you sure, you want to delete this project?')"
 		                                                style="color: red; font-weight: bold;">
                                                     		<div class="dropdown-item-icon">
@@ -185,35 +183,34 @@ String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 												</div>  
 												
 		                                    </div>
-		                                    <a href="../Views/tasks.jsp?project=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes()) %>" 
+		                                    <a href="../Views/tasks.jsp?project=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>" 
 		                                    						style="text-decoration: none;">
 		                                    <div class="card-footer">
 												<div class="small mb-2" style="color:white;">
 													<%
-														rsNested = stNested.executeQuery("SELECT count(*) FROM tasks where project = " + rs.getString("id"));
-														Integer totalTask = 0;
-														while(rsNested.next()) {
-															
-															totalTask = rsNested.getInt(1); 
-															
-															%><%=totalTask %> tasks in this project<%
-														}
+													rsNested = stNested.executeQuery("SELECT count(*) FROM tasks where project = " + rs.getString("id"));
+																									Integer totalTask = 0;
+																									while(rsNested.next()) {
+																										
+																										totalTask = rsNested.getInt(1);
+													%><%=totalTask%> tasks in this project<%
+													}
 													%>
 												</div>
 												<div class="progress rounded-pill"
 													style="height: 0.5rem">
 													<%
-														rsNested = stNested.executeQuery("select count(id) from mytask.tasks where project = "+ rs.getString("id") +"" 
-																								+" and percentage = " + SKYZERTASKSTATUS.COMPLETED.getValue());
-														Integer completedTasks = 0;
-														double avgOfCompletedTasks = 0;
-														
-														while(rsNested.next()) {
-															
-															completedTasks = rsNested.getInt(1);
-															avgOfCompletedTasks = ((double)completedTasks/(double)totalTask) * 100;
-															System.out.println(avgOfCompletedTasks) ;
-															%>
+													rsNested = stNested.executeQuery("select count(id) from mytask.tasks where project = "+ rs.getString("id") +"" 
+																																			+" and percentage = " + SKYZERTASKPROGESS.COMPLETED.getValue());
+																									Integer completedTasks = 0;
+																									double avgOfCompletedTasks = 0;
+																									
+																									while(rsNested.next()) {
+																										
+																										completedTasks = rsNested.getInt(1);
+																										avgOfCompletedTasks = ((double)completedTasks/(double)totalTask) * 100;
+																										System.out.println(avgOfCompletedTasks) ;
+													%>
 																<div style="background-color:#00ac69; width: <%=avgOfCompletedTasks %>%" title="<%=rsNested.getInt(1) %> task(s) completed" class="progress-bar rounded-pill"
 																	role="progressbar" aria-valuenow="75" aria-valuemin="0" 
 																		aria-valuemax="100"></div>															
