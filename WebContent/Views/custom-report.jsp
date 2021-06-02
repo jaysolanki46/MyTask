@@ -133,7 +133,8 @@
 										        <div class="modal-content" style="height: 40rem;">
 										            <div class="modal-header">
 										                <h5 class="modal-title">Custom Report Tutorial</h5>
-										                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+										                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+										                <span aria-hidden="true">×</span></button>
 										            </div>
 										            <div class="modal-body">
 										                <iframe  id="tutorialiframe"height="100%" width="100%" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>

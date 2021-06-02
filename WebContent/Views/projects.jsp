@@ -249,13 +249,19 @@ String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 													<i class="fas fa-ellipsis-v" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
 													<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 													
-														<a class="dropdown-item" href="projects.jsp?archiveProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes()) %>" style="color: green; font-weight: bold;">
+														<a class="dropdown-item" 
+															href="projects.jsp?archiveProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes()) %>" 
+															onclick="return confirm('Are you sure, you want to archive this project?')"
+															style="color: green; font-weight: bold;">
                                                     		<div class="dropdown-item-icon">
                                                     		<i class="fas fa-file-archive"></i></div>
 		                                                    Archive
 		                                                </a>
 		                                                <div class="dropdown-divider"></div>
-		                                                <a class="dropdown-item" href="projects.jsp?deleteProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes()) %>" style="color: red; font-weight: bold;">
+		                                                <a class="dropdown-item" 
+		                                                	href="projects.jsp?deleteProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes()) %>" 
+		                                                	onclick="return confirm('Are you sure, you want to delete this project?')"
+		                                                	style="color: red; font-weight: bold;">
                                                     		<div class="dropdown-item-icon">
                                                     		<i class="fas fa-trash"></i></div>
 		                                                    Delete
