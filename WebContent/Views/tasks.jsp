@@ -1,3 +1,4 @@
+<%@page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
@@ -6,6 +7,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" import="java.sql.*" %>
 <%@ page language="java" import="config.DBConfig" %>
+<%@ page language="java" import="java.time.LocalDate" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page language="java" import="java.util.*" %>
@@ -51,7 +53,18 @@
 	Statement stHours = null;
 	ResultSet rsHours = null;
 	stHours = dbConnNested.createStatement();
+	
+	String deleteTask = request.getParameter("deleteTask");
+	Statement stTaskStatus = null;
+	stTaskStatus = dbConn.createStatement();
 
+	if (deleteTask != null) {
+		stTaskStatus.executeUpdate("UPDATE tasks set status = '"+ SKYZERTASKSTATUS.DELETED.getValue() +"', " +
+												"updated_on = '"+ LocalDate.now().toString() +"', " +
+												"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
+												"where id = '"+ new String(Base64.getDecoder().decode(deleteTask)) +"'");
+		session.setAttribute("status", "update");
+	}
 	
 	%><%@include  file="../session.jsp" %><% 
 	
@@ -384,7 +397,7 @@
 														<select class="form-control" id="hiddenTaskId" name="hiddenTaskId" required>
 																<option value="">Select a task...</option>
 														        <%
-														        	rsNested = stNested.executeQuery("SELECT * FROM tasks where project = "+ projectId +"  AND team_member = "+ userid +"");
+														        	rsNested = stNested.executeQuery("SELECT * FROM tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" AND project = "+ projectId +"  AND team_member = "+ userid +"");
 													        		while(rsNested.next()) {
 													        			%><option value="<%=rsNested.getInt("id") %>"><%=rsNested.getString("name") %></option><%		
 													        		}
@@ -480,7 +493,8 @@
 						        String assignee =  "";
 						        String profileColor = "green";
 						        
-						        	rsTask = stTask.executeQuery("SELECT * FROM tasks INNER JOIN project_team ON project_team.team_member = tasks.team_member where tasks.project = "+ projectId +"  AND tasks.team_member = "+ userid +" group by tasks.id");
+						        	rsTask = stTask.executeQuery("SELECT * FROM tasks INNER JOIN project_team ON project_team.team_member = tasks.team_member "+
+						        								"where tasks.project = "+ projectId +"  AND tasks.team_member = "+ userid +" AND tasks.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" group by tasks.id");
 						        
 								    while(rsTask.next()) {
 								    	key = rsTask.getInt("id");
@@ -572,10 +586,18 @@
 																		</div>
 																	</div>
 													            <div class="modal-footer">
+													            	 <a style="text-decoration: none"
+						                                              	href="tasks.jsp?project=<%=Base64.getEncoder().encodeToString(projectId.getBytes())%>&deleteTask=<%=Base64.getEncoder().encodeToString(rsTask.getString("id").getBytes())%>" 
+						                                                	onclick="return confirm('Are you sure, you want to delete this task?')">
+													            	<button type="button" title="Search"
+																	class="btn btn-sm btn-light active mr-3 center_div card-button"
+																	style="background-color:#e81500;">
+																	<i class="fas fa-trash"></i>&nbsp; Delete</button>
+																	</a>
+																	
 													            	<button type="submit" title="Search"
 																	class="btn btn-sm btn-light active mr-3 center_div card-button"
-																	style="background-color:<%=bckColor %>; "
-																	>
+																	style="background-color:<%=bckColor %>; ">
 																	<i class="fas fa-save"></i>&nbsp; Save</button>
 													            </div>
 													        </div>
@@ -808,7 +830,8 @@
 							        profileColor = "purple";
 							        taskPercentage = 0;
 						        
-								        rsTask = stTask.executeQuery("SELECT * FROM tasks INNER JOIN project_team ON project_team.team_member = tasks.team_member where tasks.project = "+ projectId +"  AND tasks.team_member != "+ userid +" group by tasks.id");
+								        rsTask = stTask.executeQuery("SELECT * FROM tasks INNER JOIN project_team ON project_team.team_member = tasks.team_member "+
+								        							"where tasks.project = "+ projectId +"  AND tasks.team_member != "+ userid +" AND tasks.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" group by tasks.id");
 								        
 									    while(rsTask.next()) {
 									    	key = rsTask.getInt("id");
@@ -900,6 +923,15 @@
 																		</div>
 																	</div>
 													            <div class="modal-footer">
+													            	<a 	style="text-decoration: none"
+						                                              	href="tasks.jsp?project=<%=Base64.getEncoder().encodeToString(projectId.getBytes())%>&deleteTask=<%=Base64.getEncoder().encodeToString(rsTask.getString("id").getBytes())%>" 
+						                                                	onclick="return confirm('Are you sure, you want to delete this task?')">
+													            	<button type="button" title="Search"
+																	class="btn btn-sm btn-light active mr-3 center_div card-button"
+																	style="background-color:#e81500;">
+																	<i class="fas fa-trash"></i>&nbsp; Delete</button>
+																	</a>
+																	
 													            	<button type="submit" title="Search"
 																	class="btn btn-sm btn-light active mr-3 center_div card-button"
 																	style="background-color:<%=bckColor %>; "

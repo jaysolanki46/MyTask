@@ -1,3 +1,4 @@
+<%@page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
@@ -236,7 +237,8 @@
 									rs = st.executeQuery("select project.*, task.* from projects project " +  
 											"LEFT JOIN project_team project_team ON project.id = project_team.project " +
 											"LEFT JOIN tasks task ON project.id = task.project " +
-											"where (project.id = "+ reportProject +") AND project_team.team_member = task.team_member " +
+											"where (project.id = "+ reportProject +") AND (task.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +") " +
+											"AND project_team.team_member = task.team_member " +
 											"group by task.name order by project.id DESC");
 
 									while(rs.next()) {   
@@ -359,7 +361,8 @@
 									rs = st.executeQuery("select project.*, task.* from projects project " +  
 											"LEFT JOIN project_team project_team ON project.id = project_team.project " +
 											"LEFT JOIN tasks task ON project.id = task.project " +
-											"where (project.id = "+ reportProject +") AND project_team.team_member = task.team_member " +
+											"where (project.id = "+ reportProject +") AND (task.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +") " +
+											"AND project_team.team_member = task.team_member " +
 											"group by task.name order by project.id DESC");
 
 									while(rs.next()) {   

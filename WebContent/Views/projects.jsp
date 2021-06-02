@@ -1,3 +1,4 @@
+<%@page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
 <%@page import="java.util.Base64"%>
 <%@page import="config.EnumMyTask.SKYZERTASKPROGESS"%>
@@ -54,14 +55,14 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 		stProjectStatus.executeUpdate("UPDATE projects set status = '"+ SKYZERPROJECTSTATUS.ARCHIVED.getValue() +"', " +
 												"updated_on = '"+ LocalDate.now().toString() +"', " +
 												"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
-												"where id = '"+ new String(Base64.getDecoder().decode(request.getParameter("archiveProject"))) +"'");
+												"where id = '"+ new String(Base64.getDecoder().decode(archiveProject)) +"'");
 		session.setAttribute("status", "update");
 		
 	} else if (deleteProject != null) {
 		stProjectStatus.executeUpdate("UPDATE projects set status = '"+ SKYZERPROJECTSTATUS.DELETED.getValue() +"', " +
 												"updated_on = '"+ LocalDate.now().toString() +"', " +
 												"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
-												"where id = '"+ new String(Base64.getDecoder().decode(request.getParameter("deleteProject"))) +"'");
+												"where id = '"+ new String(Base64.getDecoder().decode(deleteProject)) +"'");
 		session.setAttribute("status", "update");
 	}
 %>
@@ -272,7 +273,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 		                                    <div class="card-footer">
 												<div class="small text-muted mb-2">
 													<%
-													rsNested = stNested.executeQuery("SELECT count(*) FROM tasks where project = " + rs.getString("id"));
+													rsNested = stNested.executeQuery("SELECT count(*) FROM tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" AND project = " + rs.getString("id"));
 																									Integer totalTask = 0;
 																									while(rsNested.next()) {
 																										
@@ -284,7 +285,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 												<div class="progress rounded-pill"
 													style="height: 0.5rem">
 													<%
-													rsNested = stNested.executeQuery("select count(id) from mytask.tasks where project = "+ rs.getString("id") +"" 
+													rsNested = stNested.executeQuery("select count(id) from tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" AND project = "+ rs.getString("id") +"" 
 																																			+" and percentage = " + SKYZERTASKPROGESS.COMPLETED.getValue());
 																									Integer completedTasks = 0;
 																									double avgOfCompletedTasks = 0;

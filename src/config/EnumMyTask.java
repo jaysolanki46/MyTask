@@ -117,4 +117,18 @@ public class EnumMyTask {
 			return value;
 		}
 	}
+	
+	public enum SKYZERTASKSTATUS {
+		DELETED(1),
+		OPENED(0);
+		
+		int value;
+		private SKYZERTASKSTATUS(int value) {
+			this.value = value;
+		}
+		
+		public int getValue(){
+			return value;
+		}
+	}
 }

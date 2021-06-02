@@ -1,3 +1,4 @@
+<%@page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
@@ -170,7 +171,8 @@
 												<%
 													rs = st.executeQuery("select task.* from tasks task " +
 															"LEFT JOIN projects project ON project.id = task.project " +
-															"where (project.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (project.department = " + userdepartment + " OR project.department = " + SKYZERDEPARTMENTS.GENERAL.getValue() + ")");
+															"where (project.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (task.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +") "+
+															"AND (project.department = " + userdepartment + " OR project.department = " + SKYZERDEPARTMENTS.GENERAL.getValue() + ")");
 													
 													while (rs.next()) {
 													%>
@@ -212,7 +214,7 @@
 							        <th style="text-align: center;">Task</th>
 							        <th>Assignee</th>
 							        <%
-							        	rs = st.executeQuery("SELECT * FROM tasks where id = " + reportTask + "");	
+							        	rs = st.executeQuery("SELECT * FROM tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" AND id = " + reportTask + "");	
 							        
 							        	while(rs.next()){
 							        		taskCreatedOn = rs.getString("created_on");
@@ -236,7 +238,7 @@
 							        
 									rs = st.executeQuery("select project.*, task.* from projects project " +  
 											"LEFT JOIN tasks task ON project.id = task.project " +
-											"where (task.id = "+ reportTask +") " + 
+											"where (task.id = "+ reportTask +") AND (task.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +") " + 
 											"group by task.name order by project.id DESC");
 
 									while(rs.next()) {   
@@ -335,7 +337,7 @@
 							        <th>Comments / Description</th>
 							        <th>Progress</th>
 							        <%
-							        	rs = st.executeQuery("SELECT * FROM tasks where id = " + reportTask + "");	
+							        	rs = st.executeQuery("SELECT * FROM tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" AND id = " + reportTask + "");	
 							        
 							        	while(rs.next()){
 							        		taskCreatedOn = rs.getString("created_on");
@@ -356,7 +358,7 @@
 							        
 									rs = st.executeQuery("select project.*, task.* from projects project " +  
 											"LEFT JOIN tasks task ON project.id = task.project " +
-											"where (task.id = "+ reportTask +") " + 
+											"where (task.id = "+ reportTask +") AND (task.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +") " + 
 											"group by task.name order by project.id DESC");
 
 									while(rs.next()) {   

@@ -2,6 +2,7 @@
 <%@ page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
 <%@ page import="java.util.*"%>
 <%@ page language="java" import="java.text.SimpleDateFormat"%>
+<%@page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
 <%@ page import="config.EnumMyTask.SKYZERTASKPROGESS"%>
 <%@ page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@ page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
@@ -59,7 +60,7 @@
 		
 		rsNested = stNested.executeQuery("select tasks.id, tasks.name, COALESCE(sum(task_details.hours), 0) as total_hours from tasks "+
 											"LEFT JOIN task_details ON tasks.id = task_details.task " +
-											"where tasks.project = "+ pieProject +" group by tasks.name ");
+											"where tasks.project = "+ pieProject +" AND tasks.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" group by tasks.name ");
 
 		while(rsNested.next()){
 				tasks.add(rsNested.getString("tasks.name"));
@@ -76,7 +77,9 @@
 	if(barUser == null)
 		barUser = userid;
 	
-	rs = st.executeQuery("SELECT tasks.*, COALESCE(sum(task_details.hours), 0) as total_hours FROM tasks LEFT JOIN task_details ON tasks.id = task_details.task where tasks.team_member = "+ barUser +" group by tasks.name");
+	rs = st.executeQuery("SELECT tasks.*, COALESCE(sum(task_details.hours), 0) as total_hours FROM tasks " +
+			"LEFT JOIN task_details ON tasks.id = task_details.task " +
+			"where tasks.team_member = "+ barUser +" AND tasks.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" group by tasks.name");
 	
 	while(rs.next()){
 		xList.add(rs.getString("tasks.name"));
@@ -117,7 +120,8 @@
 	    				+ "sum(task_details.hours) as hours  from projects "
 	    				+ "LEFT JOIN tasks ON projects.id = tasks.project "
 	    				+ "LEFT JOIN task_details ON tasks.id = task_details.task "
-	    				+ "WHERE projects.id = "+ lineProject +" and month(task_details.task_detail_date) = month('"+ date +"') group by months order by task_details.task_detail_date");
+	    				+ "WHERE projects.id = "+ lineProject +" and month(task_details.task_detail_date) = month('"+ date +"') "
+	    				+ "AND tasks.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" group by months order by task_details.task_detail_date");
 	            
 	            if(rsNested.next()) {	
 					monthlyProjectHoursList.add(rsNested.getString("hours"));
