@@ -18,8 +18,9 @@
     <%
 			if (session.getAttribute("status") != null) {
 				if (session.getAttribute("status").toString().equals("update") || session.getAttribute("status").toString().equals("insert")) {
+					System.out.println("Session STatus:" + session.getAttribute("status"));
 					session.removeAttribute("status");
-					System.out.println(session.getAttribute("status"));
+					
 					%>
 					<script>
 						$('#success').toast('show');

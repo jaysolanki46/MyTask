@@ -4,25 +4,28 @@
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@page import="config.EnumMyTask.SKYZERUSERACTIVE"%>
+<%@page import="config.EnumMyTask.SKYZERPROJECTSTATUS"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" import="java.sql.*" %>
 <%@ page language="java" import="config.DBConfig" %>
+<%@ page language="java" import="java.time.LocalDate" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<% try { %>
+<%
+try {
+%>
 <head>
 <meta charset="ISO-8859-1">
 <title>Skyzer - My Task | Projects</title>
 
 <%@include  file="../header.html" %>
 <%
-	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
+String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
-	
-	%><%@include  file="../session.jsp" %><% 
-	
+%><%@include  file="../session.jsp" %><%
+
 	if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 		bckColor = SKYZERTECHNOLOGIES.COLOR.getValue();
 		showSkyzerPaymentImg = SKYZERTECHNOLOGIES.LOGOSKYZERTECHNOLOGIES.getValue();
@@ -42,6 +45,26 @@
 	Statement stNested = null;
 	ResultSet rsNested = null;
 	stNested = dbConn.createStatement();
+	
+	String archiveProject = request.getParameter("archiveProject");
+	String deleteProject = request.getParameter("deleteProject");
+	Statement stProjectStatus = null;
+	stProjectStatus = dbConn.createStatement();
+	
+	if(archiveProject != null){
+		stProjectStatus.executeUpdate("UPDATE projects set status = '"+ SKYZERPROJECTSTATUS.ARCHIVED.getValue() +"', " +
+														"updated_on = '"+ LocalDate.now().toString() +"', " +
+														"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
+														"where id = '"+ new String(Base64.getDecoder().decode(request.getParameter("archiveProject"))) +"'");
+		session.setAttribute("status", "update");
+		
+	} else if (deleteProject != null) {
+		stProjectStatus.executeUpdate("UPDATE projects set status = '"+ SKYZERPROJECTSTATUS.DELETED.getValue() +"', " +
+														"updated_on = '"+ LocalDate.now().toString() +"', " +
+														"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
+														"where id = '"+ new String(Base64.getDecoder().decode(request.getParameter("deleteProject"))) +"'");
+		session.setAttribute("status", "update");
+	}
 	
 %>
 </head>
@@ -72,7 +95,7 @@
                             <div class="page-header-content">
                                  <div class="row align-items-center justify-content-between" style="height: 4rem;">
                                     <div class="col-auto mb-3">
-                                        <h1 class="page-header-title" style="color: <%=bckColor %>; font-weight: bold; font-size: x-large;">
+                                        <h1 class="page-header-title" style="color: <%=bckColor%>; font-weight: bold; font-size: x-large;">
                                             <div class="page-header-icon">
                                           		<i class="fas fa-project-diagram"></i>  
                                             </div>
@@ -83,11 +106,11 @@
                                         <button
                                         data-toggle="modal" data-target="#projectModelLg"
                                         class="btn btn-sm btn-light active mr-3 center_div card-button"
-											style="background-color:<%=bckColor %>; "><i class="fas fa-plus"></i>&nbsp;Create New Project</button>
+											style="background-color:<%=bckColor%>; "><i class="fas fa-plus"></i>&nbsp;Create New Project</button>
 										<button
                                         class="btn btn-sm btn-light active mr-3 center_div card-button popup-modal" 
                                         	id="projectsTutorial"  title="Tutorial"  data-toggle="modal" data-target="#tutorialPopup"
-											style="background-color:<%=bckColor %>; "><i class="fas fa-video"></i></button>
+											style="background-color:<%=bckColor%>; "><i class="fas fa-video"></i></button>
 											
                                     </div>
                                     
@@ -111,7 +134,13 @@
                     </header>
                     <!-- Main page content-->
                     <div class="container">
+						<div class="row" style="place-content:  flex-end; margin-bottom: 0.5rem;">
+							<a href="/MyTask/Views/project-archived.jsp">
+							<div class="fw-500" style="color: <%=bckColor%>; cursor: pointer;">Archived &nbsp;<i class="fas fa-chevron-right"></i></div>
+							</a>
+						</div>
                         <div class="row">
+                        	
                         
                         	<div class="modal fade" id="projectModelLg" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
 							    <div class="modal-dialog modal-lg" role="document">
@@ -135,16 +164,16 @@
 													        <label for="departmentSelect">Department</label>
 													        <select style="height: fit-content;" class="form-control" id="projectDepartment" name="projectDepartment">
 													        <%
-													        	rs = st.executeQuery("SELECT * FROM departments where id = "+ userdepartment +" OR id = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +"");
-													        
-														        while(rs.next())
-															    {   
-																	%>
-															    		<option value="<%=rs.getString("id") %>">
-															    		<%=rs.getString("name") %></option>
-															    	<%
-															    }  
+													        rs = st.executeQuery("SELECT * FROM departments where id = "+ userdepartment +" OR id = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +"");
+													        											        
+													        												        while(rs.next())
+													        													    {
 													        %>
+															    		<option value="<%=rs.getString("id")%>">
+															    		<%=rs.getString("name")%></option>
+															    	<%
+															    	}
+															    	%>
 													        </select>
 													    </div>
 												    </div>
@@ -158,9 +187,9 @@
 																id="projectTeam" name="projectTeam" multiple="multiple" required>
 																<%
 																rs = st.executeQuery("SELECT * FROM users where department = " + userdepartment + " and active = "
-																		+ SKYZERUSERACTIVE.TRUE.getValue() + "");
+																																+ SKYZERUSERACTIVE.TRUE.getValue() + "");
 
-																while (rs.next()) {
+																														while (rs.next()) {
 																%>
 																<option value="<%=rs.getString("id")%>">
 																	<%=rs.getString("name")%></option>
@@ -183,7 +212,7 @@
 											</div>
 							            <div class="modal-footer">
 							            	<button type="submit" title="Save" class="btn btn-sm btn-light active mr-3 center_div card-button"
-												style="background-color:<%=bckColor %>;">
+												style="background-color:<%=bckColor%>;">
 							            		<i class="fas fa-save"></i>&nbsp; Save
 							            	</button>
 							            </div>
@@ -193,17 +222,20 @@
 							</div>
                             
                             <!-- Project card -->
-                            <% 
-                            	rs = st.executeQuery("SELECT * FROM projects where department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC");
-	                            while(rs.next())
-							    {   
-									%>
+                            <%
+                            rs = st.executeQuery("SELECT * FROM projects where (status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (department = "+ userdepartment +" OR " +
+                                                        						" department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") order by id DESC");
+                            	                            while(rs.next())
+                            					    {
+                            %>
 							    		<div class="col-lg-3 mb-3">
-		                                <a class="card lift lift-sm h-100" href="../Views/tasks.jsp?project=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes()) %>">
+		                                <div class="card lift lift-sm h-100">
 		                                    <div class="card-body py-5" style="display: flex;">
+		                                        <a href="../Views/tasks.jsp?project=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes()) %>" style="text-decoration: none;">
 		                                        <h5 class="card-title mb-2" style="color:<%=bckColor %>;">
 		                                           <%=rs.getString("name") %>
 		                                        </h5>
+		                                        </a>
 												<h5 style="margin-left: auto;"><span class="badge" style="background-color:<%=bckColor %>; color: white;">
 													<%
 														rsNested = stNested.executeQuery("SELECT * FROM departments where id = " + rs.getString("department"));
@@ -212,8 +244,27 @@
 														}
 													%>
 												</span>
-												</h5>                                        
+												</h5>   
+												<div class="dropdown dropleft" style="margin-left: 0.7rem; color: <%=bckColor %>; cursor: pointer;">
+													<i class="fas fa-ellipsis-v" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+													<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+													
+														<a class="dropdown-item" href="projects.jsp?archiveProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes()) %>" style="color: green; font-weight: bold;">
+                                                    		<div class="dropdown-item-icon">
+                                                    		<i class="fas fa-file-archive"></i></div>
+		                                                    Archive
+		                                                </a>
+		                                                <div class="dropdown-divider"></div>
+		                                                <a class="dropdown-item" href="projects.jsp?deleteProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes()) %>" style="color: red; font-weight: bold;">
+                                                    		<div class="dropdown-item-icon">
+                                                    		<i class="fas fa-trash"></i></div>
+		                                                    Delete
+		                                                </a>
+													</div>
+												</div>  
+												
 		                                    </div>
+		                                    <a href="../Views/tasks.jsp?project=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes()) %>" style="text-decoration: none;">
 		                                    <div class="card-footer">
 												<div class="small text-muted mb-2">
 													<%
@@ -250,6 +301,7 @@
 												</div>
 											</div>
 											</a>
+											</div>
 		                            </div>
 							    	<%
 							    } 

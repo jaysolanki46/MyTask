@@ -102,4 +102,19 @@ public class EnumMyTask {
 			return value;
 		}
 	}
+	
+	public enum SKYZERPROJECTSTATUS {
+		DELETED(2),
+		ARCHIVED(1),
+		OPENED(0);
+		
+		int value;
+		private SKYZERPROJECTSTATUS(int value) {
+			this.value = value;
+		}
+		
+		public int getValue(){
+			return value;
+		}
+	}
 }

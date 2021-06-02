@@ -16,10 +16,8 @@ import bean.Department;
 import bean.Project;
 import bean.ProjectTeam;
 import bean.User;
-import jdk.nashorn.internal.ir.RuntimeNode.Request;
 import model.ProjectDAO;
 import model.ProjectTeamDAO;
-import model.UserDAO;
 
 /**
  * Servlet implementation class ProjectServlet
