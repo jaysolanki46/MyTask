@@ -1,6 +1,7 @@
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
+<%@page import="config.EnumMyTask.SKYZERPROJECTSTATUS"%>
 <%@ page language="java" import="java.sql.*" %>
 <%@ page language="java" import="config.DBConfig" %>
 <%@page import="javafx.util.Pair"%>
@@ -167,7 +168,9 @@
 											<select class="form-control col-sm-4" id="selectProject" name="selectProject" required>
 												<option value="">Select a Task...</option>
 												<%
-													rs = st.executeQuery("select task.* from tasks task LEFT JOIN projects project ON project.id = task.project  where department = " + userdepartment + " OR department = " + SKYZERDEPARTMENTS.GENERAL.getValue() + "");
+													rs = st.executeQuery("select task.* from tasks task " +
+															"LEFT JOIN projects project ON project.id = task.project " +
+															"where (project.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (project.department = " + userdepartment + " OR project.department = " + SKYZERDEPARTMENTS.GENERAL.getValue() + ")");
 													
 													while (rs.next()) {
 													%>
