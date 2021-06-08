@@ -1,8 +1,9 @@
+<%@page import="config.EnumMyTask.SKYZERUSERSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
-<%@page import="config.EnumMyTask.SKYZERUSERACTIVE"%>
+<%@page import="config.EnumMyTask.SKYZERUSERSTATUS"%>
 <%@page import="javafx.util.Pair"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" import="java.sql.*" %>
@@ -15,14 +16,16 @@
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<% try { %>
+<%
+try {
+%>
 <head>
 <meta charset="ISO-8859-1">
 <title>Skyzer - My Task | Tasks</title>
 
 <%@include  file="../header.html" %>
 <%
-	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
+String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
 	String projectId = "";
 	Integer taskColumnTotal = 0, taskRowTotal = 0;
@@ -60,15 +63,13 @@
 
 	if (deleteTask != null) {
 		stTaskStatus.executeUpdate("UPDATE tasks set status = '"+ SKYZERTASKSTATUS.DELETED.getValue() +"', " +
-												"updated_on = '"+ LocalDate.now().toString() +"', " +
-												"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
-												"where id = '"+ new String(Base64.getDecoder().decode(deleteTask)) +"'");
+										"updated_on = '"+ LocalDate.now().toString() +"', " +
+										"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
+										"where id = '"+ new String(Base64.getDecoder().decode(deleteTask)) +"'");
 		session.setAttribute("status", "update");
 	}
-	
-	%><%@include  file="../session.jsp" %><% 
-	
-	if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
+%><%@include  file="../session.jsp" %><%
+if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 		bckColor = SKYZERTECHNOLOGIES.COLOR.getValue();
 		showSkyzerPaymentImg = SKYZERTECHNOLOGIES.LOGOSKYZERTECHNOLOGIES.getValue();
 		showSkyzerTechImg = SKYZERTECHNOLOGIES.LOGOSKYZERPAYMENTS.getValue();
@@ -101,11 +102,11 @@
 %>
 <style type="text/css">
 .table100.ver1 .row100 td:hover  {
-  background-color: <%=bckColor %>;
+  background-color: <%=bckColor%>;
   color: #fff;
 }
 .table100.ver1 .hov-column-head-ver1 {
-  background-color: <%=bckColor %>; !important;
+  background-color: <%=bckColor%>; !important;
   font-weight: bold;
 }
 .mytd i:hover {
@@ -154,35 +155,35 @@
                 <!-- Begin Page Content -->
                 <div id="layoutSidenav_content">
                 <%
-					rs = st.executeQuery("SELECT * FROM projects where id = "+ projectId +"");
-                    while(rs.next()) {   
-				%>	
+                rs = st.executeQuery("SELECT * FROM projects where id = "+ projectId +"");
+                                    while(rs.next()) {
+                %>	
                 <main>
                     <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
                         <div class="container-fluid">
                             <div class="page-header-content">
                                 <div class="row align-items-center justify-content-between" style="height: 4rem;">
                                     <div class="col-auto mb-3">
-                                        <h1 class="page-header-title" style="color: <%=bckColor %>; font-weight: bold;font-size: x-large;">
+                                        <h1 class="page-header-title" style="color: <%=bckColor%>; font-weight: bold;font-size: x-large;">
                                             <div class="page-header-icon">
                                           		<i class="far fa-calendar-plus"></i> 
                                             </div>
-                                            <%=rs.getString("name") %>
+                                            <%=rs.getString("name")%>
                                         </h1>
                                     </div>
                                     <div class="col-12 col-xl-auto mb-3">
                                    		<button 
                                         data-toggle="modal" data-target="#projectModelLg"
                                         class="btn btn-sm btn-light active mr-3 center_div card-button"
-											style="background-color:<%=bckColor %>; "><i class="fas fa-keyboard"></i>&nbsp;Update This Project</button>
+											style="background-color:<%=bckColor%>; "><i class="fas fa-keyboard"></i>&nbsp;Update This Project</button>
                                         <button 
                                         data-toggle="modal" data-target="#taskModelLg"
                                         class="btn btn-sm btn-light active mr-3 center_div card-button"
-											style="background-color:<%=bckColor %>; "><i class="fas fa-plus"></i>&nbsp;Create New Task</button>
+											style="background-color:<%=bckColor%>; "><i class="fas fa-plus"></i>&nbsp;Create New Task</button>
                                     	<button
                                         class="btn btn-sm btn-light active mr-3 center_div card-button popup-modal" 
                                         	id="projectsTutorial"  title="Tutorial"  data-toggle="modal" data-target="#tutorialPopup"
-											style="background-color:<%=bckColor %>; "><i class="fas fa-video"></i></button>
+											style="background-color:<%=bckColor%>; "><i class="fas fa-video"></i></button>
                                     </div>
                                     
                                     <div class="modal fade" id="tutorialPopup" tabindex="-1" role="dialog" aria-labelledby="tutorialPopupLbl" style="display: none;" aria-hidden="true">
@@ -212,7 +213,7 @@
 							    <div class="modal-dialog modal-lg" role="document">
 							    	<form id="taskForm" action="<%=request.getContextPath()%>/TaskServlet" method="post">
 							    	<!-- hidden projectName/Project Name, so we can use while we send email -->
-							    	<input type="hidden" name="projectName" value="<%=rs.getString("name") %>" />
+							    	<input type="hidden" name="projectName" value="<%=rs.getString("name")%>" />
 							        <div class="modal-content">
 							            <div class="modal-header">
 							                <h5 class="modal-title">Create new task</h5>
@@ -230,8 +231,8 @@
 												    <div class="col">
 													    <div class="form-group">
 													        <label for="departmentSelect">Project </label>
-													        <input style="height: fit-content;" class="form-control" type="text" value="<%=rs.getString("name") %>" readonly="readonly">
-													        <input style="height: fit-content;" class="form-control" id="hiddenProjectId" name="hiddenProjectId" type="hidden" value="<%=projectId %>">
+													        <input style="height: fit-content;" class="form-control" type="text" value="<%=rs.getString("name")%>" readonly="readonly">
+													        <input style="height: fit-content;" class="form-control" id="hiddenProjectId" name="hiddenProjectId" type="hidden" value="<%=projectId%>">
 													    </div>
 												    </div>
 											    </div>
@@ -241,22 +242,23 @@
 													        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
 													        <select class="form-control" id="teamMember" name="teamMember" required>
 													        	<option value="">Select member...</option>
-													        <%
-													        	rsNested = stNested.executeQuery("SELECT * FROM project_team where project = "+ projectId +"");
-													        	List<Integer> projectTeamMemberList = new ArrayList<Integer>();
-													        	String projectTeamStr = "";
-												        		while(rsNested.next()) {
-												        			projectTeamMemberList.add(rsNested.getInt("team_member"));		
-												        		}
-												        		
-												        		projectTeamStr = projectTeamMemberList.toString().replace("[", "").replace("]", "").replace(" ", "");
-												        		
-												        		rsNested = stNested.executeQuery("SELECT * FROM users where id IN ("+ projectTeamStr +")");
-												        		while(rsNested.next()) {
-												        			%><option value="<%=rsNested.getInt("id") %>"><%=rsNested.getString("name") %></option><%		
-												        		}
-													        %>
-													        </select>
+																<%
+																rsNested = stNested.executeQuery("SELECT * FROM project_team where project = " + projectId + "");
+																List<Integer> projectTeamMemberList = new ArrayList<Integer>();
+																String projectTeamStr = "";
+																while (rsNested.next()) {
+																	projectTeamMemberList.add(rsNested.getInt("team_member"));
+																}
+
+																projectTeamStr = projectTeamMemberList.toString().replace("[", "").replace("]", "").replace(" ", "");
+
+																rsNested = stNested.executeQuery("SELECT * FROM users where id IN (" + projectTeamStr + ")");
+																while (rsNested.next()) {
+																%><option value="<%=rsNested.getInt("id")%>"><%=rsNested.getString("name")%></option>
+																<%
+																}
+																%>
+															</select>
 													    </div>
 													  </div>
 													  <div class="col">  
@@ -276,7 +278,7 @@
 							            <div class="modal-footer">
 							            	<button type="submit" title="Search"
 											class="btn btn-sm btn-light active mr-3 center_div card-button"
-											style="background-color:<%=bckColor %>; ">
+											style="background-color:<%=bckColor%>; ">
 											<i class="fas fa-save"></i>&nbsp; Save</button>
 							            </div>
 							        </div>
@@ -300,62 +302,52 @@
 													    <div class="form-group">
 														    <label for="projectNameInput">Project name <span style="color: red;">*</span></label>
 														    <input style="height: fit-content;" class="form-control" id="projectName" 
-														    	name="projectName" type="text" placeholder="Ex. IKR Project" value="<%=rs.getString("name") %>"
+														    	name="projectName" type="text" placeholder="Ex. IKR Project" value="<%=rs.getString("name")%>"
 														    	required pattern=".*\S+.*" title="This field is required">
 														    <input style="height: fit-content;" class="form-control" id="editProjectId" 
-														    	name="editProjectId" type="hidden" value="<%=projectId %>">
+														    	name="editProjectId" type="hidden" value="<%=projectId%>">
 													    </div>
 												    </div>
 												    <div class="col">
 													    <div class="form-group">
 													        <label for="departmentSelect">Department</label>
 													        <select style="height: fit-content;" class="form-control" id="projectDepartment" name="projectDepartment">
-													        <%
-													        	rsNested = stNested .executeQuery("SELECT * FROM departments where id = "+ userdepartment +" OR id = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +"");
-													        
-														        while(rsNested.next())
-															    {   
-																	%>
-															    		<option value="<%=rsNested .getInt("id") %>"
-															    		<%
-															    			if(rs.getInt("department") == rsNested.getInt("id")){
-															    				%>selected<%
-															    			}
-															    		%>
-															    		>
-															    		<%=rsNested .getString("name") %></option>
-															    	<%
-															    }  
-													        %>
-													        </select>
+																<%
+																rsNested = stNested.executeQuery("SELECT * FROM departments where id = " + userdepartment + " OR id = "
+																		+ SKYZERDEPARTMENTS.GENERAL.getValue() + "");
+
+																while (rsNested.next()) {
+																%>
+																<option value="<%=rsNested.getInt("id")%>"
+																	<%if (rs.getInt("department") == rsNested.getInt("id")) {%>
+																	selected <%}%>>
+																	<%=rsNested.getString("name")%></option>
+																<%
+																}
+																%>
+															</select>
 													    </div>
 												    </div>
 											    </div>
 											    <div class="form-group">
 											        <label for="teamMemberSelect">Team members <span style="color: red;">*</span></label><br/>
 											        <select style="height: fit-content;" class="form-control" id="projectTeam" name="projectTeam" multiple="multiple" required>
-											           <%
-													        	rsNested = stNested.executeQuery("SELECT * FROM users where department = " + userdepartment + " and active = "
-																		+ SKYZERUSERACTIVE.TRUE.getValue() + "");
-													        
-														        while(rsNested.next())
-															    {   
-																	%>
-															    		<option value="<%=rsNested.getString("id") %>"
-															    		
-															    			<%
-															    				rsTeamMember = stTeamMember.executeQuery("SELECT * FROM project_team where project = "+ projectId +" AND team_member = "+ rsNested.getString("id") +"");
-															    				if(rsTeamMember.next()) {
-															    					%>selected<%
-															    				}
-															    			%>
-															    		
-															    		>
-															    		<%=rsNested.getString("name") %></option>
-															    	<%
-															    }  
-													       %>
-											        </select>
+														<%
+														rsNested = stNested.executeQuery("SELECT * FROM users where department = " + userdepartment + " and active = "
+																+ SKYZERUSERSTATUS.ACTIVE.getValue() + "");
+
+														while (rsNested.next()) {
+														%>
+														<option value="<%=rsNested.getString("id")%>"
+															<%rsTeamMember = stTeamMember.executeQuery("SELECT * FROM project_team where project = " + projectId
+																							+ " AND team_member = " + rsNested.getString("id") + "");
+																					if (rsTeamMember.next()) {%>
+															selected <%}%>>
+															<%=rsNested.getString("name")%></option>
+														<%
+														}
+														%>
+													</select>
 											    </div>
 											    <div class="form-group">
 												    <label for="descriptionTextarea">Description</label>

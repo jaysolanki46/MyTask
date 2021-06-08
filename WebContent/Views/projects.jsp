@@ -4,7 +4,7 @@
 <%@page import="config.EnumMyTask.SKYZERTASKPROGESS"%>
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
-<%@page import="config.EnumMyTask.SKYZERUSERACTIVE"%>
+<%@page import="config.EnumMyTask.SKYZERUSERSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERPROJECTSTATUS"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" import="java.sql.*" %>
@@ -53,16 +53,16 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 	
 	if(archiveProject != null){
 		stProjectStatus.executeUpdate("UPDATE projects set status = '"+ SKYZERPROJECTSTATUS.ARCHIVED.getValue() +"', " +
-												"updated_on = '"+ LocalDate.now().toString() +"', " +
-												"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
-												"where id = '"+ new String(Base64.getDecoder().decode(archiveProject)) +"'");
+										"updated_on = '"+ LocalDate.now().toString() +"', " +
+										"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
+										"where id = '"+ new String(Base64.getDecoder().decode(archiveProject)) +"'");
 		session.setAttribute("status", "update");
 		
 	} else if (deleteProject != null) {
 		stProjectStatus.executeUpdate("UPDATE projects set status = '"+ SKYZERPROJECTSTATUS.DELETED.getValue() +"', " +
-												"updated_on = '"+ LocalDate.now().toString() +"', " +
-												"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
-												"where id = '"+ new String(Base64.getDecoder().decode(deleteProject)) +"'");
+										"updated_on = '"+ LocalDate.now().toString() +"', " +
+										"updated_by = '"+ session.getAttribute("userId").toString() +"' " +
+										"where id = '"+ new String(Base64.getDecoder().decode(deleteProject)) +"'");
 		session.setAttribute("status", "update");
 	}
 %>
@@ -162,18 +162,18 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 													    <div class="form-group">
 													        <label for="departmentSelect">Department</label>
 													        <select style="height: fit-content;" class="form-control" id="projectDepartment" name="projectDepartment">
-													        <%
-													        rs = st.executeQuery("SELECT * FROM departments where id = "+ userdepartment +" OR id = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +"");
-													        											        											        
-													        											        												        while(rs.next())
-													        											        													    {
-													        %>
-															    		<option value="<%=rs.getString("id")%>">
-															    		<%=rs.getString("name")%></option>
-															    	<%
-															    	}
-															    	%>
-													        </select>
+																<%
+																rs = st.executeQuery("SELECT * FROM departments where id = " + userdepartment + " OR id = "
+																		+ SKYZERDEPARTMENTS.GENERAL.getValue() + "");
+
+																while (rs.next()) {
+																%>
+																<option value="<%=rs.getString("id")%>">
+																	<%=rs.getString("name")%></option>
+																<%
+																}
+																%>
+															</select>
 													    </div>
 												    </div>
 											    </div>
@@ -185,10 +185,9 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																style="height: fit-content;" class="form-control"
 																id="projectTeam" name="projectTeam" multiple="multiple" required>
 																<%
-																rs = st.executeQuery("SELECT * FROM users where department = " + userdepartment + " and active = "
-																																														+ SKYZERUSERACTIVE.TRUE.getValue() + "");
+																rs = st.executeQuery("SELECT * FROM users where department = " + userdepartment + " and active = "+ SKYZERUSERSTATUS.ACTIVE.getValue() + "");
 
-																																												while (rs.next()) {
+																																																										while (rs.next()) {
 																%>
 																<option value="<%=rs.getString("id")%>">
 																	<%=rs.getString("name")%></option>

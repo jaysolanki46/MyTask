@@ -4,7 +4,6 @@
 <%@page import="config.EnumMyTask.SKYZERTASKPROGESS"%>
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
-<%@page import="config.EnumMyTask.SKYZERUSERACTIVE"%>
 <%@page import="config.EnumMyTask.SKYZERPROJECTSTATUS"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" import="java.sql.*" %>

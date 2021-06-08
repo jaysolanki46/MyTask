@@ -89,12 +89,12 @@ public class EnumMyTask {
 		}
 	}
 	
-	public enum SKYZERUSERACTIVE {
-		TRUE(1),
-		FALSE(0);
+	public enum SKYZERUSERSTATUS {
+		ACTIVE(0),
+		DEACTIVE(1);
 		
 		int value;
-		private SKYZERUSERACTIVE(int value) {
+		private SKYZERUSERSTATUS(int value) {
 			this.value = value;
 		}
 		

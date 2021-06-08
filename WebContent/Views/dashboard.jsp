@@ -6,7 +6,7 @@
 <%@ page import="config.EnumMyTask.SKYZERTASKPROGESS"%>
 <%@ page import="config.EnumMyTask.SKYZERPAYMENTS"%>
 <%@ page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
-<%@ page import="config.EnumMyTask.SKYZERUSERACTIVE"%>
+<%@ page import="config.EnumMyTask.SKYZERUSERSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERPROJECTSTATUS"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" import="java.sql.*"%>
@@ -16,19 +16,19 @@
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<% try { %>
+<%
+try {
+%>
 <head>
 <meta charset="ISO-8859-1">
 <title>Skyzer - My Task | Dashboard</title>
 
 <%@include  file="../header.html" %>
 <%
-	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
+String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
-	
-	%><%@include  file="../session.jsp" %><% 
-	
-	if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
+%><%@include  file="../session.jsp" %><%
+if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 		bckColor = SKYZERTECHNOLOGIES.COLOR.getValue();
 		showSkyzerPaymentImg = SKYZERTECHNOLOGIES.LOGOSKYZERTECHNOLOGIES.getValue();
 		showSkyzerTechImg = SKYZERTECHNOLOGIES.LOGOSKYZERPAYMENTS.getValue();
@@ -59,15 +59,15 @@
 	if(rs.next()){
 		
 		if(pieProject == null) 
-			pieProject = rs.getString(1);
+	pieProject = rs.getString(1);
 		
-			rsNested = stNested.executeQuery("select tasks.id, tasks.name, COALESCE(sum(task_details.hours), 0) as total_hours from tasks "+
-											"LEFT JOIN task_details ON tasks.id = task_details.task " +
-											"where tasks.project = "+ pieProject +" AND tasks.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" group by tasks.name ");
+	rsNested = stNested.executeQuery("select tasks.id, tasks.name, COALESCE(sum(task_details.hours), 0) as total_hours from tasks "+
+									"LEFT JOIN task_details ON tasks.id = task_details.task " +
+									"where tasks.project = "+ pieProject +" AND tasks.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" group by tasks.name ");
 
 		while(rsNested.next()){
-				tasks.add(rsNested.getString("tasks.name"));
-				taskHours.add(rsNested.getString("total_hours"));
+		tasks.add(rsNested.getString("tasks.name"));
+		taskHours.add(rsNested.getString("total_hours"));
 		}
 	}
 	
@@ -81,9 +81,9 @@
 		barUser = userid;
 	
 	rs = st.executeQuery("SELECT tasks.*, COALESCE(sum(task_details.hours), 0) as total_hours FROM tasks " +
-			"LEFT JOIN task_details ON tasks.id = task_details.task " +
-			"LEFT JOIN projects ON projects.id = tasks.project " +
-			"where projects.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND tasks.team_member = "+ barUser +" AND tasks.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" group by tasks.name");
+	"LEFT JOIN task_details ON tasks.id = task_details.task " +
+	"LEFT JOIN projects ON projects.id = tasks.project " +
+	"where projects.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND tasks.team_member = "+ barUser +" AND tasks.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" group by tasks.name");
 	
 	while(rs.next()){
 		xList.add(rs.getString("tasks.name"));
@@ -101,21 +101,21 @@
 	if(rs.next()){
 		
 		if(lineProject == null) 
-			lineProject = rs.getString(1);
+	lineProject = rs.getString(1);
 		
-			rsNested = stNested.executeQuery("select * from projects WHERE status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND id = "+ lineProject +"");
-			if(rsNested.next()) {	
-				project = rsNested.getString("projects.name");
-				projectCreatedOn = rsNested.getString("projects.created_on");
-			}
+	rsNested = stNested.executeQuery("select * from projects WHERE status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND id = "+ lineProject +"");
+	if(rsNested.next()) {	
+		project = rsNested.getString("projects.name");
+		projectCreatedOn = rsNested.getString("projects.created_on");
+	}
 		
-			// Get monthly hours
-			Calendar createdOnCalendar = Calendar.getInstance();
-			Calendar nowCalendar = Calendar.getInstance(); // Get cuurent date
-			SimpleDateFormat yyyyMMddFormate = new SimpleDateFormat("yyyy-MM-dd");
-			createdOnCalendar.setTime(yyyyMMddFormate.parse(projectCreatedOn));
-			
-			while (createdOnCalendar.before(nowCalendar)) {
+	// Get monthly hours
+	Calendar createdOnCalendar = Calendar.getInstance();
+	Calendar nowCalendar = Calendar.getInstance(); // Get cuurent date
+	SimpleDateFormat yyyyMMddFormate = new SimpleDateFormat("yyyy-MM-dd");
+	createdOnCalendar.setTime(yyyyMMddFormate.parse(projectCreatedOn));
+	
+	while (createdOnCalendar.before(nowCalendar)) {
 	            String date = yyyyMMddFormate.format(createdOnCalendar.getTime()).toUpperCase();
 	            
 	            rsNested = stNested.executeQuery("select projects.id, projects.name, projects.created_on, task_details.id, task_details.task_detail_date, "
@@ -127,7 +127,7 @@
 	    				+ "AND tasks.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" group by months order by task_details.task_detail_date");
 	            
 	            if(rsNested.next()) {	
-					monthlyProjectHoursList.add(rsNested.getString("hours"));
+			monthlyProjectHoursList.add(rsNested.getString("hours"));
 	            } else {
 	            	monthlyProjectHoursList.add("0");
 	            }
@@ -144,22 +144,21 @@
 	if(barProjects == null) {
 		
 		rs = st.executeQuery("SELECT projects.id, projects.name, tasks.*, IFNULL(SUM(task_details.hours),0) as total_hours FROM projects "
-				+ "LEFT JOIN (SELECT * from tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +") as tasks ON tasks.project = projects.id "
-				+ "LEFT JOIN task_details ON task_details.task = tasks.id "
-				+ "WHERE (projects.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (projects.department = "+ userdepartment +" OR " +
-						"projects.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") group by projects.id");
+		+ "LEFT JOIN (SELECT * from tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +") as tasks ON tasks.project = projects.id "
+		+ "LEFT JOIN task_details ON task_details.task = tasks.id "
+		+ "WHERE (projects.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (projects.department = "+ userdepartment +" OR " +
+				"projects.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") group by projects.id");
 	} else {
 		rs = st.executeQuery("SELECT projects.id, projects.name, tasks.*, IFNULL(SUM(task_details.hours),0) as total_hours FROM projects "
-				+ "LEFT JOIN (SELECT * from tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +") as tasks ON tasks.project = projects.id "
-				+ "LEFT JOIN task_details ON task_details.task = tasks.id "
-				+ "WHERE projects.id IN ("+ String.join(",", barProjects) +") group by projects.id");
+		+ "LEFT JOIN (SELECT * from tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +") as tasks ON tasks.project = projects.id "
+		+ "LEFT JOIN task_details ON task_details.task = tasks.id "
+		+ "WHERE projects.id IN ("+ String.join(",", barProjects) +") group by projects.id");
 	}
 	
 	while(rs.next()){
 		xProjectsList.add(rs.getString("projects.name"));
 		yProjectsHourList.add(rs.getString("total_hours"));
 	}
-		
 %>
 </head>
 <body id="page-top">
@@ -189,7 +188,7 @@
                             <div class="page-header-content">
                                 <div class="row align-items-center justify-content-between" style="height: 4rem;">
                                     <div class="col-auto mb-3">
-                                        <h1 class="page-header-title" style="color: <%=bckColor %>; font-weight: bold; font-size: x-large;">
+                                        <h1 class="page-header-title" style="color: <%=bckColor%>; font-weight: bold; font-size: x-large;">
                                             <div class="page-header-icon">
                                           		<i class="fas fa-chart-pie"></i>
                                             </div>
@@ -200,7 +199,7 @@
 										<button
                                         class="btn btn-sm btn-light active mr-3 center_div card-button popup-modal" 
                                         	id="dashboardTutorial"  title="Tutorial"  data-toggle="modal" data-target="#tutorialPopup"
-											style="background-color:<%=bckColor %>; "><i class="fas fa-video"></i></button>
+											style="background-color:<%=bckColor%>; "><i class="fas fa-video"></i></button>
                                     </div>
                                     
                                    <div class="modal fade" id="tutorialPopup" tabindex="-1" role="dialog" aria-labelledby="tutorialPopupLbl" style="display: none;" aria-hidden="true">
@@ -228,26 +227,24 @@
                         	<!-- Begin Pie Chart -->
                         	<div class="col-xl-4 mb-4">
                                 <div class="card card-header-actions h-70">
-                                    <div class="card-header" style="color: <%=bckColor %>;">
+                                    <div class="card-header" style="color: <%=bckColor%>;">
                                         Project Task Spent Overview
                                         <div class="dropdown no-caret" style="margin-left: auto; margin-right: 1rem;">
                                         	<select class="form-control" id="pieProject" name="pieProject" onchange="form.submit()">
 												<%
-													rs = st.executeQuery("SELECT id, name FROM projects where status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC");
-	
-													while (rs.next()) {
-														%>
+												rs = st.executeQuery("SELECT id, name FROM projects where status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC");
+													
+																							while (rs.next()) {
+												%>
 														<option value="<%=rs.getString("id")%>"
-															<%
-															if (pieProject != null && pieProject.equals(rs.getString("id"))) {%>
+															<%if (pieProject != null && pieProject.equals(rs.getString("id"))) {%>
 																selected
-															<%}
-															%>
+															<%}%>
 														>
 														<%=rs.getString("name")%></option>
 													<%
 													}
-												%>
+													%>
 											</select>
                                         </div>
                                         <i class="fas fa-question-circle" title="Select project to see how much time each task took to complete"></i>
@@ -255,16 +252,15 @@
                                     <div class="card-body">
 	                                    <%
 	                                    String pieTasks = "";
-	                                    String pieTaskHours = "";
-	                                    if (pieProject != null) {
-	                                    	pieTasks = tasks.toString().replace("[", "").replace("]", "").trim();
-			                        		pieTaskHours = taskHours.toString().replace("[", "").replace("]", "").trim();
-			                        		if(pieTasks.isEmpty()) pieTasks = "No Tasks";	
-	                                    }
-	                                   
-			                        	%>
-			                        	<input type="hidden" id="pieTasks" value="<%=pieTasks %>">
-                            			<input type="hidden" id="pieTaskHours" value="<%=pieTaskHours %>">
+	                                    	                                    String pieTaskHours = "";
+	                                    	                                    if (pieProject != null) {
+	                                    	                                    	pieTasks = tasks.toString().replace("[", "").replace("]", "").trim();
+	                                    	                        		pieTaskHours = taskHours.toString().replace("[", "").replace("]", "").trim();
+	                                    	                        		if(pieTasks.isEmpty()) pieTasks = "No Tasks";	
+	                                    	                                    }
+	                                    %>
+			                        	<input type="hidden" id="pieTasks" value="<%=pieTasks%>">
+                            			<input type="hidden" id="pieTaskHours" value="<%=pieTaskHours%>">
                                         <canvas id="projectHours" width="400" height="350"></canvas>
                                     </div>
                                 </div>
@@ -274,15 +270,15 @@
                         	<!-- Begin Bar Chart -->
                         	<div class="col-xl-8 mb-8">
                                 <div class="card card-header-actions h-70">
-                                    <div class="card-header" style="color: <%=bckColor %>;">
+                                    <div class="card-header" style="color: <%=bckColor%>;">
                                         Member Task Achievement
                                         <div class="dropdown no-caret" style="margin-left: auto; margin-right: 1rem;">
                                         	<select class="form-control" id="barUser" name="barUser" onchange="form.submit()">
 												<%
-													rs = st.executeQuery("SELECT * FROM users where department = "+ userdepartment +" and active = "+ SKYZERUSERACTIVE.TRUE.getValue() +"");
-	
-													while (rs.next()) {
-														%>
+												rs = st.executeQuery("SELECT * FROM users where department = "+ userdepartment +" and active = "+ SKYZERUSERSTATUS.ACTIVE.getValue() +"");
+													
+																							while (rs.next()) {
+												%>
 														<option value="<%=rs.getString("id")%>"
 																<%
 																if (barUser != null && barUser.equals(rs.getString("id"))) {%>
