@@ -5991,6 +5991,27 @@ input[type=button].btn-block {
      -moz-appearance: none;
           appearance: none;
 }
+
+.custom-select-multi {
+  display: inline-block;
+  height: calc(1em + 1.75rem + 2px);
+  /*padding: 0.875rem 2.125rem 0.875rem 1.125rem;*/
+  width: 20rem;
+  text-align: start;
+  padding: 1rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1;
+  color: #69707a;
+  vertical-align: middle;
+  background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23363d47' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 1.125rem center/8px 10px;
+  border: 1px solid #c5ccd6;
+  border-radius: 0.35rem;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+
 .custom-select:focus {
   border-color: transparent;
   outline: 0;

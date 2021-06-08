@@ -26,7 +26,7 @@ var myBarChart = new Chart(ctx, {
 			        display: true,
 			      },
 			    },
-			    responsive: false,
+			    responsive: true,
 			 },
 			scales: {
 		      x: {

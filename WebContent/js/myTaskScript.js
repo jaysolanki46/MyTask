@@ -1,5 +1,8 @@
 $(document).ready(function () {
 	$('#projectTeam').multiselect();
+	$('#barProjects').multiselect({
+		buttonClass:'custom-select-multi'
+	});
 	
 	/** Youtube Video */
     var url = $("#tutorialiframe").attr('src');
