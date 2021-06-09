@@ -3,6 +3,7 @@ package model;
 import java.sql.*;
 import bean.User;
 import config.DBConfig;
+import config.EnumMyTask.SKYZERUSERSTATUS;
 
 public class UserDAO {
 
@@ -17,9 +18,10 @@ public class UserDAO {
 			cnn = DBConfig.connection();
         	
 			PreparedStatement preparedStatement = cnn
-					.prepareStatement("select * from users where name = ? and pass = ?");
+					.prepareStatement("select * from users where name = ? and pass = ? and active = ?");
 			preparedStatement.setString(1, user.getName());
 			preparedStatement.setString(2, user.getPass());
+			preparedStatement.setInt(3, SKYZERUSERSTATUS.ACTIVE.getValue());
 
 			System.out.println(preparedStatement);
 			rs = preparedStatement.executeQuery();

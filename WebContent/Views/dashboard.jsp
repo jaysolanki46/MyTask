@@ -54,7 +54,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 	ArrayList<String> tasks = new ArrayList<String>();
 	ArrayList<String> taskHours = new ArrayList<String>();
 	
-	rs = st.executeQuery("SELECT * FROM projects where status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC LIMIT 1");
+	rs = st.executeQuery("SELECT * FROM projects where status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by updated_by DESC LIMIT 1");
 
 	if(rs.next()){
 		
@@ -97,7 +97,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 	String projectCreatedOn = "";
 	ArrayList<String> monthlyProjectHoursList = new ArrayList<String>();
 	
-	rs = st.executeQuery("SELECT * FROM projects where status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC LIMIT 1");
+	rs = st.executeQuery("SELECT * FROM projects where status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by updated_by DESC LIMIT 1");
 	if(rs.next()){
 		
 		if(lineProject == null) 

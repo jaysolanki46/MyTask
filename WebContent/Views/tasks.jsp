@@ -1,3 +1,5 @@
+<%@page import="bean.User"%>
+<%@page import="model.UserDAO"%>
 <%@page import="config.EnumMyTask.SKYZERUSERSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERPAYMENTS"%>
@@ -166,7 +168,18 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
                                     <div class="col-auto mb-3">
                                         <h1 class="page-header-title" style="color: <%=bckColor%>; font-weight: bold;font-size: x-large;">
                                             <div class="page-header-icon">
-                                          		<i class="far fa-calendar-plus"></i> 
+                                            	<%
+                                            		ResultSet rsUser;
+                                            		String projectCreatedBy = "", projectUpdatedBy = "";
+                                            		
+                                            		rsUser = new UserDAO().getUserDetails(new User(rs.getInt("created_by")));
+                                            		if(rsUser.next()) projectCreatedBy = rsUser.getString("name");
+                                            		
+                                            		rsUser = new UserDAO().getUserDetails(new User(rs.getInt("updated_by")));
+                                            		if(rsUser.next()) projectUpdatedBy = rsUser.getString("name");
+                                            	%>
+                                          		<i class="far fa-calendar-plus" 
+                                          		title="Created on: <%=rs.getString("created_on")%>, Created by: <%=projectCreatedBy %>, Update on: <%=rs.getString("updated_on")%>, Updated by: <%=projectUpdatedBy %>"></i> 
                                             </div>
                                             <%=rs.getString("name")%>
                                         </h1>
@@ -224,7 +237,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 							                		<div class="col">
 													    <div class="form-group">
 														    <label for="projectNameInput">Task name <span style="color: red;">*</span></label>
-														    <input style="height: fit-content;" class="form-control" id="name" name="name" type="text" placeholder="Ex. IKR Project"
+														    <input style="height: fit-content;" class="form-control" id="name" name="name" type="text" placeholder="Ex. POS Testing"
 														    required pattern=".*\S+.*" title="This field is required">
 													    </div>
 												    </div>
@@ -302,7 +315,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 													    <div class="form-group">
 														    <label for="projectNameInput">Project name <span style="color: red;">*</span></label>
 														    <input style="height: fit-content;" class="form-control" id="projectName" 
-														    	name="projectName" type="text" placeholder="Ex. IKR Project" value="<%=rs.getString("name")%>"
+														    	name="projectName" type="text" placeholder="<%=rs.getString("name")%>" value="<%=rs.getString("name")%>"
 														    	required pattern=".*\S+.*" title="This field is required">
 														    <input style="height: fit-content;" class="form-control" id="editProjectId" 
 														    	name="editProjectId" type="hidden" value="<%=projectId%>">
@@ -517,7 +530,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																			    <div class="form-group">
 																				    <label for="projectNameInput">Task name <span style="color: red;">*</span></label>
 																				    <input style="height: fit-content;" class="form-control" id="editTaskName" 
-																				    name="name" type="text" placeholder="Ex. IKR Project" value="<%=name %>"
+																				    name="name" type="text" placeholder="<%=name %>" value="<%=name %>"
 																				    required pattern=".*\S+.*" title="This field is required">
 																			    </div>
 																		    </div>
@@ -854,7 +867,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																			    <div class="form-group">
 																				    <label for="projectNameInput">Task name <span style="color: red;">*</span></label>
 																				    <input style="height: fit-content;" class="form-control" id="name" name="name" 
-																				    type="text" placeholder="Ex. IKR Project" value="<%=name %>"
+																				    type="text" placeholder="<%=name %>" value="<%=name %>"
 																				    required pattern=".*\S+.*" title="This field is required">
 																			    </div>
 																		    </div>
