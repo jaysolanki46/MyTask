@@ -179,13 +179,14 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 											    </div>
 												<div class="row">
 													<div class="col">
-														<div class="form-group">
+														<!-- Start of General Members -->
+														<div class="form-group" id="group-general" style="display: none;">
 															<label for="teamMemberSelect">Team members <span
 																style="color: red;">*</span></label><br /> <select
 																style="height: fit-content;" class="form-control"
-																id="projectTeam" name="projectTeam" multiple="multiple" required>
+																id="projectGeneralTeam" name="projectGeneralTeam" multiple="multiple">
 																<%
-																rs = st.executeQuery("SELECT * FROM users where department = " + userdepartment + " and active = "+ SKYZERUSERSTATUS.ACTIVE.getValue() + "");
+																rs = st.executeQuery("SELECT * FROM users where active = "+ SKYZERUSERSTATUS.ACTIVE.getValue() + " order by name");
 
 																																																										while (rs.next()) {
 																%>
@@ -196,6 +197,26 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																%>
 															</select>
 														</div>
+														<!-- End of General Members -->
+													    <!-- Start of Department Members -->
+														<div class="form-group" id="group-department" style="display: none;">
+															<label for="teamMemberSelect">Team members <span
+																style="color: red;">*</span></label><br /> <select
+																style="height: fit-content;" class="form-control"
+																id="projectDepartmentTeam" name="projectDepartmentTeam" multiple="multiple">
+																<%
+																rs = st.executeQuery("SELECT * FROM users where department = " + userdepartment + " and active = "+ SKYZERUSERSTATUS.ACTIVE.getValue() + " order by name");
+
+																																																										while (rs.next()) {
+																%>
+																<option value="<%=rs.getString("id")%>">
+																	<%=rs.getString("name")%></option>
+																<%
+																}
+																%>
+															</select>
+														</div>
+														<!-- End of Department Members -->
 													</div>
 												</div>
 												<div class="row">

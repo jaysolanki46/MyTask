@@ -342,12 +342,13 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 													    </div>
 												    </div>
 											    </div>
-											    <div class="form-group">
+											    <!-- Start of General Members -->
+											    <div class="form-group" id="group-general" style="display: none;">
 											        <label for="teamMemberSelect">Team members <span style="color: red;">*</span></label><br/>
-											        <select style="height: fit-content;" class="form-control" id="projectTeam" name="projectTeam" multiple="multiple" required>
+											        <select style="height: fit-content;" class="form-control" id="projectGeneralTeam" name="projectGeneralTeam" multiple="multiple">
 														<%
-														rsNested = stNested.executeQuery("SELECT * FROM users where department = " + userdepartment + " and active = "
-																+ SKYZERUSERSTATUS.ACTIVE.getValue() + "");
+														rsNested = stNested.executeQuery("SELECT * FROM users where active = "
+																+ SKYZERUSERSTATUS.ACTIVE.getValue() + " order by name");
 
 														while (rsNested.next()) {
 														%>
@@ -362,6 +363,29 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 														%>
 													</select>
 											    </div>
+											    <!-- End of General Members -->
+												<!-- Start of Department Members -->
+											    <div class="form-group" id="group-department" style="display: none;">
+											        <label for="teamMemberSelect">Team members <span style="color: red;">*</span></label><br/>
+											        <select style="height: fit-content;" class="form-control" id="projectDepartmentTeam" name="projectDepartmentTeam" multiple="multiple">
+														<%
+														rsNested = stNested.executeQuery("SELECT * FROM users where department = " + userdepartment + " and active = "
+																+ SKYZERUSERSTATUS.ACTIVE.getValue() + " order by name");
+
+														while (rsNested.next()) {
+														%>
+														<option value="<%=rsNested.getString("id")%>"
+															<%rsTeamMember = stTeamMember.executeQuery("SELECT * FROM project_team where project = " + projectId
+																							+ " AND team_member = " + rsNested.getString("id") + "");
+																					if (rsTeamMember.next()) {%>
+															selected <%}%>>
+															<%=rsNested.getString("name")%></option>
+														<%
+														}
+														%>
+													</select>
+											    </div>
+											    <!-- End of Department Members -->
 											    <div class="form-group">
 												    <label for="descriptionTextarea">Description</label>
 												    <textarea class="form-control" id="projectDescription" name="projectDescription" rows="4"><%=rs.getString("description") %></textarea>
@@ -1168,8 +1192,6 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#teamMemberSelect').multiselect();
-        $('#projectTeam').multiselect();
         // hidden
         document.getElementById("tableMyTeamTasks").style.display = "none";
     });

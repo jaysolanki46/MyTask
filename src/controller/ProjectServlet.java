@@ -81,7 +81,13 @@ public class ProjectServlet extends HttpServlet {
 				
 				project.setId(Integer.valueOf(projectRS.getString(1)));
 				
-				String[] team = request.getParameterValues("projectTeam");
+				String[] team = {};
+				/** Pick members upon department */
+				if(department.getId() == 1)
+					team = request.getParameterValues("projectGeneralTeam");
+				else
+					team = request.getParameterValues("projectDepartmentTeam");
+					
 				for (String member : team) {
 					ProjectTeam projectTeam = new ProjectTeam();
 					projectTeam.setProject(project);
@@ -125,7 +131,13 @@ public class ProjectServlet extends HttpServlet {
 			
 			if(projectRS != null) {
 				
-				String[] team = request.getParameterValues("projectTeam");
+				String[] team = {};
+				/** Pick members upon department */
+				if(department.getId() == 1)
+					team = request.getParameterValues("projectGeneralTeam");
+				else
+					team = request.getParameterValues("projectDepartmentTeam");
+				
 				for (String member : team) {
 					ProjectTeam projectTeam = new ProjectTeam();
 					projectTeam.setProject(project);
