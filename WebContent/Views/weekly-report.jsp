@@ -390,7 +390,7 @@
 										        <td><%='\"'+rs.getString("project.name") + '\"'%></td>
 										        <td style="text-align: inherit;"><%='\"'+name + '\"'%></td>
 										        <td><%=assignee %></td>
-										        <td><%=rs.getString("task.description") %></td>
+										        <td><%='\"'+rs.getString("task.description") + '\"'%></td>
 										        <td><%=rs.getInt("task.percentage") %>%</td>
 										        <%
 										        
@@ -400,8 +400,7 @@
 											        now.add(Calendar.DAY_OF_MONTH, delta );
 											        taskColumnTotal = 0; taskRowTotal = 0;
 										        
-											        for (int i = 0; i < 5; i++)
-											        {
+											        for (int i = 0; i < 5; i++){
 											        	%>
 											        		<td><% // Getting hours from task_details
 											        				Integer taskId = key;

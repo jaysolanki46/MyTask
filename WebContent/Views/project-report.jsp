@@ -376,7 +376,7 @@
 									<td><%=rs.getString("project.name") %></td>
 									<td style="text-align: inherit;"><%=name%></td>
 									<td><%=assignee.toUpperCase() %></td>
-									<td><%=rs.getString("task.description") %></td>
+									<td><%='\"'+rs.getString("task.description") + '\"'%></td>
 									<td><%=rs.getInt("task.percentage") %>%</td>
 									<%
 									 taskRowTotal = 0;

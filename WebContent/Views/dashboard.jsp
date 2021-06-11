@@ -54,7 +54,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 	ArrayList<String> tasks = new ArrayList<String>();
 	ArrayList<String> taskHours = new ArrayList<String>();
 	
-	rs = st.executeQuery("SELECT * FROM projects where status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by updated_by DESC LIMIT 1");
+	rs = st.executeQuery("SELECT * FROM projects where (status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") order by updated_by DESC LIMIT 1");
 
 	if(rs.next()){
 		
@@ -97,16 +97,17 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 	String projectCreatedOn = "";
 	ArrayList<String> monthlyProjectHoursList = new ArrayList<String>();
 	
-	rs = st.executeQuery("SELECT * FROM projects where status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by updated_by DESC LIMIT 1");
+	rs = st.executeQuery("SELECT * FROM projects where (status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") order by updated_by DESC LIMIT 1");
 	if(rs.next()){
 		
 		if(lineProject == null) 
-	lineProject = rs.getString(1);
+			lineProject = rs.getString(1);
 		
+	System.out.print(lineProject);	
 	rsNested = stNested.executeQuery("select * from projects WHERE status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND id = "+ lineProject +"");
 	if(rsNested.next()) {	
-		project = rsNested.getString("projects.name");
-		projectCreatedOn = rsNested.getString("projects.created_on");
+		project = rsNested.getString("name");
+		projectCreatedOn = rsNested.getString("created_on");
 	}
 		
 	// Get monthly hours
@@ -232,7 +233,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
                                         <div class="dropdown no-caret" style="margin-left: auto; margin-right: 1rem;">
                                         	<select class="form-control" id="pieProject" name="pieProject" onchange="form.submit()">
 												<%
-												rs = st.executeQuery("SELECT id, name FROM projects where status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC");
+												rs = st.executeQuery("SELECT id, name FROM projects where (status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") order by id DESC");
 													
 																							while (rs.next()) {
 												%>
@@ -325,7 +326,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
                                         <div class="dropdown no-caret" style="margin-left: auto; margin-right: 1rem;">
                                         	<select class="form-control" id="lineProject" name="lineProject" onchange="form.submit()" style="width: 23rem;">
 												<%
-													rs = st.executeQuery("SELECT id, name FROM projects where status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +" AND department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +" order by id DESC");
+													rs = st.executeQuery("SELECT id, name FROM projects where (status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") order by id DESC");
 	
 													while (rs.next()) {
 														%>
