@@ -368,7 +368,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
                         	<div class="col-xl-12 mb-12">
                                 <div class="card card-header-actions h-90">
                                     <div class="card-header" style="color: <%=bckColor %>;">
-                                        <div>Projects Time Spent Overview</div> 
+                                        <div>Project Total Time Spent Overview</div> 
                                         <div class="dropdown no-caret" style="margin-left: auto; margin-right: 1rem;">
                                         <select style="height: fit-content; width: fit-content;" class="form-control" title="Multi-Project Overview"
 												id="barProjects" name="barProjects" multiple="multiple">

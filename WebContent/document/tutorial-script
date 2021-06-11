@@ -1,0 +1,74 @@
+Dashboard
+
+Project Task Spent Overview: 
+This pie chart showing you the overall time consumed by each task in the project.
+You can simply select any project from this dropdown to see the result.  Simply you can see that which task has taken more time to complete in this project. 
+
+Member Task Achievement
+This bar chart allowing us to see the team's individual member task status like how much it is completed? and how many hours they spent to make this much progress.
+You can select any member of your department and you can see the all the task which has currently assigned to that user.
+
+Project Life Overview
+This line chart illustrates the overall time team has spent on the project throughout each month since the project started. 
+Select your choice of project from this list and see the contribution throughout each month.
+
+Project Total Time Spent Overview
+This bar chart showing the total hours we spent on each project so far. 
+If you want to focus on the specific project or you just want to compare between your choice of projects, then simply select the projects from this dropdown and see the result.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Projects
+
+To create a new project either you can click on this "Create New Project " button or you can click on this plus card and it will pop up the small window in that you can add the project details like 
+
+Project Name - you can name your choice of project. 
+
+Department - It will give you two choices: one is general and the other is your department, 
+so here is the thing, if you select the department "General" then this project will be visible to all the users, but if you go with your department so here is "support" then it will be visible only for the support team members. 
+
+Team Members - Here, you can select the members whom you want to add to this project. 
+And here it depends on your choice of department, this team member list will also get refreshed. If you go with "General" then it will allow you to select from all the users but if you select your department then it will restrict you to those members only who are in your specific department. 
+
+Description - You can add a description. 
+
+And that's it, just click on Save and it will be available in this list over here. 
+
+To Delete the project click on these 3 vertical dots and it will show you these two actions, select Delete then it will ask you to confirm your operation, go with ok and it will get deleted. 
+
+Archive - if click on these 3 vertical dots and it will show you these two actions, select Archived then it will ask you for the confirmation, go with ok and it will shift your project Archived section.
+So, if you want to see archived projects, click on this Archived button, here you can see all the archived projects.
+Here, you can also unarchive your project by simply click on these 3 vertical dots and select open. Now if you again go to the open project you can see that project listed on the open projects page. 
+Remember once you archived the project it won't allow you to access it on Dashboard or throughout the Reports. 
+
+However, if you want to add or see the task of any particular project, please click on the project so you can see more details of that. 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Task
+
+Update This Project - If you want to update any details of the existing project. Click on this "Update This Project" button and it will show you the popup with all the details simply you can update anything like
+- here we rename the project name... and click on save.
+
+Create New Task - To create a new task, click on the "Create New Task" button, it will show you a small popup like this..
+- You can give a task name. 
+- Here you can see in which project you are creating this task. 
+- Assignee field - in that you select a team member to whom you want to assign this task.
+- Due date - You select a due date for that task. However, it is optional. 
+- Description - You elaborate more on that task in the description.
+
+Once you are done with all of these, click on save. Also, it will send an email with all the task details to that person to whom you have assigned a task.
+Moreover, if that task is assigned to you then it will available in the "My Task" section and if it is assigned to one of your team members then I will be available in the "My Team Tasks" section.
+
+Edit Task - If you want to update any details of the existing task. Click on this "Edit" button and it will show you the popup with all the details simply you can update anything like
+- here we rename the task name... and click on save.
+- here you can also remove that task from this project. 
+
+Task Progress - By default it allows you to update the hours on the current week. 
+So for example, if you have worked this day ###### for this #### task then you can just click on this box to see the popup and here you can note the progress for that particular task.   
+So, here you can add a number of hours you have worked, how many percentages has completed and more you can add a description, you can explain why did it take you that much time to complete or anything. Just click on save and here you see your number of hours has been noted. 
+You can also update that by simply click on the same box and edit the details and save. 
+Here you can also see the progress bar underneath the task, you just hover on it and it will show you a percentage. 
+
+However, in case you have forgotten to update your progress of last week or last month, you can simply click on this "Custom Update" link and here you can select your task, date, hours, percentage and description, save. 
+
