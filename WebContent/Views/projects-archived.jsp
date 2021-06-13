@@ -173,7 +173,13 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 		                                                <div class="dropdown-divider"></div>
 		                                                <a class="dropdown-item" 
 		                                                href="projects-archived.jsp?deleteProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>" 
-		                                                onclick="return confirm('Are you sure, you want to delete this project?')"
+		                                                <%
+		                                                		if(rs.getInt("created_by") != Integer.parseInt(userid)) {
+		                                                			%>onclick="alert('You are not authorized user to delete this project');return false;"<%		                                                			
+		                                                		} else {
+		                                                			%>onclick="return confirm('Are you sure, you want to delete this project?')"<%
+		                                                		}
+		                                                %>
 		                                                style="color: red; font-weight: bold;">
                                                     		<div class="dropdown-item-icon">
                                                     		<i class="fas fa-trash"></i></div>

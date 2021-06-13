@@ -617,8 +617,15 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 													            <div class="modal-footer">
 													            	 <a style="text-decoration: none"
 						                                              	href="tasks.jsp?project=<%=Base64.getEncoder().encodeToString(projectId.getBytes())%>&deleteTask=<%=Base64.getEncoder().encodeToString(rsTask.getString("id").getBytes())%>" 
-						                                                	onclick="return confirm('Are you sure, you want to delete this task?')">
-													            	<button type="button" title="Search"
+						                                                <%
+					                                                		if(rsTask.getInt("created_by") != Integer.parseInt(userid)) {
+					                                                			%>onclick="alert('You are not authorized user to delete this task');return false;"<%		                                                			
+					                                                		} else {
+					                                                			%>onclick="return confirm('Are you sure, you want to delete this task?')"<%
+					                                                		}
+					                                                	%>	
+						                                                >
+													            	<button type="button" title="Delete"
 																	class="btn btn-sm btn-light active mr-3 center_div card-button"
 																	style="background-color:#e81500;">
 																	<i class="fas fa-trash"></i>&nbsp; Delete</button>
@@ -954,8 +961,15 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 													            <div class="modal-footer">
 													            	<a 	style="text-decoration: none"
 						                                              	href="tasks.jsp?project=<%=Base64.getEncoder().encodeToString(projectId.getBytes())%>&deleteTask=<%=Base64.getEncoder().encodeToString(rsTask.getString("id").getBytes())%>" 
-						                                                	onclick="return confirm('Are you sure, you want to delete this task?')">
-													            	<button type="button" title="Search"
+						                                                <%
+					                                                		if(rsTask.getInt("created_by") != Integer.parseInt(userid)) {
+					                                                			%>onclick="alert('You are not authorized user to delete this task');return false;"<%		                                                			
+					                                                		} else {
+					                                                			%>onclick="return confirm('Are you sure, you want to delete this task?')"<%
+					                                                		}
+					                                                	%>		
+						                                                >
+													            	<button type="button" title="Delete" 
 																	class="btn btn-sm btn-light active mr-3 center_div card-button"
 																	style="background-color:#e81500;">
 																	<i class="fas fa-trash"></i>&nbsp; Delete</button>
