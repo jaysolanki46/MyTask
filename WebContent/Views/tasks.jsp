@@ -289,7 +289,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 												</div>
 											</div>
 							            <div class="modal-footer">
-							            	<button type="submit" title="Search"
+							            	<button type="submit" title="Save"
 											class="btn btn-sm btn-light active mr-3 center_div card-button"
 											style="background-color:<%=bckColor%>; ">
 											<i class="fas fa-save"></i>&nbsp; Save</button>
@@ -466,7 +466,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 													</div>
 												</div>
 												<div class="modal-footer">
-													<button type="submit" title="Search"
+													<button type="submit" title="Save"
 																	class="btn btn-sm btn-light active mr-3 center_div card-button"
 																	style="background-color:<%=bckColor %>; ">
 																	<i class="fas fa-save"></i>&nbsp; Save</button>
@@ -631,7 +631,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																	<i class="fas fa-trash"></i>&nbsp; Delete</button>
 																	</a>
 																	
-													            	<button type="submit" title="Search"
+													            	<button type="submit" title="Save"
 																	class="btn btn-sm btn-light active mr-3 center_div card-button"
 																	style="background-color:<%=bckColor %>; ">
 																	<i class="fas fa-save"></i>&nbsp; Save</button>
@@ -763,7 +763,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																            <div class="modal-footer">
 																            <div style="margin-right: auto;margin-left: 0.5rem;">
 																            </div>
-																            	<button type="submit" title="Search"
+																            	<button type="submit" title="Save"
 																					class="btn btn-sm btn-light active mr-3 center_div card-button"
 																					style="background-color:<%=bckColor %>; ">
 																					<i class="fas fa-save"></i>&nbsp; Save</button>
@@ -975,7 +975,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																	<i class="fas fa-trash"></i>&nbsp; Delete</button>
 																	</a>
 																	
-													            	<button type="submit" title="Search"
+													            	<button type="submit" title="Save"
 																	class="btn btn-sm btn-light active mr-3 center_div card-button"
 																	style="background-color:<%=bckColor %>; "
 																	>
@@ -1103,7 +1103,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																				    <% 	} %>
 																            </div>
 																            <div class="modal-footer">
-																            	<button type="submit" title="Search"
+																            	<button type="submit" title="Save"
 																					class="btn btn-sm btn-light active mr-3 center_div card-button"
 																					style="background-color:<%=bckColor %>; "
 																					>
