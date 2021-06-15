@@ -242,99 +242,103 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
                             
                             <!-- Project card -->
                             <%
-                            rs = st.executeQuery("SELECT * FROM projects where (status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (department = "+ userdepartment +" OR " +
-                                                                                    						" department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") order by id DESC");
-                                                        	                            while(rs.next())
-                                                        					    {
-                            %>
-							    		<div class="col-lg-3 mb-3">
-		                                <div class="card lift lift-sm h-100">
-		                                    <div class="card-body py-5" style="display: flex;">
-		                                        <a href="../Views/tasks.jsp?project=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>" style="text-decoration: none;">
-		                                        <h5 class="card-title mb-2" style="color:<%=bckColor%>;">
-		                                           <%=rs.getString("name")%>
-		                                        </h5>
-		                                        </a>
-												<h5 style="margin-left: auto;"><span class="badge" style="background-color:<%=bckColor%>; color: white;">
-													<%
-													rsNested = stNested.executeQuery("SELECT * FROM departments where id = " + rs.getString("department"));
-																									while(rsNested.next()) {
-													%><%=rsNested.getString("name")%><%
-													}
-													%>
-												</span>
-												</h5>   
-												<div class="dropdown dropleft" style="margin-left: 0.7rem; color: <%=bckColor%>; cursor: pointer;">
-													<i class="fas fa-ellipsis-v" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-													<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-													
-														<a class="dropdown-item" 
-															href="projects.jsp?archiveProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>" 
-															onclick="return confirm('Are you sure, you want to archive this project?')"
-															style="color: green; font-weight: bold;">
-                                                    		<div class="dropdown-item-icon">
-                                                    		<i class="fas fa-file-archive"></i></div>
-		                                                    Archive
-		                                                </a>
-		                                                <div class="dropdown-divider"></div>
-		                                                <a class="dropdown-item" 
-		                                                	href="projects.jsp?deleteProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>" 
-		                                                	<%
-		                                                		if(rs.getInt("created_by") != Integer.parseInt(userid)) {
-		                                                			%>onclick="alert('You are not authorized user to delete this project');return false;"<%		                                                			
-		                                                		} else {
-		                                                			%>onclick="return confirm('Are you sure, you want to delete this project?')"<%
-		                                                		}
-		                                                	%>
-		                                                	style="color: red; font-weight: bold;">
-                                                    		<div class="dropdown-item-icon">
-                                                    		<i class="fas fa-trash"></i></div>
-		                                                    Delete
-		                                                </a>
-													</div>
-												</div>  
-												
-		                                    </div>
-		                                    <a href="../Views/tasks.jsp?project=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>" style="text-decoration: none;">
-		                                    <div class="card-footer">
-												<div class="small text-muted mb-2">
-													<%
-													rsNested = stNested.executeQuery("SELECT count(*) FROM tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" AND project = " + rs.getString("id"));
-																									Integer totalTask = 0;
-																									while(rsNested.next()) {
-																										
-																										totalTask = rsNested.getInt(1);
-													%><%=totalTask%> tasks in this project<%
-													}
-													%>
-												</div>
-												<div class="progress rounded-pill"
-													style="height: 0.5rem">
-													<%
-													rsNested = stNested.executeQuery("select count(id) from tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" AND project = "+ rs.getString("id") +"" 
-																																			+" and percentage = " + SKYZERTASKPROGESS.COMPLETED.getValue());
-																									Integer completedTasks = 0;
-																									double avgOfCompletedTasks = 0;
-																									
-																									while(rsNested.next()) {
-																										
-																										completedTasks = rsNested.getInt(1);
-																										avgOfCompletedTasks = ((double)completedTasks/(double)totalTask) * 100;
-																										System.out.println(avgOfCompletedTasks) ;
-													%>
-																<div style="background-color:<%=bckColor %>; width: <%=avgOfCompletedTasks %>%" title="<%=rsNested.getInt(1) %> task(s) completed" class="progress-bar rounded-pill"
-																	role="progressbar" aria-valuenow="75" aria-valuemin="0" 
-																		aria-valuemax="100"></div>															
-															<%															
-														}
-													%>
-												</div>
-											</div>
-											</a>
-											</div>
-		                            </div>
-							    	<%
-							    } 
+                            rs = st.executeQuery("SELECT projects.* FROM projects "
+													+ "LEFT JOIN project_team ON project_team.project = projects.id "
+													+ "where (projects.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (projects.department = "+ userdepartment +" OR projects.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") " 
+													+ "AND (project_team.team_member = "+ userid +") "
+													+ "order by projects.id DESC");	
+                            
+                                                    while(rs.next())
+						      					    {
+						                            %>
+													    		<div class="col-lg-3 mb-3">
+								                                <div class="card lift lift-sm h-100">
+								                                    <div class="card-body py-5" style="display: flex;">
+								                                        <a href="../Views/tasks.jsp?project=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>" style="text-decoration: none;">
+								                                        <h5 class="card-title mb-2" style="color:<%=bckColor%>;">
+								                                           <%=rs.getString("name")%>
+								                                        </h5>
+								                                        </a>
+																		<h5 style="margin-left: auto;"><span class="badge" style="background-color:<%=bckColor%>; color: white;">
+																			<%
+																			rsNested = stNested.executeQuery("SELECT * FROM departments where id = " + rs.getString("department"));
+																						while(rsNested.next()) {
+																							%><%=rsNested.getString("name")%><%
+																						}
+																						%>
+																		</span>
+																		</h5>   
+																		<div class="dropdown dropleft" style="margin-left: 0.7rem; color: <%=bckColor%>; cursor: pointer;">
+																			<i class="fas fa-ellipsis-v" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+																			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+																			
+																				<a class="dropdown-item" 
+																					href="projects.jsp?archiveProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>" 
+																					onclick="return confirm('Are you sure, you want to archive this project?')"
+																					style="color: green; font-weight: bold;">
+						                                                    		<div class="dropdown-item-icon">
+						                                                    		<i class="fas fa-file-archive"></i></div>
+								                                                    Archive
+								                                                </a>
+								                                                <div class="dropdown-divider"></div>
+								                                                <a class="dropdown-item" 
+								                                                	href="projects.jsp?deleteProject=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>" 
+								                                                	<%
+								                                                		if(rs.getInt("created_by") != Integer.parseInt(userid)) {
+								                                                			%>onclick="alert('You are not authorized user to delete this project');return false;"<%		                                                			
+								                                                		} else {
+								                                                			%>onclick="return confirm('Are you sure, you want to delete this project?')"<%
+								                                                		}
+								                                                	%>
+								                                                	style="color: red; font-weight: bold;">
+						                                                    		<div class="dropdown-item-icon">
+						                                                    		<i class="fas fa-trash"></i></div>
+								                                                    Delete
+								                                                </a>
+																			</div>
+																		</div>  
+																		
+								                                    </div>
+								                                    <a href="../Views/tasks.jsp?project=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>" style="text-decoration: none;">
+								                                    <div class="card-footer">
+																		<div class="small text-muted mb-2">
+																			<%
+																			rsNested = stNested.executeQuery("SELECT count(*) FROM tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" AND project = " + rs.getString("id"));
+																															Integer totalTask = 0;
+																															while(rsNested.next()) {
+																																
+																																totalTask = rsNested.getInt(1);
+																			%><%=totalTask%> tasks in this project<%
+																			}
+																			%>
+																		</div>
+																		<div class="progress rounded-pill"
+																			style="height: 0.5rem">
+																			<%
+																			rsNested = stNested.executeQuery("select count(id) from tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" AND project = "+ rs.getString("id") +"" 
+																																									+" and percentage = " + SKYZERTASKPROGESS.COMPLETED.getValue());
+																															Integer completedTasks = 0;
+																															double avgOfCompletedTasks = 0;
+																															
+																															while(rsNested.next()) {
+																																
+																																completedTasks = rsNested.getInt(1);
+																																avgOfCompletedTasks = ((double)completedTasks/(double)totalTask) * 100;
+																																System.out.println(avgOfCompletedTasks) ;
+																			%>
+																						<div style="background-color:<%=bckColor %>; width: <%=avgOfCompletedTasks %>%" title="<%=rsNested.getInt(1) %> task(s) completed" class="progress-bar rounded-pill"
+																							role="progressbar" aria-valuenow="75" aria-valuemin="0" 
+																								aria-valuemax="100"></div>															
+																					<%															
+																				}
+																			%>
+																		</div>
+																	</div>
+																	</a>
+																	</div>
+								                            </div>
+													    	<%
+													    } 
                             %>
                            <!-- End of project card -->
                            

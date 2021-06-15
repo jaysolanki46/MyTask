@@ -171,8 +171,9 @@
 												<%
 													rs = st.executeQuery("select task.* from tasks task " +
 															"LEFT JOIN projects project ON project.id = task.project " +
+															"LEFT JOIN project_team project_team ON project.id = project_team.project " +
 															"where (project.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (task.status = "+ SKYZERTASKSTATUS.OPENED.getValue() +") "+
-															"AND (project.department = " + userdepartment + " OR project.department = " + SKYZERDEPARTMENTS.GENERAL.getValue() + ")");
+															"AND (project.department = " + userdepartment + " OR project.department = " + SKYZERDEPARTMENTS.GENERAL.getValue() + ") AND (project_team.team_member = "+ userid +")");
 													
 													while (rs.next()) {
 													%>

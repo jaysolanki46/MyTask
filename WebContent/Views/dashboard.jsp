@@ -54,8 +54,11 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 	ArrayList<String> tasks = new ArrayList<String>();
 	ArrayList<String> taskHours = new ArrayList<String>();
 	
-	rs = st.executeQuery("SELECT * FROM projects where (status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") order by updated_by DESC LIMIT 1");
-
+	rs = st.executeQuery("SELECT projects.id, projects.name FROM projects "
+								+ "LEFT JOIN project_team ON project_team.project = projects.id "
+								+ "where (projects.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (projects.department = "+ userdepartment +" OR projects.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") " 
+								+ "AND (project_team.team_member = "+ userid +") "
+								+ "order by projects.updated_by DESC LIMIT 1");
 	if(rs.next()){
 		
 		if(pieProject == null) 
@@ -97,7 +100,12 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 	String projectCreatedOn = "";
 	ArrayList<String> monthlyProjectHoursList = new ArrayList<String>();
 	
-	rs = st.executeQuery("SELECT * FROM projects where (status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") order by updated_by DESC LIMIT 1");
+	rs = st.executeQuery("SELECT projects.id, projects.name FROM projects "
+							+ "LEFT JOIN project_team ON project_team.project = projects.id "
+							+ "where (projects.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (projects.department = "+ userdepartment +" OR projects.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") " 
+							+ "AND (project_team.team_member = "+ userid +") "
+							+ "order by projects.updated_by DESC LIMIT 1");
+	
 	if(rs.next()){
 		
 		if(lineProject == null) 
@@ -147,13 +155,15 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 		rs = st.executeQuery("SELECT projects.id, projects.name, tasks.*, IFNULL(SUM(task_details.hours),0) as total_hours FROM projects "
 		+ "LEFT JOIN (SELECT * from tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +") as tasks ON tasks.project = projects.id "
 		+ "LEFT JOIN task_details ON task_details.task = tasks.id "
+		+ "LEFT JOIN project_team ON project_team.project = projects.id "
 		+ "WHERE (projects.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (projects.department = "+ userdepartment +" OR " +
-				"projects.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") group by projects.id");
+				"projects.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") AND (project_team.team_member = "+ userid +") group by projects.id");
 	} else {
 		rs = st.executeQuery("SELECT projects.id, projects.name, tasks.*, IFNULL(SUM(task_details.hours),0) as total_hours FROM projects "
 		+ "LEFT JOIN (SELECT * from tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +") as tasks ON tasks.project = projects.id "
 		+ "LEFT JOIN task_details ON task_details.task = tasks.id "
-		+ "WHERE projects.id IN ("+ String.join(",", barProjects) +") group by projects.id");
+		+ "LEFT JOIN project_team ON project_team.project = projects.id "
+		+ "WHERE projects.id IN ("+ String.join(",", barProjects) +") AND (project_team.team_member = "+ userid +") group by projects.id");
 	}
 	
 	while(rs.next()){
@@ -233,8 +243,11 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
                                         <div class="dropdown no-caret" style="margin-left: auto; margin-right: 1rem;">
                                         	<select class="form-control" id="pieProject" name="pieProject" onchange="form.submit()">
 												<%
-												rs = st.executeQuery("SELECT id, name FROM projects where (status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") order by id DESC");
-													
+												rs = st.executeQuery("SELECT projects.id, projects.name FROM projects "
+														+ "LEFT JOIN project_team ON project_team.project = projects.id "
+														+ "where (projects.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (projects.department = "+ userdepartment +" OR projects.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") " 
+														+ "AND (project_team.team_member = "+ userid +") "
+														+ "order by projects.id DESC");	
 																							while (rs.next()) {
 												%>
 														<option value="<%=rs.getString("id")%>"
@@ -326,8 +339,11 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
                                         <div class="dropdown no-caret" style="margin-left: auto; margin-right: 1rem;">
                                         	<select class="form-control" id="lineProject" name="lineProject" onchange="form.submit()" style="width: 23rem;">
 												<%
-													rs = st.executeQuery("SELECT id, name FROM projects where (status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (department = "+ userdepartment +" OR department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") order by id DESC");
-	
+													rs = st.executeQuery("SELECT projects.id, projects.name FROM projects "
+															+ "LEFT JOIN project_team ON project_team.project = projects.id "
+															+ "where (projects.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (projects.department = "+ userdepartment +" OR projects.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") " 
+															+ "AND (project_team.team_member = "+ userid +") "
+															+ "order by projects.id DESC");	
 													while (rs.next()) {
 														%>
 														<option value="<%=rs.getString("id")%>"
@@ -373,8 +389,11 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
                                         <select style="height: fit-content; width: fit-content;" class="form-control" title="Multi-Project Overview"
 												id="barProjects" name="barProjects" multiple="multiple">
 											<%
-											rs = st.executeQuery("SELECT * FROM projects where (status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (department = "+ userdepartment +" OR " +
-                            						" department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") order by id DESC");
+											rs = st.executeQuery("SELECT projects.id, projects.name FROM projects "
+													+ "LEFT JOIN project_team ON project_team.project = projects.id "
+													+ "where (projects.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (projects.department = "+ userdepartment +" OR projects.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") " 
+													+ "AND (project_team.team_member = "+ userid +") "
+													+ "order by projects.id DESC");	
 
 															while (rs.next()) {
 																%>

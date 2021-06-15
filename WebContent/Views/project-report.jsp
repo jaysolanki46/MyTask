@@ -169,8 +169,10 @@
 											<select class="form-control col-sm-4" id="selectProject" name="selectProject" required>
 												<option value="">Select a project...</option>
 												<%
-													rs = st.executeQuery("SELECT * FROM projects where (status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND " +
-															"(department = " + userdepartment + " OR department = " + SKYZERDEPARTMENTS.GENERAL.getValue() + ")");
+												rs = st.executeQuery("SELECT projects.* FROM projects "
+														+ "LEFT JOIN project_team ON project_team.project = projects.id "
+														+ "where (projects.status = "+ SKYZERPROJECTSTATUS.OPENED.getValue() +") AND (projects.department = "+ userdepartment +" OR projects.department = "+ SKYZERDEPARTMENTS.GENERAL.getValue() +") " 
+														+ "AND (project_team.team_member = "+ userid +")");	
 													
 													while (rs.next()) {
 													%>
