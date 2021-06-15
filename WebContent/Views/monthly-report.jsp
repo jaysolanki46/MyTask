@@ -154,7 +154,7 @@
 										                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 										            </div>
 										            <div class="modal-body">
-										                <iframe id="tutorialiframe" height="100%" width="100%" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+										                <iframe id="tutorialiframe" height="100%" width="100%" src="https://www.youtube.com/embed/C8HOmHPc3cA"></iframe>
 										            </div>
 										        </div>
 										    </div>
