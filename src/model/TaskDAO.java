@@ -21,8 +21,8 @@ public class TaskDAO {
 			cnn = DBConfig.connection();
         	
             PreparedStatement preparedStatement =  cnn.prepareStatement("Insert into tasks "
-            		+ "(name, project, team_member, description, created_on, created_by, updated_on, updated_by, due_date)"
-            		+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            		+ "(name, project, team_member, description, created_on, created_by, updated_on, updated_by, due_date, priority)"
+            		+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, task.getName());
             preparedStatement.setInt(2, task.getProject().getId());
             preparedStatement.setInt(3, task.getTeam_member().getId());
@@ -33,6 +33,7 @@ public class TaskDAO {
             preparedStatement.setInt(8, task.getUpdatedBy().getId());
             if(task.getDueDate() == "") task.setDueDate(null);
             preparedStatement.setString(9, task.getDueDate());
+            preparedStatement.setInt(10, task.getPriority());
 
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
@@ -84,7 +85,7 @@ public class TaskDAO {
 			cnn = DBConfig.connection();
         	
             PreparedStatement preparedStatement =  cnn.prepareStatement("Update tasks set "
-            		+ "name = ? , project = ?, team_member = ?, description = ?, updated_on = ?, updated_by = ?, due_date = ?"
+            		+ "name = ? , project = ?, team_member = ?, description = ?, updated_on = ?, updated_by = ?, due_date = ?, priority = ?"
             		+ " where id = ?", Statement.RETURN_GENERATED_KEYS);
             
             preparedStatement.setString(1, task.getName());
@@ -95,7 +96,8 @@ public class TaskDAO {
             preparedStatement.setInt(6, task.getUpdatedBy().getId());
             if(task.getDueDate() == "") task.setDueDate(null);
             preparedStatement.setString(7, task.getDueDate());
-            preparedStatement.setInt(8, task.getId());
+            preparedStatement.setInt(8, task.getPriority());
+            preparedStatement.setInt(9, task.getId());
 
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();

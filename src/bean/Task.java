@@ -6,6 +6,7 @@ public class Task {
 	private String name;
 	private Project project;
 	private User team_member;
+	private Integer priority;
 	private String dueDate; 
 	private String description;
 	private Integer percentage;
@@ -34,6 +35,12 @@ public class Task {
 	}
 	public String getDueDate() {
 		return dueDate;
+	}
+	public Integer getPriority() {
+		return priority;
+	}
+	public void setPriority(Integer priority) {
+		this.priority = priority;
 	}
 	public void setDueDate(String dueDate) {
 		this.dueDate = dueDate;
@@ -89,8 +96,8 @@ public class Task {
 	@Override
 	public String toString() {
 		return "Task [id=" + id + ", name=" + name + ", project=" + project + ", team_member=" + team_member
-				+ ", dueDate=" + dueDate + ", description=" + description + ", percentage=" + percentage
-				+ ", createdOn=" + createdOn + ", createdBy=" + createdBy + ", updatedOn=" + updatedOn + ", updatedBy="
-				+ updatedBy + "]";
+				+ ", priority=" + priority + ", dueDate=" + dueDate + ", description=" + description + ", percentage="
+				+ percentage + ", createdOn=" + createdOn + ", createdBy=" + createdBy + ", updatedOn=" + updatedOn
+				+ ", updatedBy=" + updatedBy + "]";
 	}
 }

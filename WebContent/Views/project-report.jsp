@@ -3,6 +3,7 @@
 <%@page import="config.EnumMyTask.SKYZERTECHNOLOGIES"%>
 <%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
 <%@page import="config.EnumMyTask.SKYZERPROJECTSTATUS"%>
+<%@page import="config.EnumMyTask.SKYZERTASKPRIORITY"%>
 <%@ page language="java" import="java.sql.*" %>
 <%@ page language="java" import="config.DBConfig" %>
 <%@page import="javafx.util.Pair"%>
@@ -212,6 +213,7 @@
 							      <tr>
 							      	<th>Project</th>
 							        <th style="text-align: center;">Task</th>
+							        <th>Priority</th>
 							        <th>Assignee</th>
 							        <%
 							        	rs = st.executeQuery("SELECT * FROM projects where id = " + reportProject + "");	
@@ -233,6 +235,7 @@
 							     <% 
 								    Integer key = 0;
 							        String name = "";
+							        String priority = "";
 							        String assignee =  "";
 							        String profileColor = "green";
 							        
@@ -268,6 +271,16 @@
 															role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
 													</div>
 									</td>
+									<td>
+										<% if(rs.getInt("task.priority") == SKYZERTASKPRIORITY.LOW.getValue()) {
+											%> <span class="badge" style="background-color:#00ac69; color: white; font-weight: bold; float: left;">LOW</span> <%	
+										} else if (rs.getInt("task.priority") == SKYZERTASKPRIORITY.MEDIUM.getValue()) {
+											%> <span class="badge" style="background-color:#f4a100; color: white; font-weight: bold; float: left;">MEDIUM</span> <%
+										} else if (rs.getInt("task.priority") == SKYZERTASKPRIORITY.HIGH.getValue()) {
+											%> <span class="badge" style="background-color:#e81500; color: white; font-weight: bold; float: left;">HIGH</span> <%
+										}
+										%> 
+										        </td>
 									<td><div id="profileImage" style="background: <%=profileColor %>" title="<%=assignee %>"><%=assignee.toUpperCase().substring(0, 2) %></div></td>
 									<%
 										 taskRowTotal = 0;
@@ -337,6 +350,7 @@
 							      <tr>
 							      	<th>Project</th>
 							        <th style="text-align: center;">Task</th>
+							        <th>Priority</th>
 							        <th>Assignee</th>
 							        <th>Comments / Description</th>
 							        <th>Progress</th><%
@@ -357,6 +371,7 @@
 							     <% 
 								   key = 0;
 							       name = "";
+							       priority = "";
 							       assignee =  "";
 							       taskColumnTotal = 0;
 							        
@@ -370,6 +385,14 @@
 									while(rs.next()) {   
 									   	key = rs.getInt("task.id");
 									    name = rs.getString("task.name");
+									    
+									    if(rs.getInt("priority") == SKYZERTASKPRIORITY.LOW.getValue()) {
+								        	priority = SKYZERTASKPRIORITY.LOW.name();
+								        } else if (rs.getInt("priority") == SKYZERTASKPRIORITY.MEDIUM.getValue()) {
+								        	priority = SKYZERTASKPRIORITY.MEDIUM.name();
+								        } else if (rs.getInt("priority") == SKYZERTASKPRIORITY.HIGH.getValue()) {
+								        	priority = SKYZERTASKPRIORITY.HIGH.name();
+								        }
 									    rsNested = stNested.executeQuery("SELECT * FROM users where id = "+ rs.getInt("task.team_member") +"");
 									   	if(rsNested.next()) assignee = rsNested.getString("name");
 								        	
@@ -377,6 +400,7 @@
 								<tr>
 									<td><%=rs.getString("project.name") %></td>
 									<td style="text-align: inherit;"><%=name%></td>
+									<td><%='\"'+ priority + '\"'%></td>
 									<td><%=assignee.toUpperCase() %></td>
 									<td><%='\"'+rs.getString("task.description") + '\"'%></td>
 									<td><%=rs.getInt("task.percentage") %>%</td>
@@ -421,7 +445,8 @@
 							    	<tr>
 							    		<th style="text-align: inherit;">Total hours:</th>
 							    		<%
-							    		for (LocalDate date = LocalDate.parse(projectCreatedOn); date.isBefore(LocalDate.now().plusDays(5)); date = date.plusDays(1)) {
+							    		// On new field add 1 in PlusDays to maintain columns
+							    		for (LocalDate date = LocalDate.parse(projectCreatedOn); date.isBefore(LocalDate.now().plusDays(6)); date = date.plusDays(1)) {
 							    			%>
 							    				<th></th>
 							    			<%

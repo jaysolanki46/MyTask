@@ -131,4 +131,19 @@ public class EnumMyTask {
 			return value;
 		}
 	}
+	
+	public enum SKYZERTASKPRIORITY {
+		LOW(0),
+		MEDIUM(1),
+		HIGH(2);
+		
+		int value;
+		private SKYZERTASKPRIORITY(int value) {
+			this.value = value;
+		}
+		
+		public int getValue(){
+			return value;
+		}
+	}
 }

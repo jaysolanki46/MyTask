@@ -1,3 +1,4 @@
+<%@page import="config.EnumMyTask.SKYZERTASKPRIORITY"%>
 <%@page import="bean.User"%>
 <%@page import="model.UserDAO"%>
 <%@page import="config.EnumMyTask.SKYZERUSERSTATUS"%>
@@ -250,7 +251,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 												    </div>
 											    </div>
 											    <div class="row">
-							                		<div class="col">
+							                		<div class="col-md-3">
 													    <div class="form-group">
 													        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
 													        <select class="form-control" id="teamMember" name="teamMember" required>
@@ -272,6 +273,16 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																}
 																%>
 															</select>
+													    </div>
+													  </div>
+													  <div class="col-md-3">
+													    <div class="form-group">
+													  		<label for="taskPriority">Priority</label>
+													  		<select class="form-control" id="priority" name="priority" required>
+													  			<option style="background: #00ac69; font-weight: bold" value=<%=SKYZERTASKPRIORITY.LOW.getValue() %>>LOW</option>
+													  			<option style="background: #f4a100; font-weight: bold"  value=<%=SKYZERTASKPRIORITY.MEDIUM.getValue() %>>MEDIUM</option>
+													  			<option style="background: #e81500; font-weight: bold"  value=<%=SKYZERTASKPRIORITY.HIGH.getValue() %>>HIGH</option>
+													  		</select>
 													    </div>
 													  </div>
 													  <div class="col">  
@@ -536,7 +547,19 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 								        %>
 								        	<tr>
 										        <td style="text-align: inherit;">
-										        	<a data-toggle="modal" data-target="#taskEditModelLg<%=key %>" style="cursor: pointer;" title="Edit Task"><i class="far fa-edit"></i>&nbsp;<%=name %></a>
+										        	<a data-toggle="modal" data-target="#taskEditModelLg<%=key %>" style="cursor: pointer;" title="Edit Task">
+										        		<i class="far fa-edit"></i>&nbsp;<%=name %> 
+										        		<% if(rsTask.getInt("priority") == SKYZERTASKPRIORITY.LOW.getValue()) {
+										        			%> <span class="badge" style="background-color:#00ac69; color: white; font-weight: bold; float: right;">LOW</span> <%	
+										        		} else if (rsTask.getInt("priority") == SKYZERTASKPRIORITY.MEDIUM.getValue()) {
+										        			%> <span class="badge" style="background-color:#f4a100; color: white; font-weight: bold; float: right;">MEDIUM</span> <%
+										        		} else if (rsTask.getInt("priority") == SKYZERTASKPRIORITY.HIGH.getValue()) {
+										        			%> <span class="badge" style="background-color:#e81500; color: white; font-weight: bold; float: right;">HIGH</span> <%
+										        		}
+										        		%>
+										        		
+										        	</a> 
+										        	
 										        	
 										        	<!-- Model edit a task -->
 						                        	<div class="modal fade" id="taskEditModelLg<%=key %>" tabindex="-1" role="dialog" aria-labelledby="taskEditModelLg<%=key %>" aria-hidden="true">
@@ -567,7 +590,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																		    </div>
 																	    </div>
 																	    <div class="row">
-													                		<div class="col">
+													                		<div class="col-md-3">
 																			    <div class="form-group">
 																			    	<input type="hidden" name="hiddenOldTeamMember" value="<%=rsTask.getInt("team_member") %>">
 																			        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
@@ -595,6 +618,19 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																		        		}
 																			        %>
 																			        </select>
+																			    </div>
+																			  </div>
+																			  <div class="col-md-3">
+																			    <div class="form-group">
+																			  		<label for="taskPriority">Priority</label>
+																			  		<select class="form-control" id="priority" name="priority" required>
+																			  			<option style="background: #00ac69; font-weight: bold" value=<%=SKYZERTASKPRIORITY.LOW.getValue() %>
+																			  				<%if (rsTask.getInt("priority") == SKYZERTASKPRIORITY.LOW.getValue()) {%>selected <%}%>>LOW</option>
+																			  			<option style="background: #f4a100; font-weight: bold"  value=<%=SKYZERTASKPRIORITY.MEDIUM.getValue() %>
+																			  				<%if (rsTask.getInt("priority") == SKYZERTASKPRIORITY.MEDIUM.getValue()) {%>selected <%}%>>MEDIUM</option>
+																			  			<option style="background: #e81500; font-weight: bold"  value=<%=SKYZERTASKPRIORITY.HIGH.getValue() %>
+																			  				<%if (rsTask.getInt("priority") == SKYZERTASKPRIORITY.HIGH.getValue()) {%>selected <%}%>>HIGH</option>
+																			  		</select>
 																			    </div>
 																			  </div>
 																			  <div class="col">  
@@ -880,7 +916,16 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 								        %>
 								        	<tr>
 										        <td style="text-align: inherit;">
-										        	<a data-toggle="modal" data-target="#taskEditModelLg<%=key %>" style="cursor: pointer;" title="Edit Task"><i class="far fa-edit"></i>&nbsp;<%=name %></a>
+										        	<a data-toggle="modal" data-target="#taskEditModelLg<%=key %>" style="cursor: pointer;" title="Edit Task"><i class="far fa-edit"></i>&nbsp;<%=name %>
+										        		<% if(rsTask.getInt("priority") == SKYZERTASKPRIORITY.LOW.getValue()) {
+										        			%> <span class="badge" style="background-color:#00ac69; color: white; font-weight: bold; float: right;">LOW</span> <%	
+										        		} else if (rsTask.getInt("priority") == SKYZERTASKPRIORITY.MEDIUM.getValue()) {
+										        			%> <span class="badge" style="background-color:#f4a100; color: white; font-weight: bold; float: right;">MEDIUM</span> <%
+										        		} else if (rsTask.getInt("priority") == SKYZERTASKPRIORITY.HIGH.getValue()) {
+										        			%> <span class="badge" style="background-color:#e81500; color: white; font-weight: bold; float: right;">HIGH</span> <%
+										        		}
+										        		%>
+										        	</a>
 										        	
 										        	<!-- Model edit a task -->
 						                        	<div class="modal fade" id="taskEditModelLg<%=key %>" tabindex="-1" role="dialog" aria-labelledby="taskEditModelLg<%=key %>" aria-hidden="true">
@@ -911,7 +956,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																		    </div>
 																	    </div>
 																	    <div class="row">
-													                		<div class="col">
+													                		 <div class="col-md-3">
 																			    <div class="form-group">
 																			    	<input type="hidden" name="hiddenOldTeamMember" value="<%=rsTask.getInt("team_member") %>">
 																			        <label for="teamMemberSelect">Assignee <span style="color: red;">*</span></label><br/>
@@ -939,6 +984,19 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																		        		}
 																			        %>
 																			        </select>
+																			    </div>
+																			  </div>
+																			  <div class="col-md-3">
+																			    <div class="form-group">
+																			  		<label for="taskPriority">Priority</label>
+																			  		<select class="form-control" id="priority" name="priority" required>
+																			  			<option style="background: #00ac69; font-weight: bold" value=<%=SKYZERTASKPRIORITY.LOW.getValue() %>
+																			  				<%if (rsTask.getInt("priority") == SKYZERTASKPRIORITY.LOW.getValue()) {%>selected <%}%>>LOW</option>
+																			  			<option style="background: #f4a100; font-weight: bold"  value=<%=SKYZERTASKPRIORITY.MEDIUM.getValue() %>
+																			  				<%if (rsTask.getInt("priority") == SKYZERTASKPRIORITY.MEDIUM.getValue()) {%>selected <%}%>>MEDIUM</option>
+																			  			<option style="background: #e81500; font-weight: bold"  value=<%=SKYZERTASKPRIORITY.HIGH.getValue() %>
+																			  				<%if (rsTask.getInt("priority") == SKYZERTASKPRIORITY.HIGH.getValue()) {%>selected <%}%>>HIGH</option>
+																			  		</select>
 																			    </div>
 																			  </div>
 																			  <div class="col">  
