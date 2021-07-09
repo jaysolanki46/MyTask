@@ -31,9 +31,9 @@ try {
 String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
 	String projectId = "";
-	Integer taskColumnTotal = 0, taskRowTotal = 0;
-	Integer myTaskColumnTotalMon = 0, myTaskColumnTotalTue = 0, myTaskColumnTotalWed = 0, myTaskColumnTotalThu = 0, myTaskColumnTotalFri = 0;
-	Integer myTeamTaskColumnTotalMon = 0, myTeamTaskColumnTotalTue = 0, myTeamTaskColumnTotalWed = 0, myTeamTaskColumnTotalThu = 0, myTeamTaskColumnTotalFri = 0;
+	Float taskColumnTotal = 0f, taskRowTotal = 0f;
+	Float myTaskColumnTotalMon = 0f, myTaskColumnTotalTue = 0f, myTaskColumnTotalWed = 0f, myTaskColumnTotalThu = 0f, myTaskColumnTotalFri = 0f;
+	Float myTeamTaskColumnTotalMon = 0f, myTeamTaskColumnTotalTue = 0f, myTeamTaskColumnTotalWed = 0f, myTeamTaskColumnTotalThu = 0f, myTeamTaskColumnTotalFri = 0f;
 	
 	Connection dbConn = DBConfig.connection(); ;
 	Statement st = null;
@@ -453,8 +453,8 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																max="31-12-3000" min="01-01-1000" class="form-control" required>
 														</div>
 														<div class="col-md-3">
-															<label for="departmentSelect">Hours </label> 
-																<input class="form-control" type="number" min="0" max="12"
+															<label for="departmentSelect">Hours (99.99)</label> 
+																<input class="form-control" type="number" min="0" max="12" step=0.01
 																	value="0" id="customTaskDetailHours"
 																	name="taskDetailHours" required>
 														</div>
@@ -704,7 +704,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 											    	now = Calendar.getInstance();
 											        delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
 											        now.add(Calendar.DAY_OF_MONTH, delta );
-											        taskColumnTotal = 0; taskRowTotal = 0;
+											        taskColumnTotal = 0f; taskRowTotal = 0f;
 
 											        for (int i = 0; i < 5; i++)
 											        {
@@ -713,12 +713,12 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 											        			<% // Getting hours from task_details
 											        				Integer taskId = key;
 											        				String taskDate = yyyyMMddFormate.format(now.getTime());
-											        				Integer taskHours = 0;
+											        				Float taskHours = 0f;
 											        				String taskDescription = "";
 											        				
 											        				rsHours = stHours.executeQuery("SELECT * FROM task_details where task = "+ taskId +" AND task_detail_date = '"+ taskDate +"' order by id DESC");
 								        							if(rsHours.next()) {
-								        								taskHours = rsHours.getInt("hours");
+								        								taskHours = rsHours.getFloat("hours");
 								        								taskDescription = rsHours.getString("description");
 								        							}
 								        							taskRowTotal += taskHours;
@@ -734,7 +734,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 											        			<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class="form-control"
 											        			onclick="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" data-toggle="modal" 
 											        			data-target="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" 
-											        			><%=taskHours %>:00</label>
+											        			><%=taskHours %></label>
 													        	
 													        	<!-- Model update task hours -->
 									                        	<div class="modal fade" id="taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" tabindex="-1" role="dialog" aria-labelledby="projectModelLglabel" aria-hidden="true">
@@ -760,8 +760,8 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																					    </div>
 																					   		<div class="col-md-6">
 																						    <div class="form-group" style="text-align: start;">
-																						        <label for="departmentSelect">Hours</label>
-																						        <input class="form-control" type="number" min="0" max="12" value=<%=taskHours %>
+																						        <label for="departmentSelect">Hours (99.99)</label>
+																						        <input class="form-control" type="number" min="0" max="12" value=<%=taskHours %> step=0.01
 																						         id="inlineTaskDetailHours" name="taskDetailHours" required>
 																						    </div>
 																						    </div>
@@ -816,7 +816,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 										        
 										        %>
 										        <td>
-										       		<label class="total-hours-text"><%=taskRowTotal %>:00</label>
+										       		<label class="total-hours-text"><%=taskRowTotal %></label>
 										        </td>
 										      </tr>
 								        <%
@@ -831,22 +831,22 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 							    			Total hours:
 							    		</th>
 							    		<th>
-							    			<label class="total-hours-text"><%=myTaskColumnTotalMon %>:00</label>
+							    			<label class="total-hours-text"><%=myTaskColumnTotalMon %></label>
 							    		</th>
 							    		<th>
-							    			<label class="total-hours-text"><%=myTaskColumnTotalTue %>:00</label>
+							    			<label class="total-hours-text"><%=myTaskColumnTotalTue %></label>
 							    		</th>
 							    		<th>
-											<label class="total-hours-text"><%=myTaskColumnTotalWed %>:00</label>
+											<label class="total-hours-text"><%=myTaskColumnTotalWed %></label>
 							    		</th>
 							    		<th>
-							    			<label class="total-hours-text"><%=myTaskColumnTotalThu %>:00</label>
+							    			<label class="total-hours-text"><%=myTaskColumnTotalThu %></label>
 							    		</th>
 							    		<th>
-							    			<label class="total-hours-text"><%=myTaskColumnTotalFri %>:00</label>
+							    			<label class="total-hours-text"><%=myTaskColumnTotalFri %></label>
 							    		</th>
 							    		<th>
-							    			<label class="total-hours-text"><%=taskColumnTotal %>:00</label>
+							    			<label class="total-hours-text"><%=taskColumnTotal %></label>
 							    		</th>
 							    	</tr>
 							    </tfoot>
@@ -1070,7 +1070,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 											    	now = Calendar.getInstance();
 											        delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
 											        now.add(Calendar.DAY_OF_MONTH, delta );
-											        taskColumnTotal = 0; taskRowTotal = 0;
+											        taskColumnTotal = 0f; taskRowTotal = 0f;
 										        
 											        for (int i = 0; i < 5; i++)
 											        {
@@ -1079,12 +1079,12 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 											        			<% // Getting hours from task_details
 											        				Integer taskId = key;
 											        				String taskDate = yyyyMMddFormate.format(now.getTime());
-											        				Integer taskHours = 0;
+											        				Float taskHours = 0f;
 											        				String taskDescription = "";
 											        				
 											        				rsHours = stHours.executeQuery("SELECT * FROM task_details where task = "+ taskId +" AND task_detail_date = '"+ taskDate +"' order by id DESC");
 								        							if(rsHours.next()) {
-								        								taskHours = rsHours.getInt("hours");
+								        								taskHours = rsHours.getFloat("hours");
 								        								taskDescription = rsHours.getString("description");
 								        							}
 								        							taskRowTotal += taskHours;
@@ -1100,7 +1100,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 											        			<label name=hoursLable class="form-control"
 											        			onclick="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" data-toggle="modal" 
 											        			data-target="#taskModel<%=key + ddMMMFormate.format(now.getTime()) %>" 
-											        			><%=taskHours %>:00</label>
+											        			><%=taskHours %></label>
 													        </td>
 											        		
 											        		<!-- Start Disabled Model update task -->
@@ -1128,7 +1128,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 																					    </div>
 																					    <div class="col-md-6">
 																						    <div class="form-group" style="text-align: start;">
-																						        <label for="departmentSelect">Hours</label>
+																						        <label for="departmentSelect">Hours (99.99)</label>
 																						        <input class="form-control" type="number" min="0" max="12" value=<%=taskHours %>>
 																						    </div>
 																					    </div>
@@ -1180,7 +1180,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 										        
 										        %>
 										        <td>
-										        	<label class="total-hours-text"><%=taskRowTotal %>:00</label>
+										        	<label class="total-hours-text"><%=taskRowTotal %></label>
 										        </td>
 										      </tr>
 								        
@@ -1197,22 +1197,22 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 							    			Total hours:
 							    		</th>
 							    		<th>
-							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalMon %>:00</label>
+							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalMon %></label>
 							    		</th>
 							    		<th>
-							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalTue %>:00</label>
+							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalTue %></label>
 							    		</th>
 							    		<th>
-							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalWed %>:00</label>
+							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalWed %></label>
 							    		</th>
 							    		<th>
-							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalThu %>:00</label>
+							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalThu %></label>
 							    		</th>
 							    		<th>
-							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalFri %>:00</label>
+							    			<label class="total-hours-text"><%=myTeamTaskColumnTotalFri %></label>
 							    		</th>
 							    		<th>
-							    			<label class="total-hours-text"><%=taskColumnTotal %>:00</label>
+							    			<label class="total-hours-text"><%=taskColumnTotal %></label>
 							    		</th>
 							    	</tr>
 							    </tfoot>

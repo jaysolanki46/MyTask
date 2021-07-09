@@ -33,6 +33,7 @@ public class TaskDetailDAO {
             	preparedStatement =  cnn.prepareStatement("Update task_details set "
                 		+ "hours = ?, description = ?, updated_on = ?, updated_by = ? "
             			+ "where id = ?", Statement.RETURN_GENERATED_KEYS);
+
             	preparedStatement.setString(1, taskDetail.getHours());
             	preparedStatement.setString(2, taskDetail.getDescription());
             	preparedStatement.setString(3, taskDetail.getUpdatedOn());

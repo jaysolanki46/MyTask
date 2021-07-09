@@ -26,7 +26,7 @@
 	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
 	String reportStartDate = "", reportEndDate = ""; 
-	Integer taskColumnTotal = 0, taskRowTotal = 0;
+	Float taskColumnTotal = 0f, taskRowTotal = 0f;
 	
 	Connection dbConn = DBConfig.connection(); ;
 	Statement st = null;
@@ -221,7 +221,7 @@
 							        String priority = "";
 							        String assignee =  "";
 							        String profileColor = "green";
-							        taskColumnTotal = 0; taskRowTotal = 0;
+							        taskColumnTotal = 0f; taskRowTotal = 0f;
 							        
 									rs = st.executeQuery("select project.*, task.* from projects project " +  
 											"LEFT JOIN project_team project_team ON project.id = project_team.project " +
@@ -266,7 +266,7 @@
 									</td>
 									<td><div id="profileImage" style="background: <%=profileColor %>" title="<%=assignee %>"><%=assignee.toUpperCase().substring(0, 2) %></div></td>
 									<%
-										taskColumnTotal = 0; taskRowTotal = 0;
+										taskColumnTotal = 0f; taskRowTotal = 0f;
 									
 										for (LocalDate date = LocalDate.parse(reportStartDate); date.isBefore(LocalDate.parse(reportEndDate).plusDays(1)); date = date.plusDays(1))
 								        {
@@ -274,7 +274,7 @@
 													// Getting hours from task_details
 														Integer taskId = key;
 														String tableDate = date.getYear() + "-" + String.format("%02d", date.getMonthValue()) + "-" + String.format("%02d", date.getDayOfMonth());
-														Integer taskHours = 0;
+														Float taskHours = 0f;
 														String taskDescription = "";
 														
 														rsNested = stNested.executeQuery("SELECT taskdetail.* FROM task_details taskdetail where taskdetail.task = "+ taskId +" AND " 
@@ -284,7 +284,7 @@
 								        						);
 								        				
 								        				if(rsNested.next()){
-								        					taskHours = rsNested.getInt("taskdetail.hours");
+								        					taskHours = rsNested.getFloat("taskdetail.hours");
 								        					taskDescription = rsNested.getString("taskdetail.description");
 								        				}
 														taskRowTotal += taskHours;
@@ -293,13 +293,13 @@
 														style="cursor: pointer;" class="">
 														<%
 											        		if(taskHours > 0)
-											        			%><%=taskHours + ":00"%><%
+											        			%><%=taskHours %><%
 											        		else
 											        			%><%="-"%>
 													</label></td><% 
 								        }
 									%>
-									<td><label class="total-hours-text"><%=taskRowTotal %>:00</label></td>
+									<td><label class="total-hours-text"><%=taskRowTotal %></label></td>
 								</tr>
 								 <%
 								    }
@@ -337,7 +337,7 @@
 							        name = "";
 							        priority = "";
 							        assignee =  "";
-							        taskColumnTotal = 0; taskRowTotal = 0;
+							        taskColumnTotal = 0f; taskRowTotal = 0f;
 							        
 									rs = st.executeQuery("select project.*, task.* from projects project " +  
 											"LEFT JOIN project_team project_team ON project.id = project_team.project " +
@@ -368,7 +368,7 @@
 									<td><%='\"'+rs.getString("task.description") + '\"'%></td>
 									<td><%=rs.getInt("task.percentage")%>%</td>
 									<%
-										taskColumnTotal = 0; taskRowTotal = 0;
+										taskColumnTotal = 0f; taskRowTotal = 0f;
 									
 										for (LocalDate date = LocalDate.parse(reportStartDate); date.isBefore(LocalDate.parse(reportEndDate).plusDays(1)); date = date.plusDays(1))
 								        {
@@ -376,7 +376,7 @@
 													// Getting hours from task_details
 														Integer taskId = key;
 														String tableDate = date.getYear() + "-" + String.format("%02d", date.getMonthValue()) + "-" + String.format("%02d", date.getDayOfMonth());
-														Integer taskHours = 0;
+														Float taskHours = 0f;
 														String taskDescription = "";
 														
 														rsNested = stNested.executeQuery("SELECT taskdetail.* FROM task_details taskdetail where taskdetail.task = "+ taskId +" AND " 
@@ -386,18 +386,18 @@
 								        						);
 								        				
 								        				if(rsNested.next()){
-								        					taskHours = rsNested.getInt("taskdetail.hours");
+								        					taskHours = rsNested.getFloat("taskdetail.hours");
 								        					taskDescription = rsNested.getString("taskdetail.description");
 								        				}
 														taskRowTotal += taskHours;
 													%><label id="hoursLable" name="hoursLable" style="cursor: pointer;" class=""><%
 											        		if(taskHours > 0)
-											        			%><%=taskHours + ":00"%><%
+											        			%><%=taskHours %><%
 											        		else
 											        			%><%="-"%></label></td><% 
 								        }
 									%>
-									<td><label class="total-hours-text"><%=taskRowTotal %>:00</label></td>
+									<td><label class="total-hours-text"><%=taskRowTotal %></label></td>
 								</tr>
 								 <%
 								    }

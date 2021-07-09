@@ -25,7 +25,7 @@
 <%
 	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
-	Integer taskColumnTotal = 0, taskRowTotal = 0;
+	Float taskColumnTotal = 0f, taskRowTotal = 0f;
 	String reportMonth = "", reportYear = "";
 	
 	Connection dbConn = DBConfig.connection(); ;
@@ -285,7 +285,7 @@
 											     	// 5 days
 											    	now = currentMonth;
 								       				delta = currentMonth.getActualMaximum(GregorianCalendar.DAY_OF_MONTH); //number of days in month
-								       				taskColumnTotal = 0; taskRowTotal = 0;
+								       				taskColumnTotal = 0f; taskRowTotal = 0f;
 								       				
 								       				for (int i = 1; i <= delta; i++)
 											        {
@@ -294,7 +294,7 @@
 											        			<% // Getting hours from task_details
 											        				Integer taskId = key;
 											        				String tableDate = yyyyMMddFormate.format(now.getTime()); 
-											        				Integer taskHours = 0;
+											        				Float taskHours = 0f;
 											        				String taskDescription = "";
 											        				
 											        				rsNested = stNested.executeQuery("SELECT taskdetail.* FROM task_details taskdetail where taskdetail.task = "+ taskId +" AND " 
@@ -304,7 +304,7 @@
 											        						);
 											        				
 											        				if(rsNested.next()){
-											        					taskHours = rsNested.getInt("taskdetail.hours");
+											        					taskHours = rsNested.getFloat("taskdetail.hours");
 											        					taskDescription = rsNested.getString("taskdetail.description");
 											        				}
 								        							taskRowTotal += taskHours;
@@ -313,7 +313,7 @@
 											        			<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class=""
 											        			><%
 											        				if(taskHours > 0)
-											        					%><%=taskHours + ":00"%><%
+											        					%><%=taskHours%><%
 											        				else
 											        					%><%="-"%>
 											        			</label>
@@ -323,7 +323,7 @@
 											        }
 										        %>
 										        <td>
-										        	<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=taskRowTotal + ":00" %>">
+										        	<input class="form-control form-control-sm total-hours-text" type="text" readonly="readonly" value="<%=taskRowTotal  %>">
 										        </td>
 										      </tr>
 								        
@@ -403,7 +403,7 @@
 											     	// 5 days
 											    	now = currentMonth;
 								       				delta = currentMonth.getActualMaximum(GregorianCalendar.DAY_OF_MONTH); //number of days in month
-								       				taskColumnTotal = 0; taskRowTotal = 0;
+								       				taskColumnTotal = 0f; taskRowTotal = 0f;
 								       				
 								       				for (int i = 1; i <= delta; i++)
 											        {
@@ -411,7 +411,7 @@
 											        		<td><% // Getting hours from task_details
 											        				Integer taskId = key;
 											        				String tableDate = yyyyMMddFormate.format(now.getTime()); 
-											        				Integer taskHours = 0;
+											        				Float taskHours = 0f;
 											        				String taskDescription = "";
 											        				
 											        				rsNested = stNested.executeQuery("SELECT taskdetail.* FROM task_details taskdetail where taskdetail.task = "+ taskId +" AND " 
@@ -421,19 +421,19 @@
 											        						);
 											        				
 											        				if(rsNested.next()){
-											        					taskHours = rsNested.getInt("taskdetail.hours");
+											        					taskHours = rsNested.getFloat("taskdetail.hours");
 											        					taskDescription = rsNested.getString("taskdetail.description");
 											        				}
 								        							taskRowTotal += taskHours;
 											        			%><label id="hoursLable" name="hoursLable" style="cursor: pointer;" class=""><%
 											        				if(taskHours > 0)
-											        					%><%=taskHours + ":00"%><%
+											        					%><%=taskHours %><%
 											        				else
 											        					%><%="-"%></label></td>
 											        	<% 
 											        }
 										        %>
-										        <td><%=taskRowTotal + ":00" %></td>
+										        <td><%=taskRowTotal  %></td>
 										      </tr>
 								        <%
 								    }

@@ -26,7 +26,7 @@
 	String bckColor = "", showSkyzerPaymentImg = "", showSkyzerTechImg = "";
 	String userid = "", username = "", useremail = "", usertheme = "", userpass = "", usertype = "", userdepartment = "";
 	String reportStartDate = "", reportEndDate = "";
-	Integer taskColumnTotal = 0, taskRowTotal = 0;
+	Float taskColumnTotal = 0f, taskRowTotal = 0f;
 	
 	Connection dbConn = DBConfig.connection(); ;
 	Statement st = null;
@@ -290,7 +290,6 @@
 										        		%> 
 										        </td>
 										        <td>
-										        	<!-- will come from db -->
 													<div id="profileImage" style="background: <%=profileColor %>" title="<%=assignee %>">
 														<%=assignee.toUpperCase().substring(0, 2) %>
 													</div>
@@ -301,7 +300,7 @@
 											    	now = currentWeek;
 											        delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
 											        now.add(Calendar.DAY_OF_MONTH, delta );
-											        taskColumnTotal = 0; taskRowTotal = 0;
+											        taskColumnTotal = 0f; taskRowTotal = 0f;
 										        
 											        for (int i = 0; i < 5; i++)
 											        {
@@ -310,12 +309,12 @@
 													        	<% // Getting hours from task_details
 											        				Integer taskId = key;
 											        				String taskDate = yyyyMMddFormate.format(now.getTime());
-											        				Integer taskHours = 0;
+											        				Float taskHours = 0f;
 											        				String taskDescription = "";
 											        				
 											        				rsNested = stNested.executeQuery("SELECT taskdetail.* FROM task_details taskdetail where taskdetail.task = "+ taskId +" AND taskdetail.task_detail_date = '"+ taskDate +"'");
 											        				if(rsNested.next()){
-											        					taskHours = rsNested.getInt("taskdetail.hours");
+											        					taskHours = rsNested.getFloat("taskdetail.hours");
 											        					taskDescription = rsNested.getString("taskdetail.description");
 											        				}
 								        							taskRowTotal += taskHours;
@@ -325,7 +324,7 @@
 											        			<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class=""
 											        			><%
 											        				if(taskHours > 0)
-											        					%><%=taskHours + ":00"%><%
+											        					%><%=taskHours%><%
 											        				else
 											        					%><%="-"%>
 											        			</label>
@@ -335,7 +334,7 @@
 											        }
 										        %>
 										        <td>
-										        	<label class="total-hours-text"><%=taskRowTotal %>:00</label>
+										        	<label class="total-hours-text"><%=taskRowTotal %></label>
 										        </td>
 										      </tr>
 								        <%
@@ -422,31 +421,31 @@
 											    	now = currentWeek;
 											        delta = -now.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
 											        now.add(Calendar.DAY_OF_MONTH, delta );
-											        taskColumnTotal = 0; taskRowTotal = 0;
+											        taskColumnTotal = 0f; taskRowTotal = 0f;
 										        
 											        for (int i = 0; i < 5; i++){
 											        	%>
 											        		<td><% // Getting hours from task_details
 											        				Integer taskId = key;
 											        				String taskDate = yyyyMMddFormate.format(now.getTime());
-											        				Integer taskHours = 0;
+											        				Float taskHours = 0f;
 											        				String taskDescription = "";
 											        				
 											        				rsNested = stNested.executeQuery("SELECT taskdetail.* FROM task_details taskdetail where taskdetail.task = "+ taskId +" AND taskdetail.task_detail_date = '"+ taskDate +"'");
 											        				if(rsNested.next()){
-											        					taskHours = rsNested.getInt("taskdetail.hours");
+											        					taskHours = rsNested.getFloat("taskdetail.hours");
 											        					taskDescription = rsNested.getString("taskdetail.description");
 											        				}
 								        							taskRowTotal += taskHours;
 								        							
 											        			%><label id="hoursLable" name="hoursLable" style="cursor: pointer;" class=""><%
 											        				if(taskHours > 0)
-											        					%><%=taskHours + ":00"%><%
+											        					%><%=taskHours%><%
 											        				else
 											        					%><%="-"%></label></td><% 
 											            now.add(Calendar.DAY_OF_MONTH, 1);
 											        } %>
-											        <td><label class="total-hours-text"><%=taskRowTotal %>:00</label></td>
+											        <td><label class="total-hours-text"><%=taskRowTotal %></label></td>
 										      </tr>
 								        <%
 								    }
