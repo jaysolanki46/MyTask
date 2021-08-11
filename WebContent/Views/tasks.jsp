@@ -515,7 +515,13 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 							        
 								        for (int i = 0; i < 5; i++)
 								        {
-								        	%><th style="text-align: -webkit-center;"><%=ddMMFormate.format(now.getTime()) + " , " + daysList[i] %></th><% 
+								        	%><th style="text-align: -webkit-center; 
+								        		<% if (LocalDate.now().getDayOfWeek().name().substring(0, 3).equals( daysList[i])) {%>
+								        				background: darkgray;
+								        				color: white;
+								        			<%}%>">
+								        		<%=ddMMFormate.format(now.getTime()) + " , " + daysList[i] %>
+								        	</th><% 
 								        	now.add(Calendar.DAY_OF_MONTH, 1);
 								        }
 							        	
@@ -709,7 +715,9 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 											        for (int i = 0; i < 5; i++)
 											        {
 											        	%>
-											        		<td>
+											        	<td style="<% if (LocalDate.now().getDayOfWeek().getValue() -1 == i) {%>
+										        				background: darkgray;
+										        			<%}%>">
 											        			<% // Getting hours from task_details
 											        				Integer taskId = key;
 											        				String taskDate = yyyyMMddFormate.format(now.getTime());
@@ -884,7 +892,11 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 							        
 								        for (int i = 0; i < 5; i++)
 								        {
-								        	%><th style="text-align: -webkit-center;"><%=ddMMFormate.format(now.getTime()) + " , " + daysList[i] %></th><% 
+								        	%><th style="text-align: -webkit-center;
+								        			<% if (LocalDate.now().getDayOfWeek().name().substring(0, 3).equals( daysList[i])) {%>
+								        				background: darkgray;
+								        				color: white;
+								        			<%}%>"><%=ddMMFormate.format(now.getTime()) + " , " + daysList[i] %></th><% 
 								        	now.add(Calendar.DAY_OF_MONTH, 1);
 								        }
 							        	
@@ -1075,7 +1087,9 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 											        for (int i = 0; i < 5; i++)
 											        {
 											        	%>
-											        		<td>
+											        		<td style="<% if (LocalDate.now().getDayOfWeek().getValue() -1 == i) {%>
+										        				background: darkgray;
+										        			<%}%>">
 											        			<% // Getting hours from task_details
 											        				Integer taskId = key;
 											        				String taskDate = yyyyMMddFormate.format(now.getTime());
@@ -1259,8 +1273,6 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 } catch (Exception e) {
 	e.printStackTrace();
 } %>
-</html>
-
 
 <script type="text/javascript">
     
@@ -1277,3 +1289,4 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 	})
     
 </script>
+</html>
