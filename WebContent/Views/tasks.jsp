@@ -864,7 +864,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 	                            		<h2>My Team Tasks</h2>
 	                            	</td>
 	                            	<td style="text-align: end;">
-		                            		<input type="checkbox" class="form-check-input" id="checkboxMyTeamTaskShow" name="checkboxMyTeamTaskShow"> 
+		                            		<input type="checkbox" class="form-check-input" id="checkboxMyTeamTaskShow" name="checkboxMyTeamTaskShow" checked="checked"> 
 											<label class="form-check-label" for="checkboxMyTeamTaskShow">Show</label>
 	                            	</td>
 	                            </tr>
@@ -1263,10 +1263,6 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        // hidden
-        document.getElementById("tableMyTeamTasks").style.display = "none";
-    });
     
 	$("#checkboxMyTeamTaskShow").change(function() {
 		
