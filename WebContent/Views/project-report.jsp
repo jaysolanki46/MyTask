@@ -306,13 +306,7 @@
 														taskRowTotal += taskHours;
 													%> 
 													<label id="hoursLable" name="hoursLable"
-														style="cursor: pointer;" class="">
-														<%
-											        		if(taskHours > 0)
-											        			%><%=taskHours %><%
-											        		else
-											        			%><%="-"%>
-													</label></td><%
+														style="cursor: pointer;" class=""><%if(taskHours > 0)%><%=taskHours %><%else%><%="-"%></label></td><%
 													
 												
 								        }
@@ -486,6 +480,11 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+    
+    <!-- CSV Export -->
+	<script src="../js/csv.js"></script>
+	<!-- Hide Empty Columns In Table -->
+	<script src="../js/hideEmptyColumns.js"></script>
 </body>
 <% 
 } catch (Exception e) {
@@ -539,4 +538,9 @@ $('#projectDataTable tbody').on('click', 'tr.group-start', function() {
   collapsedGroups[name] = !collapsedGroups[name];
   oTable.draw(false);
 });
+
+window.onload = function() {
+	// Hide Empty Columns in Table
+	hideEmptyCols('#projectDataTable', '#exportProjectDataTable');
+};
 </script>

@@ -200,11 +200,13 @@
                         </header>
                     <!-- Main page content-->
                     <div class="container">
-                            <button type="submit" title="CSV Export"
-											class="btn btn-sm btn-light active mr-3 center_div card-button"
-											style="background-color:<%=bckColor %>; "
-											onclick="exportTableToCSV('Weekly-report.csv', 'exportWeeklyDataTable');">
-											<i class="fas fa-file-csv"></i>&nbsp; Export</button>	
+                            <div>
+	                            <button type="submit" title="CSV Export"
+												class="btn btn-sm btn-light active mr-3 center_div card-button"
+												style="background-color:<%=bckColor %>; "
+												onclick="exportTableToCSV('Weekly-report.csv', 'exportWeeklyDataTable');">
+												<i class="fas fa-file-csv"></i>&nbsp; Export</button>	
+							</div>
                             <table id="weeklyDataTable" class="table table-bordered" style="border: hidden;">
 						    <thead>
 							      <tr>
@@ -321,13 +323,7 @@
 								        							
 											        			%>
 											        			
-											        			<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class=""
-											        			><%
-											        				if(taskHours > 0)
-											        					%><%=taskHours%><%
-											        				else
-											        					%><%="-"%>
-											        			</label>
+											        			<label id="hoursLable" name="hoursLable" style="cursor: pointer;" class=""><%if(taskHours > 0)%><%=taskHours%><%else%><%="-"%></label>
 													        </td>
 											        	<% 
 											            now.add(Calendar.DAY_OF_MONTH, 1);
@@ -481,6 +477,12 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+    
+    <!-- CSV Export -->
+	<script src="../js/csv.js"></script>
+	<!-- Hide Empty Columns In Table -->
+	<script src="../js/hideEmptyColumns.js"></script>
+	
 </body>
 <% 
 } catch (Exception e) {
@@ -568,5 +570,10 @@ $('#weeklyDataTable tbody').on('click', 'tr.group-start', function() {
   collapsedGroups[name] = !collapsedGroups[name];
   oTable.draw(false);
 });
+
+window.onload = function() {
+	// Hide Empty Columns in Table
+	hideEmptyCols('#weeklyDataTable', '#exportWeeklyDataTable');
+};
 
 </script>

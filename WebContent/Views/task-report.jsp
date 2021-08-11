@@ -305,13 +305,7 @@
 														taskRowTotal += taskHours;
 													%> 
 													<label id="hoursLable" name="hoursLable"
-														style="cursor: pointer;" class="">
-														<%
-											        		if(taskHours > 0)
-											        			%><%=taskHours %><%
-											        		else
-											        			%><%="-"%>
-													</label></td><%
+														style="cursor: pointer;" class=""><%if(taskHours > 0)%><%=taskHours %><%else%><%="-"%></label></td><%
 													
 												
 								        }
@@ -421,11 +415,8 @@
 								        					taskDescription = rsNested.getString("taskdetail.description");
 								        				}
 														taskRowTotal += taskHours;
-													%><label id="hoursLable" name="hoursLable" style="cursor: pointer;" class=""><%
-											        		if(taskHours > 0)
-											        			%><%=taskHours %><%
-											        		else
-											        			%><%="-"%></label></td><%
+													%><label id="hoursLable" name="hoursLable"
+													 style="cursor: pointer;" class=""><%if(taskHours > 0)%><%=taskHours %><%else%><%="-"%></label></td><%
 													}
 									%><td><label class="total-hours-text"><%=taskRowTotal %></label></td>
 								</tr>
@@ -479,6 +470,11 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+    
+    <!-- CSV Export -->
+	<script src="../js/csv.js"></script>
+	<!-- Hide Empty Columns In Table -->
+	<script src="../js/hideEmptyColumns.js"></script>
 </body>
 <% 
 } catch (Exception e) {
@@ -531,4 +527,9 @@ $('#taskDataTable tbody').on('click', 'tr.group-start', function() {
   collapsedGroups[name] = !collapsedGroups[name];
   oTable.draw(false);
 });
+
+window.onload = function() {
+	// Hide Empty Columns in Table
+	hideEmptyCols('#taskDataTable', '#exportTaskDataTable');
+};
 </script>
