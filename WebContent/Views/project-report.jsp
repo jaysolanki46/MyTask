@@ -349,13 +349,14 @@
 								   }
 							     %>	
 						    </tbody>
-						    <tfoot>
+						    <%-- <tfoot>
 							    	<tr>
 							    		<th colspan="3"  style="text-align: inherit;" class="sticky-col first-col">
 							    			Total hours:
 							    		</th>
 							    		<%
-							    		for (LocalDate date = LocalDate.parse(projectCreatedOn); date.isBefore(LocalDate.now().plusDays(2)); date = date.plusDays(1)) {
+							    		for (LocalDate date = LocalDate.parse(projectCreatedOn); 
+							    				date.isBefore(LocalDate.now().plusDays(2)); date = date.plusDays(1)) {
 							    			%>
 							    				<th></th>
 							    			<%
@@ -365,8 +366,11 @@
 							    			<label class="total-hours-text"><%=taskColumnTotal %></label>
 							    		</th>
 							    	</tr>
-							 </tfoot>
+							 </tfoot> --%>
 						  </table>
+						  
+						  <h2><label class="col-sm-0 col-form-label" 
+						  	style="margin-left: 0.5rem;margin-right: 0.5rem; float: right">Total Hours: <%=taskColumnTotal %></label></h2>
 						  
 						  <!-- Hidden table for export -->
 						  <div style="display: none;">
