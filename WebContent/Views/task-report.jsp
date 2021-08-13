@@ -87,6 +87,39 @@
     line-height: 40px;
 }
 
+#taskDataTable .sticky-col {
+  position: -webkit-sticky;
+  position: sticky;
+  background-color: #eee;
+}
+
+#taskDataTable .first-col {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  left: 0px;
+}
+
+#taskDataTable .second-col {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  left: 100px;
+}
+
+#taskDataTable .third-col {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  left: 200px;
+}
+
+#taskDataTable .fourth-col {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  left: 300px;
+}
 
 </style>
 </head>
@@ -160,7 +193,7 @@
                     <!-- Main page content-->
                     <div class="container">
                     	
-                    	 <!--  Custom search -->
+                    	 <!-- search -->
                             <div id="divCustom" class="card-body" style="padding: 0px;">
                             <div class="card mb-3">
 				
@@ -198,7 +231,7 @@
                             		</div>
                             </div>
                             </div>
-                            <!--  End of custom search -->
+                            <!--  End of search -->
                     		
                     		<%
                     		if(reportTask != null && !reportTask.isEmpty()) {
@@ -209,13 +242,13 @@
 											style="background-color:<%=bckColor %>; "
 											onclick="exportTableToCSV('Task-report.csv', 'exportTaskDataTable');">
 											<i class="fas fa-file-csv"></i>&nbsp; Export</button>	
-                            <table id="taskDataTable" class="table table-bordered" style="border: hidden;">
+                            <table id="taskDataTable" class="table table-bordered" style="border: hidden; overflow-x: auto; display: block;">
 						    <thead>
 							      <tr>
-							      	<th>Project</th>
-							        <th style="text-align: center;">Task</th>
-							        <th>Priority</th>
-							        <th>Assignee</th>
+							      	<th class="sticky-col first-col">Project</th>
+							        <th style="text-align: center;" class="sticky-col second-col">Task</th>
+							        <th class="sticky-col third-col">Priority</th>
+							        <th class="sticky-col fourth-col">Assignee</th>
 							        <%
 							        	rs = st.executeQuery("SELECT * FROM tasks where status = "+ SKYZERTASKSTATUS.OPENED.getValue() +" AND id = " + reportTask + "");	
 							        
@@ -253,10 +286,10 @@
 								        	
 								%>
 								<tr>
-									<td><%=rs.getString("project.name") %></td>
-									<td style="text-align: inherit;"><%=name%>
+									<td style="text-align: left;" class="sticky-col first-col"><%=rs.getString("project.name") %></td>
+									<td style="text-align: inherit;" class="sticky-col second-col"><%=name%>
 									<div class="progress rounded-pill" title="<%=rs.getInt("task.percentage") %>% completed"
-													style="height: 0.5rem; margin-top: 0.5rem;">
+													style="height: 0.5rem; margin-top: 0.5rem; cursor: pointer;">
 										        	<div style="
 										        			<%
 										        				if(rs.getInt("task.percentage") >= 0 && rs.getInt("task.percentage") <=50) {
@@ -270,7 +303,7 @@
 															role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
 													</div>
 									</td>
-									<td>
+									<td class="sticky-col third-col">
 										<% if(rs.getInt("task.priority") == SKYZERTASKPRIORITY.LOW.getValue()) {
 										   %> <span class="badge" style="background-color:#00ac69; color: white; font-weight: bold; float: left;">LOW</span> <%	
 										} else if (rs.getInt("task.priority") == SKYZERTASKPRIORITY.MEDIUM.getValue()) {
@@ -280,7 +313,7 @@
 										 }
 										 %> 
 									</td>
-									<td><div id="profileImage" style="background: <%=profileColor %>" title="<%=assignee %>"><%=assignee.toUpperCase().substring(0, 2) %></div></td>
+									<td class="sticky-col fourth-col"><div id="profileImage" style="cursor: pointer; background: <%=profileColor %>" title="<%=assignee %>"><%=assignee.toUpperCase().substring(0, 2) %></div></td>
 									<%
 										 taskRowTotal = 0f;
 									
@@ -317,7 +350,7 @@
 								   }
 							     %>	
 						    </tbody>
-						    <tfoot>
+						    <%-- <tfoot>
 							    	<tr>
 							    		<th colspan="3"  style="text-align: inherit;">
 							    			Total hours:
@@ -331,7 +364,7 @@
 							    		%>
 							    		<th><label class="total-hours-text"><%=taskColumnTotal %></label></th>
 							    	</tr>
-							 </tfoot>
+							 </tfoot> --%>
 						  </table>
 						  
 						  <!-- Hidden table for export -->
@@ -515,7 +548,7 @@ var oTable = $('#taskDataTable').DataTable({
 
       // Add category name to the <tr>. NOTE: Hardcoded colspan
       return $('<tr/>')
-        .append('<td colspan="32" style="text-align: justify;">' + group + ' - ' + rows.count() + ' Task(s)</td>')
+        .append('<td colspan="4" style="text-align: justify; cursor: pointer;" class="sticky-col first-col">' + group + ' - ' + rows.count() + ' Task(s)</td>')
         .attr('data-name', group)
         .toggleClass('collapsed', collapsed);
     }

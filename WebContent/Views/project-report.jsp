@@ -87,7 +87,39 @@
     line-height: 40px;
 }
 
+#projectDataTable .sticky-col {
+  position: -webkit-sticky;
+  position: sticky;
+  background-color: #eee;
+}
 
+#projectDataTable .first-col {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  left: 0px;
+}
+
+#projectDataTable .second-col {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  left: 100px;
+}
+
+#projectDataTable .third-col {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  left: 200px;
+}
+
+#projectDataTable .fourth-col {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  left: 300px;
+}
 </style>
 </head>
 <body id="page-top">
@@ -202,19 +234,18 @@
                     		<%
                     		if(reportProject != null && !reportProject.isEmpty()) {
                     		%>
-                            <div style="overflow: auto;    height: 40rem;    width: 100%;">
                              <button type="submit" title="CSV Export"
 											class="btn btn-sm btn-light active mr-3 center_div card-button"
 											style="background-color:<%=bckColor %>; "
 											onclick="exportTableToCSV('Project-report.csv', 'exportProjectDataTable');">
 											<i class="fas fa-file-csv"></i>&nbsp; Export</button>	
-                            <table id="projectDataTable" class="table table-bordered" style="border: hidden;">
+                            <table id="projectDataTable" class="table table-bordered" style="border: hidden; overflow-x: auto; display: block;">
 						    <thead>
 							      <tr>
-							      	<th>Project</th>
-							        <th style="text-align: center;">Task</th>
-							        <th>Priority</th>
-							        <th>Assignee</th>
+							      	<th class="sticky-col first-col">Project</th>
+							        <th style="text-align: center;" class="sticky-col second-col">Task</th>
+							        <th class="sticky-col third-col">Priority</th>
+							        <th class="sticky-col fourth-col">Assignee</th>
 							        <%
 							        	rs = st.executeQuery("SELECT * FROM projects where id = " + reportProject + "");	
 							        
@@ -254,10 +285,10 @@
 								        	
 								%>
 								<tr>
-									<td><%=rs.getString("project.name") %></td>
-									<td style="text-align: inherit;"><%=name%>
+									<td style="text-align: left;" class="sticky-col first-col"><%=rs.getString("project.name") %></td>
+									<td style="text-align: inherit;" class="sticky-col second-col"><%=name%>
 									<div class="progress rounded-pill" title="<%=rs.getInt("task.percentage") %>% completed"
-													style="height: 0.5rem; margin-top: 0.5rem;">
+													style="height: 0.5rem; margin-top: 0.5rem; cursor: pointer;">
 										        	<div style="
 										        			<%
 										        				if(rs.getInt("task.percentage") >= 0 && rs.getInt("task.percentage") <=50) {
@@ -271,7 +302,7 @@
 															role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
 													</div>
 									</td>
-									<td>
+									<td class="sticky-col third-col">
 										<% if(rs.getInt("task.priority") == SKYZERTASKPRIORITY.LOW.getValue()) {
 											%> <span class="badge" style="background-color:#00ac69; color: white; font-weight: bold; float: left;">LOW</span> <%	
 										} else if (rs.getInt("task.priority") == SKYZERTASKPRIORITY.MEDIUM.getValue()) {
@@ -281,7 +312,7 @@
 										}
 										%> 
 										        </td>
-									<td><div id="profileImage" style="background: <%=profileColor %>" title="<%=assignee %>"><%=assignee.toUpperCase().substring(0, 2) %></div></td>
+									<td class="sticky-col fourth-col"><div id="profileImage" style="cursor: pointer; background: <%=profileColor %>" title="<%=assignee %>"><%=assignee.toUpperCase().substring(0, 2) %></div></td>
 									<%
 										 taskRowTotal = 0f;
 									
@@ -320,7 +351,7 @@
 						    </tbody>
 						    <tfoot>
 							    	<tr>
-							    		<th colspan="3"  style="text-align: inherit;">
+							    		<th colspan="3"  style="text-align: inherit;" class="sticky-col first-col">
 							    			Total hours:
 							    		</th>
 							    		<%
@@ -453,7 +484,6 @@
 						  </div>
 						  <!-- End hidden table for export -->
 						  
-                    		</div>
                     		<%
                     		}
                     		%>
@@ -526,7 +556,7 @@ var oTable = $('#projectDataTable').DataTable({
 
       // Add category name to the <tr>. NOTE: Hardcoded colspan
       return $('<tr/>')
-        .append('<td colspan="32" style="text-align: justify;">' + group + ' - ' + rows.count() + ' Task(s)</td>')
+        .append('<td colspan="4" style="text-align: justify; cursor: pointer;" class="sticky-col first-col">' + group + ' - ' + rows.count() + ' Task(s)</td>')
         .attr('data-name', group)
         .toggleClass('collapsed', collapsed);
     }

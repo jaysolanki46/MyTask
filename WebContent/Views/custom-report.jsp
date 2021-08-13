@@ -86,6 +86,39 @@
     line-height: 40px;
 }
 
+#customDataTable .sticky-col {
+  position: -webkit-sticky;
+  position: sticky;
+  background-color: #eee;
+}
+
+#customDataTable .first-col {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  left: 0px;
+}
+
+#customDataTable .second-col {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  left: 100px;
+}
+
+#customDataTable .third-col {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  left: 200px;
+}
+
+#customDataTable .fourth-col {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  left: 300px;
+}
 
 </style>
 </head>
@@ -194,13 +227,13 @@
 											style="background-color:<%=bckColor %>; "
 											onclick="exportTableToCSV('Custom-report.csv', 'exportCustomDataTable');">
 											<i class="fas fa-file-csv"></i>&nbsp; Export</button>	
-                            <table id="customDataTable" class="table table-bordered" style="border: hidden;">
+                            <table id="customDataTable" class="table table-bordered" style="border: hidden; overflow-x: auto; display: block;">
 						    <thead>
 							      <tr>
-							      	<th>Project</th>
-							        <th style="text-align: center;">Task</th>
-							        <th>Priority</th>
-							        <th>Assignee</th>
+							      	<th class="sticky-col first-col">Project</th>
+							        <th style="text-align: center;" class="sticky-col second-col">Task</th>
+							        <th class="sticky-col third-col">Priority</th>
+							        <th class="sticky-col fourth-col">Assignee</th>
 							        <%
 							        
 								        for (LocalDate date = LocalDate.parse(reportStartDate); date.isBefore(LocalDate.parse(reportEndDate).plusDays(1)); date = date.plusDays(1))
@@ -237,10 +270,10 @@
 								        	
 								%>
 								<tr>
-									<td><%=rs.getString("project.name") %></td>
-									<td style="text-align: inherit;"><%=name%>
+									<td style="text-align: left;" class="sticky-col first-col"><%=rs.getString("project.name") %></td>
+									<td style="text-align: inherit;" class="sticky-col second-col"><%=name%>
 									<div class="progress rounded-pill" title="<%=rs.getInt("task.percentage") %>% completed"
-													style="height: 0.5rem; margin-top: 0.5rem;">
+													style="height: 0.5rem; margin-top: 0.5rem; cursor: pointer;">
 										        	<div style="
 										        			<%
 										        				if(rs.getInt("task.percentage") >= 0 && rs.getInt("task.percentage") <=50) {
@@ -254,7 +287,7 @@
 															role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
 													</div>
 									</td>
-									<td>
+									<td class="sticky-col third-col">
 										 <% if(rs.getInt("task.priority") == SKYZERTASKPRIORITY.LOW.getValue()) {
 										 	%> <span class="badge" style="background-color:#00ac69; color: white; font-weight: bold; float: left;">LOW</span> <%	
 										 } else if (rs.getInt("task.priority") == SKYZERTASKPRIORITY.MEDIUM.getValue()) {
@@ -264,7 +297,7 @@
 										 }
 										 %> 
 									</td>
-									<td><div id="profileImage" style="background: <%=profileColor %>" title="<%=assignee %>"><%=assignee.toUpperCase().substring(0, 2) %></div></td>
+									<td class="sticky-col fourth-col"><div id="profileImage" style="cursor: pointer; background: <%=profileColor %>" title="<%=assignee %>"><%=assignee.toUpperCase().substring(0, 2) %></div></td>
 									<%
 										taskColumnTotal = 0f; taskRowTotal = 0f;
 									
@@ -385,9 +418,7 @@
 								        					taskDescription = rsNested.getString("taskdetail.description");
 								        				}
 														taskRowTotal += taskHours;
-													%><label id="hoursLable" name="hoursLable" style="cursor: pointer;" 
-														class=""><%if(taskHours > 0)%><%=taskHours %><%else%><%="-"%></label>
-													</td><%}%>
+													%><label id="hoursLable" name="hoursLable" style="cursor: pointer;"><%if(taskHours > 0)%><%=taskHours%><%else%><%="-"%></label></td><%}%>
 									<td><label class="total-hours-text"><%=taskRowTotal %></label></td>
 								</tr>
 								 <%
@@ -470,7 +501,7 @@ var oTable = $('#customDataTable').DataTable({
 
       // Add category name to the <tr>. NOTE: Hardcoded colspan
       return $('<tr/>')
-        .append('<td colspan="32" style="text-align: justify;">' + group + ' - ' + rows.count() + ' Task(s)</td>')
+        .append('<td colspan="4" style="text-align: justify; cursor: pointer;" class="sticky-col first-col">' + group + ' - ' + rows.count() + ' Task(s)</td>')
         .attr('data-name', group)
         .toggleClass('collapsed', collapsed);
     }
