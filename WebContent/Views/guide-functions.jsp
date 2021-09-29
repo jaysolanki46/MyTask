@@ -349,6 +349,8 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 	<!-- Alert Status -->
 </body>
 <% 
+	dbConn.close();
+
 } catch (Exception e) {
 	e.printStackTrace();
 } %>

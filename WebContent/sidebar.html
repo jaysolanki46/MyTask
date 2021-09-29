@@ -46,25 +46,32 @@ style="background-color: <%=bckColor %>">
             </li>
             
             
-             <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-            <br/>
-            <div class="sidebar-heading ">SKYZER GUIDE</div>
-            <!-- Nav Item - Guide -->
-            <li class="nav-item active">
-                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseGuide"
-                    aria-expanded="true" aria-controls="collapseGuide">
-                    <i class="fas fa-mobile"></i>
-                    <span>Guide App</span></a>
-                    
-                    <div id="collapseGuide" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-						<a class="collapse-item" href="/MyTask/Views/guide-users.jsp">Users</a>
-                        <a class="collapse-item" href="/MyTask/Views/guide-functions.jsp">Functions</a>
-                    </div>
-                </div>
-            </li>
-            
+            <%
+            Integer userType = Integer.valueOf(session.getAttribute("userType").toString());
+            	if(userType == 1) {
+            	%>
+            		 <!-- Divider -->
+		            <hr class="sidebar-divider my-0">
+		            <br/>
+		            <div class="sidebar-heading ">SKYZER GUIDE</div>
+		            <!-- Nav Item - Guide -->
+		            <li class="nav-item active">
+		                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseGuide"
+		                    aria-expanded="true" aria-controls="collapseGuide">
+		                    <i class="fas fa-mobile"></i>
+		                    <span>Guide App</span></a>
+		                    
+		                    <div id="collapseGuide" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+		                    <div class="bg-white py-2 collapse-inner rounded">
+								<a class="collapse-item" href="/MyTask/Views/guide-users.jsp">Users</a>
+		                        <a class="collapse-item" href="/MyTask/Views/guide-functions.jsp">Functions</a>
+		                    </div>
+		                </div>
+		            </li>
+            	<%
+					} 
+            	
+            %>
 
 			<!-- Nav Item - To-do List -->
             <!-- <li class="nav-item active">
