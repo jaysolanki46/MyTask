@@ -147,7 +147,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
                                     	<% 
                                     	
                                     		rs = st.executeQuery("select users.*, divisions.division, divisions.dealer_name from users "
-                                    			+ "LEFT JOIN divisions on users.division = divisions.id;");
+                                    			+ "LEFT JOIN divisions on users.division = divisions.id");
                                     	
                                     		while (rs.next()) { 
                                     	%>
@@ -230,7 +230,9 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 } %>
 <script type="text/javascript">
 	$(document).ready( function () {
-	    $('#dataTable').DataTable({});
+	    $('#dataTable').DataTable({
+	    	"order": [[ 0, "desc" ]]
+	    });
 	} );
 </script>
 </html>
