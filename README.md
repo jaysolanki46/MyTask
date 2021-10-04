@@ -71,7 +71,7 @@ MyTask is a user-friendly time tracker and timesheet web tool that allows the te
 
 ### Dashboard
 
-[![Dashboard](https://i9.ytimg.com/vi/I2Q3YjQnQw4/mq2.jpg?sqp=CPSV7ooG&rs=AOn4CLAiwv-wqr9zoasJhHZsIkwas6gAHQ)](https://www.youtube.com/watch?v=I2Q3YjQnQw4&ab_channel=SkyzerTechnologies)
+[![Dashboard](https://www.youtube.com/watch?v=I2Q3YjQnQw4&ab_channel=SkyzerTechnologies)](https://www.youtube.com/watch?v=I2Q3YjQnQw4&ab_channel=SkyzerTechnologies)
 
 ### Project
 
