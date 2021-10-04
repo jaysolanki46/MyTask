@@ -9,6 +9,8 @@ MyTask is a user-friendly time tracker and timesheet web tool that allows the te
 - Export report as csv
 - Invite team members 
 
+![Introduction(https://github.com/jaysolanki46/MyTask/blob/master/demo/Intro.png "Introduction")
+
 ## 🚀 Technologies & Tools
 <table>
     <tbody>
