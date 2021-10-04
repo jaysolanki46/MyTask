@@ -15,8 +15,7 @@ MyTask is a user-friendly time tracker and timesheet web tool that allows the te
 <table>
     <tbody>
         <tr>
-             <td><a href="#"><img alt="Java" title="Java" height="40px" width="50px"
-                        src="https://user-images.githubusercontent.com/25057099/117538162-05c05200-b059-11eb-9b36-a04c54e6d60f.png" /> Java
+             <td> Java
               </a>
             </td>
            <td><a href="#"><img alt="JSP" title="JSP" height="40px" width="50px"
