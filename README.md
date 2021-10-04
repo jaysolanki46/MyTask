@@ -66,4 +66,39 @@ MyTask is a user-friendly time tracker and timesheet web tool that allows the te
 </table>
 
 ##  👨🏽‍🏫  Demo
-<i>Coming soon...</i>
+
+### Dashboard
+
+[![Dashboard](http://i.imgur.com/7YTMFQp.png)](https://www.youtube.com/watch?v=I2Q3YjQnQw4&ab_channel=SkyzerTechnologies)
+
+### Project
+
+[![Project](http://i.imgur.com/7YTMFQp.png)](https://www.youtube.com/watch?v=h3fX-DOfDEw&ab_channel=SkyzerTechnologies)
+
+### Tasks
+
+[![Tasks](http://i.imgur.com/7YTMFQp.png)](https://www.youtube.com/watch?v=KVwU4te2xQI&ab_channel=SkyzerTechnologies)
+
+### Weekly Report
+
+[![Weekly Report](http://i.imgur.com/7YTMFQp.png)](https://www.youtube.com/watch?v=hqZoFbPb24I&ab_channel=SkyzerTechnologies)
+
+### Monthly Report
+
+[![Monthly Report](http://i.imgur.com/7YTMFQp.png)](https://www.youtube.com/watch?v=C8HOmHPc3cA&ab_channel=SkyzerTechnologies)
+
+### Custom Report
+
+[![Custom Report](http://i.imgur.com/7YTMFQp.png)](https://www.youtube.com/watch?v=HNQlTxLXkvk&ab_channel=SkyzerTechnologies)
+
+### Project Report
+
+[![Project Report](http://i.imgur.com/7YTMFQp.png)](https://www.youtube.com/watch?v=T-ArvD21Xwk&ab_channel=SkyzerTechnologies)
+
+### Task Report
+
+[![Task Report](http://i.imgur.com/7YTMFQp.png)](https://www.youtube.com/watch?v=ddu5xkZpr6A&ab_channel=SkyzerTechnologies)
+
+### My Profile
+
+[![My Profile](http://i.imgur.com/7YTMFQp.png)](https://www.youtube.com/watch?v=q8R5xk-vwFU&ab_channel=SkyzerTechnologies)
