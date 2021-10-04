@@ -66,4 +66,7 @@ MyTask is a user-friendly time tracker and timesheet web tool that allows the te
 </table>
 
 ##  👨🏽‍🏫  Demo
-<i>Coming soon...</i>
+
+### Dashboard
+
+
