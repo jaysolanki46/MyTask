@@ -4,12 +4,15 @@
 MyTask is a user-friendly time tracker and timesheet web tool that allows the team to track their work hours across the projects. 
 
 ## 📑 Features 
-- Keep time track on project
-- Report breakdown by project and task 
-- Export report as csv
-- Invite team members 
+- Keep the track of your projects
+- Report breakdown by project and task
+- Export reports as csv
+- Easy collaboration between team members
+- Notify the user on new task assign
+- Theme Customization
 
-![Introduction](https://github.com/jaysolanki46/MyTask/blob/master/demo/Intro.png)
+
+![Intro](https://user-images.githubusercontent.com/25057099/136633299-f3abcfce-6759-4e5d-a48e-47531414d810.png)
 
 ## 🚀 Technologies & Tools
 <table>
