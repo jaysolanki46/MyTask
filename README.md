@@ -78,42 +78,42 @@ Click on the image to play...
 
 ### Project
 
-[![Projects](https://user-images.githubusercontent.com/25057099/136632257-755a9882-c125-4056-ae19-0bb19395db16.png)]
+[![Projects](https://user-images.githubusercontent.com/25057099/136632257-755a9882-c125-4056-ae19-0bb19395db16.png)](https://www.youtube.com/watch?v=h3fX-DOfDEw&ab_channel=SkyzerTechnologies)
 
 
 ### Tasks
 
-[![Tasks](https://user-images.githubusercontent.com/25057099/136632281-000149d5-fec3-46b4-a7d1-a83a21083b6e.png)]
+[![Tasks](https://user-images.githubusercontent.com/25057099/136632281-000149d5-fec3-46b4-a7d1-a83a21083b6e.png)](https://www.youtube.com/watch?v=KVwU4te2xQI&ab_channel=SkyzerTechnologies)
 
 
 ### Weekly Report
 
-[![Weekly](https://user-images.githubusercontent.com/25057099/136632293-b8e9a756-f683-42e2-961a-2a30a32f5afe.png)]
+[![Weekly](https://user-images.githubusercontent.com/25057099/136632293-b8e9a756-f683-42e2-961a-2a30a32f5afe.png)](https://www.youtube.com/watch?v=hqZoFbPb24I&ab_channel=SkyzerTechnologies)
 
 
 ### Monthly Report
 
-[![Monthly](https://user-images.githubusercontent.com/25057099/136632298-8324c3da-dabf-457f-a618-f4a6dd1ace24.png)]
+[![Monthly](https://user-images.githubusercontent.com/25057099/136632298-8324c3da-dabf-457f-a618-f4a6dd1ace24.png)](https://www.youtube.com/watch?v=C8HOmHPc3cA&ab_channel=SkyzerTechnologies)
 
 
 ### Custom Report
 
-[![Custom](https://user-images.githubusercontent.com/25057099/136632305-aefa6c6f-1c11-485c-a372-d65beeaeed47.png)]
+[![Custom](https://user-images.githubusercontent.com/25057099/136632305-aefa6c6f-1c11-485c-a372-d65beeaeed47.png)](https://www.youtube.com/watch?v=HNQlTxLXkvk&ab_channel=SkyzerTechnologies)
 
 
 ### Project Report
 
-[![Project](https://user-images.githubusercontent.com/25057099/136632313-a2e9fc5f-f403-4612-9dcf-a11d11e9890b.png)]
+[![Project](https://user-images.githubusercontent.com/25057099/136632313-a2e9fc5f-f403-4612-9dcf-a11d11e9890b.png)](https://www.youtube.com/watch?v=T-ArvD21Xwk&ab_channel=SkyzerTechnologies)
 
 
 ### Task Report
 
-[![Task](https://user-images.githubusercontent.com/25057099/136632323-ef3a4eb1-cf4c-42d9-b371-1ff561cb37c9.png)]
+[![Task](https://user-images.githubusercontent.com/25057099/136632323-ef3a4eb1-cf4c-42d9-b371-1ff561cb37c9.png)](https://www.youtube.com/watch?v=ddu5xkZpr6A&ab_channel=SkyzerTechnologies)
 
 
 ### My Profile
 
-[![Profile](https://user-images.githubusercontent.com/25057099/136632337-46bec6b7-aea6-4255-81ce-eb1355399cd0.png)]
+[![Profile](https://user-images.githubusercontent.com/25057099/136632337-46bec6b7-aea6-4255-81ce-eb1355399cd0.png)](https://www.youtube.com/watch?v=q8R5xk-vwFU&ab_channel=SkyzerTechnologies)
 
 
 
