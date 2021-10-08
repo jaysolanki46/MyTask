@@ -12,7 +12,6 @@ public class TaskDetailDAO {
 
 	private static Connection cnn;
 	private static ResultSet rs;
-	private PreparedStatement preparedStatement;
 	
 	@SuppressWarnings("resource")
 	public boolean insert(TaskDetail taskDetail) throws ClassNotFoundException, SQLException {

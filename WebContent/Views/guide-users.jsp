@@ -1,3 +1,4 @@
+<%@page import="config.GuideEmail"%>
 <%@page import="config.EnumGuide"%>
 <%@page import="config.EnumMyTask.SKYZERTASKSTATUS"%>
 <%@page import="config.EnumMyTask.SKYZERDEPARTMENTS"%>
@@ -53,6 +54,9 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
 										"updated_on = '"+ LocalDate.now().toString() +"' " +
 										"where id = '"+ new String(Base64.getDecoder().decode(activeUser)) +"'");
 		session.setAttribute("status", "update");
+		String emailUsername = request.getParameter("username");
+		String emailRecipient = request.getParameter("email");
+		new GuideEmail().sendEmailOnUserActivation(emailRecipient, emailUsername);
 		
 	} else if (deactiveUser != null) {
 		stUserStatus.executeUpdate("UPDATE users set is_active = '"+ EnumGuide.USERSTATUS.DEACTIVE.getValue() +"', " +
@@ -173,7 +177,7 @@ if(usertheme.equals(SKYZERTECHNOLOGIES.ID.getValue())) {
                                             	<%
                                             	if(!rs.getBoolean("is_active")) {
                                             		%>
-	                                            		<a 	style="text-decoration: none" href="guide-users.jsp?activeUser=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>">
+	                                            		<a 	style="text-decoration: none" href="guide-users.jsp?activeUser=<%=Base64.getEncoder().encodeToString(rs.getString("id").getBytes())%>&username=<%=rs.getString("username")%>&email=<%=rs.getString("email")%>">
 	                                            				<button type="button" class="btn btn-success">
 																<i class="fas fa-check-square"></i>&nbsp; ACTIVE</button>
 														</a>

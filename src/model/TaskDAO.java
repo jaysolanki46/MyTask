@@ -2,7 +2,6 @@ package model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import bean.Task;
@@ -11,7 +10,6 @@ import config.DBConfig;
 public class TaskDAO {
 
 	private static Connection cnn;
-	private static ResultSet rs;
 	
 	public boolean insert(Task task) throws ClassNotFoundException, SQLException {
 		
@@ -38,7 +36,7 @@ public class TaskDAO {
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
             
-            rs = preparedStatement.getGeneratedKeys();
+            preparedStatement.getGeneratedKeys();
             
         } catch (SQLException e) {
            	e.printStackTrace();
@@ -66,7 +64,7 @@ public class TaskDAO {
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
             
-            rs = preparedStatement.getGeneratedKeys();
+            preparedStatement.getGeneratedKeys();
             
         } catch (Exception e) {
            	e.printStackTrace();
@@ -102,7 +100,7 @@ public class TaskDAO {
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
             
-            rs = preparedStatement.getGeneratedKeys();
+            preparedStatement.getGeneratedKeys();
             
         } catch (SQLException e) {
            	e.printStackTrace();
