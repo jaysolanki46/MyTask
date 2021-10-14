@@ -11,8 +11,8 @@ MyTask is a user-friendly time tracker and timesheet web tool that allows the te
 - Notify the user on new task assign
 - Theme Customization
 
+![Intro](https://user-images.githubusercontent.com/25057099/137273924-fdd6d46c-6802-4a79-af0a-7fcecced0e7b.png)
 
-![Intro](https://user-images.githubusercontent.com/25057099/136633299-f3abcfce-6759-4e5d-a48e-47531414d810.png)
 
 ## 🚀 Technologies & Tools
 <table>
