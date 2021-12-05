@@ -18,8 +18,8 @@ public class GuideEmail {
 
 	private Properties props;
 	private Session session;
-	private final String username = "skyzertms@gmail.com";
-	private final String password = "Skynet123";
+	private final String adminEmail = "noreply@skyzer.co.nz";
+	private final String adminPass = "Gon58589";
 	private String bodyText = "";
     
 	
@@ -27,14 +27,14 @@ public class GuideEmail {
 		props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "25");
+        props.put("mail.smtp.host", "smtp.office365.com");
+        props.put("mail.smtp.port", "587");
         props.put("mail.smtp.ssl.protocols", "TLSv1.2");
         
         session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                    protected PasswordAuthentication getPasswordAuthentication() {
-                      return new PasswordAuthentication(username, password);
+                      return new PasswordAuthentication(adminEmail, adminPass);
                    }
                 });
 	}
@@ -42,10 +42,12 @@ public class GuideEmail {
 	public boolean sendEmailOnUserActivation(String recipient, String username) {
 		
 		try {
-		 	
+		 		
+			System.err.println(adminEmail + " " + adminPass );	
+			
 	           Message message = new MimeMessage(session);
 
-	           message.setFrom(new InternetAddress(username, "Skyzer Technologies"));
+	           message.setFrom(new InternetAddress(adminEmail));
 	           message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
 	           message.setSubject("SKYZER GUIDE | Congratulations!");
 	          

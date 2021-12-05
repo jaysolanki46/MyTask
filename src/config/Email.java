@@ -21,8 +21,8 @@ public class Email {
 
 	private Properties props;
 	private Session session;
-	private final String username = "skyzertms@gmail.com";
-	private final String password = "Skynet123";
+	private final String adminEmail = "noreply@skyzer.co.nz";
+	private final String adminPass = "Gon58589";
 	private String bodyText = "";
     
 	
@@ -30,13 +30,13 @@ public class Email {
 		props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "25");
+        props.put("mail.smtp.host", "smtp.office365.com");
+        props.put("mail.smtp.port", "587");
         
         session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                    protected PasswordAuthentication getPasswordAuthentication() {
-                      return new PasswordAuthentication(username, password);
+                      return new PasswordAuthentication(adminEmail, adminPass);
                    }
                 });
 	}
@@ -52,7 +52,7 @@ public class Email {
 			 
 	           Message message = new MimeMessage(session);
 
-	           message.setFrom(new InternetAddress(username, assignedBy));
+	           message.setFrom(new InternetAddress(adminEmail, assignedBy));
 	           message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
 	           message.setSubject("[My Task] - " + task.getName());
 	          
