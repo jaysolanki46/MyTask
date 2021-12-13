@@ -20,7 +20,7 @@ import bean.Task;
 public class Email {
 
 	private Properties props;
-	private Session session;
+	private Session session;sdfsdfsdfsdfsdfsdfsdff
 	private final String adminEmail = "noreply@skyzer.co.nz";
 	private final String adminPass = "Gon58589";
 	private String bodyText = "";
