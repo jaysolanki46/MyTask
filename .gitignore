@@ -1,7 +1,5 @@
 .classpath
-src/config/DBConfig.java
-src/config/GuideDBConfig.java
-src/config/GuideEmail.java
+src/config/*
 build/
 /bin/
 
